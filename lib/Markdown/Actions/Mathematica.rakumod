@@ -19,12 +19,20 @@ class Markdown::Actions::Mathematica {
         }
     }
 
+
     method md-header1($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Title"]'; }
     method md-header2($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Section"]'; }
     method md-header3($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsection"]'; }
     method md-header4($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsection"]'; }
     method md-header5($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsubsection"]'; }
+
     method md-horizontal-line($/) { make 'Cell[TextData["\[HorizontalLine]"], "Text"]'; }
+
+    method md-image-simple-link($/) {
+        my $code = 'Import[' ~ $<md-simple-link><md-link-url>.made ~ ']';
+        $code = $code.Str.subst(:g, '"', '\"');
+        make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+    }
 
     method md-simple-link($/) { make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-url>.made ~ ', None}]'; }
     method md-link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }

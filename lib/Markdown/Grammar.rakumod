@@ -15,6 +15,7 @@ grammar Markdown::Grammar {
         || <md-header1>
         || <md-horizontal-line>
         || <md-code-block>
+        || <md-image-simple-link>
         || <md-empty-line>
         || <md-item-list-block>
         || <md-numbered-list-block>
@@ -37,6 +38,8 @@ grammar Markdown::Grammar {
     regex md-header5 { '#####' \h* $<head>=(\V*) \n }
 
     regex md-horizontal-line { '---' ['-']* \n }
+
+    regex md-image-simple-link { '!' <md-simple-link> }
 
     regex md-simple-link { '[' <md-link-name> ']' \h* '(' <md-link-url> ')' }
     regex md-link-name { <-[\[\]]>* }

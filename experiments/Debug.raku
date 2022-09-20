@@ -142,8 +142,20 @@ my $mtext7 = q:to/END/;
 4. QRMon
 END
 
+my $mtext8 = q:to/END/;
+### Images
+
+Here is the breakdown:
+
+![](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)
+
+Here is the "Ocean" style version:
+
+![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)
+END
+
 say "=" x 60;
 
 #say md-subparse($mtext7, rule => 'TOP');
 
-say md-interpret($mtext7);
+say md-interpret($mtext8);

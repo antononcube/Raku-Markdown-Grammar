@@ -47,10 +47,10 @@ grammar Markdown::Grammar {
     regex md-link-url { <-[()]>* }
 
     regex md-word { (\S+) <!{ so $0.Str ~~ self.md-simple-link-strict }> }
-    regex md-empty-line { \h* \n+ }
+    regex md-empty-line { \h* \n }
 
     regex md-text-element { <md-simple-link> || <md-word> }
-    regex md-text-line { \h* $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \n <!{ $<first>.Str eq $mdTicks }> }
+    regex md-text-line { \h* $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
     regex md-text-block { <md-text-line>+ }
 
     regex md-item-list-block { <md-item-list-element>+ }

@@ -10,7 +10,7 @@ class Markdown::Actions::Mathematica {
     method header4($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsection"]'; }
     method header5($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsubsection"]'; }
     method horizontal-line($/) { make 'TextCell["\[HorizontalLine]", "Text"]'; }
-    method code-block($/) { make 'Cell[ BoxData["' ~ $<code> ~ '"], "Input"]'; }
+    method code-block($/) { make 'Cell[ BoxData["' ~ $<code>.subst(:g, '"', '\"') ~ '"], "Input"]'; }
     method simple-link($/) { make 'ButtonBox[' ~ $<link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<link-url>.made ~ ', None}]'; }
     method link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
     method link-url($/) { make 'URL["' ~ make $/.Str ~ '"]'; }

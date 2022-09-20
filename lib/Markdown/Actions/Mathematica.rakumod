@@ -20,11 +20,11 @@ class Markdown::Actions::Mathematica {
     }
 
 
-    method md-header1($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Title"]'; }
-    method md-header2($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Section"]'; }
-    method md-header3($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsection"]'; }
-    method md-header4($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsection"]'; }
-    method md-header5($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsubsection"]'; }
+    method md-header1($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Title"]'; }
+    method md-header2($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Section"]'; }
+    method md-header3($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsection"]'; }
+    method md-header4($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsection"]'; }
+    method md-header5($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsubsection"]'; }
 
     method md-horizontal-line($/) { make 'Cell[TextData["\[HorizontalLine]"], "Text"]'; }
 

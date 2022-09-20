@@ -31,11 +31,11 @@ grammar Markdown::Grammar {
         $mdTicks
     }
 
-    regex md-header1 { '#' \h* $<head>=(\V*) \n }
-    regex md-header2 { '##' \h* $<head>=(\V*) \n }
-    regex md-header3 { '###' \h* $<head>=(\V*) \n }
-    regex md-header4 { '####' \h* $<head>=(\V*) \n }
-    regex md-header5 { '#####' \h* $<head>=(\V*) \n }
+    regex md-header1 { '#' \h* <head=.md-text-line> }
+    regex md-header2 { '##' \h* <head=.md-text-line> }
+    regex md-header3 { '###' \h* <head=.md-text-line> }
+    regex md-header4 { '####' \h* <head=.md-text-line> }
+    regex md-header5 { '#####' \h* <head=.md-text-line> }
 
     regex md-horizontal-line { '---' ['-']* \n }
 

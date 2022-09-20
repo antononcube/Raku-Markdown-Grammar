@@ -43,6 +43,18 @@ Here is a Python cell:
 4. ClCon
 5. QRMon
 
+------
+
+## Images
+
+Here is the breakdown of Pythonistan:
+
+![](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)
+
+Here is the "Ocean" style version:
+
+![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)
+
 -----
 
 ## References

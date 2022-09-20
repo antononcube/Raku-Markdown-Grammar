@@ -7,7 +7,7 @@ class Markdown::Actions::Mathematica {
     method md-block($/) { make $/.values[0].made; }
 
     method md-code-block($/) {
-        my $code = $<code>.Str.subst(:g, '"', '\"');
+        my $code = $<code>.Str.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
         with $<header><lang> {
             if $<header><lang>.lc ∈ <wl mathematica> {
                 make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';

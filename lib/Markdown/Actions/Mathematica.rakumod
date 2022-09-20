@@ -59,5 +59,19 @@ class Markdown::Actions::Mathematica {
 
         make 'Cell[TextData[{' ~ $<content>.made ~ '}], "' ~ $itemType ~ '"]';
     }
+
+    method md-numbered-list-block($/) {
+        make  $<md-numbered-list-element>>>.made.join(', ');
+    }
+    method md-numbered-list-element($/) {
+        my $itemType =
+                do given $<indent>.Str.chars {
+                    when 0 { 'ItemNumbered' }
+                    when 1 ≤ $_ ≤ 2 { 'SubitemNumbered' }
+                    when 3 ≤ $_ ≤ 4 { 'SubsubitemNumbered' }
+                };
+
+        make 'Cell[TextData[{' ~ $<content>.made ~ '}], "' ~ $itemType ~ '"]';
+    }
 }
 

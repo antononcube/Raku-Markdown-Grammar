@@ -17,6 +17,7 @@ grammar Markdown::Grammar {
         || <md-code-block>
         || <md-empty-line>
         || <md-item-list-block>
+        || <md-numbered-list-block>
         || <md-text-block>
     }
 
@@ -52,4 +53,6 @@ grammar Markdown::Grammar {
     regex md-item-list-element { $<indent>=(\h*) $mdItemListMarker \h+ <content=.md-text-line> }
 
     regex md-numbered-list-block { <md-numbered-list-element>+ }
+    regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }
+
 }

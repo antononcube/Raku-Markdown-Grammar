@@ -132,8 +132,18 @@ my $mtext6 = q:to/END/;
 - ClCon
 END
 
+my $mtext7 = q:to/END/;
+### Monads
+
+1. LSAMon
+2. SMRMon
+  1. SBR too
+3. ClCon
+4. QRMon
+END
+
 say "=" x 60;
 
-#say md-subparse($mtext6, rule => 'TOP');
+#say md-subparse($mtext7, rule => 'TOP');
 
-say md-interpret($mtext6);
+say md-interpret($mtext7);

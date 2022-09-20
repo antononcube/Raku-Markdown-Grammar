@@ -1,0 +1,30 @@
+{
+  "name": "Markdown::Grammar",
+  "description": "Grammar for parsing Markdown (aka Wolfram Language) expressions.",
+  "version": "0.0.1",
+  "perl": "6.d",
+  "authors": [
+    "Anton Antonov"
+  ],
+  "auth": "github:antononcube",
+  "depends": [],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {
+    "Markdown::Actions::Mathematica": "lib/Markdown/Actions/Mathematica.rakumod",
+    "Markdown::Grammar": "lib/Markdown/Grammar.rakumod"
+  },
+  "resources": [],
+  "license": "Artistic-2.0",
+  "tags": [
+    "grammar",
+    "markdown",
+    "mathematica",
+    "parser",
+    "wl",
+    "wolfram language",
+    "wolfram"
+  ],
+  "api": "1",
+  "source-url": "https://github.com/antononcube/Raku-Markdown-Grammar.git"
+}

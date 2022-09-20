@@ -2,7 +2,7 @@ use v6.d;
 
 class Markdown::Actions::Mathematica {
 
-    method TOP($/) { make 'NotebookPut @ Notebook[{' ~ $<md-block>>>.made.join(', ') ~ '}]' }
+    method TOP($/) { make 'Notebook[{' ~ $<md-block>>>.made.join(', ') ~ '}]' }
 
     method md-block($/) { make $/.values[0].made; }
 
@@ -12,7 +12,7 @@ class Markdown::Actions::Mathematica {
             if $<header><lang>.lc ∈ <wl mathematica> {
                 make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
             } else {
-                make 'Cell["'  ~ $code ~ '", "ExternalLanguage", CellEvaluationLanguage->"' ~ $<header><lang>.Str ~ '"]'
+                make 'Cell["'  ~ $code ~ '", "ExternalLanguage", CellEvaluationLanguage->"' ~ $<header><lang>.Str.tc ~ '"]'
             }
         } else {
             make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
@@ -24,7 +24,7 @@ class Markdown::Actions::Mathematica {
     method md-header3($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsection"]'; }
     method md-header4($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsection"]'; }
     method md-header5($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsubsection"]'; }
-    method md-horizontal-line($/) { make 'TextCell["\[HorizontalLine]", "Text"]'; }
+    method md-horizontal-line($/) { make 'Cell[TextData["\[HorizontalLine]"], "Text"]'; }
 
     method md-simple-link($/) { make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-url>.made ~ ', None}]'; }
     method md-link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }

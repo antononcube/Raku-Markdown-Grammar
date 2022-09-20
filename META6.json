@@ -14,7 +14,9 @@
     "Markdown::Actions::Mathematica": "lib/Markdown/Actions/Mathematica.rakumod",
     "Markdown::Grammar": "lib/Markdown/Grammar.rakumod"
   },
-  "resources": [],
+  "resources": [
+    "Example-document-1.md"
+  ],
   "license": "Artistic-2.0",
   "tags": [
     "grammar",

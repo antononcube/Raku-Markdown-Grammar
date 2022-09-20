@@ -21,11 +21,11 @@ grammar Markdown::Grammar {
         $<code>=[<!before $mdTicks> .]*
         $mdTicks
     }
-    regex header1 { '#' $<head>=(\V*) \n }
-    regex header2 { '##' $<head>=(\V*) \n }
-    regex header3 { '###' $<head>=(\V*) \n }
-    regex header4 { '####' $<head>=(\V*) \n }
-    regex header5 { '#####' $<head>=(\V*) \n }
+    regex header1 { '#' \h* $<head>=(\V*) \n }
+    regex header2 { '##' \h* $<head>=(\V*) \n }
+    regex header3 { '###' \h* $<head>=(\V*) \n }
+    regex header4 { '####' \h* $<head>=(\V*) \n }
+    regex header5 { '#####' \h* $<head>=(\V*) \n }
     regex horizontal-line { '---' ['-']* \n }
     regex simple-link { '[' <link-name> ']' \h* '(' <link-url> ')' }
     regex link-name { <-[\[\]]>* }

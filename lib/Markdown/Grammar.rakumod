@@ -42,14 +42,15 @@ grammar Markdown::Grammar {
     regex md-image-simple-link { '!' <md-simple-link> }
 
     regex md-simple-link { '[' <md-link-name> ']' \h* '(' <md-link-url> ')' }
+    regex md-simple-link-strict { ^ <md-simple-link> $ }
     regex md-link-name { <-[\[\]]>* }
     regex md-link-url { <-[()]>* }
 
-    regex md-word { (\S+) <!{ $0 ~~ self.md-simple-link }> }
+    regex md-word { (\S+) <!{ so $0.Str ~~ self.md-simple-link-strict }> }
     regex md-empty-line { \h* \n+ }
 
     regex md-text-element { <md-simple-link> || <md-word> }
-    regex md-text-line { \h* $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h+ ])]? \n <!{ $<first>.Str eq $mdTicks }> }
+    regex md-text-line { \h* $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \n <!{ $<first>.Str eq $mdTicks }> }
     regex md-text-block { <md-text-line>+ }
 
     regex md-item-list-block { <md-item-list-element>+ }

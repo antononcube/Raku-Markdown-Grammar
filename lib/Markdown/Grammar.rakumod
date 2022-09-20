@@ -4,19 +4,20 @@ constant $mdTicks = '```';
 
 grammar Markdown::Grammar {
 
-    rule TOP { <markdown-block>+ }
-    rule markdown-block {
-        || <header5>
-        || <header4>
-        || <header3>
-        || <header2>
-        || <header1>
-        || <horizontal-line>
-        || <code-block>
-        || <text-line>
+    rule TOP { <md-block>+ }
+    rule md-block {
+        || <md-header5>
+        || <md-header4>
+        || <md-header3>
+        || <md-header2>
+        || <md-header1>
+        || <md-horizontal-line>
+        || <md-code-block>
+        || <md-empty-line>
+        || <md-text-block>
     }
     #regex code-block { '```' \V* \n [ .* ] \n '```' \h* \n }
-    regex code-block {
+    regex md-code-block {
         $<header>=(
         $mdTicks '{'? \h* $<lang>=(\w*)
         [ \h+ $<name>=(<alpha>+) ]?
@@ -24,18 +25,18 @@ grammar Markdown::Grammar {
         $<code>=[<!before $mdTicks> .]*
         $mdTicks
     }
-    regex header1 { '#' \h* $<head>=(\V*) \n }
-    regex header2 { '##' \h* $<head>=(\V*) \n }
-    regex header3 { '###' \h* $<head>=(\V*) \n }
-    regex header4 { '####' \h* $<head>=(\V*) \n }
-    regex header5 { '#####' \h* $<head>=(\V*) \n }
-    regex horizontal-line { '---' ['-']* \n }
-    regex simple-link { '[' <link-name> ']' \h* '(' <link-url> ')' }
-    regex link-name { <-[\[\]]>* }
-    regex link-url { <-[()]>* }
-    regex md-word { \S+ }
-    regex text-line { <simple-link> <text2=.text>? || <text1=.text>? <simple-link>? <text2=.text>? \n }
-#    regex md-text-element { <simple-link> || <md-word> }
-#    regex text-line { (<md-text-element>) <.ws>? [<md-text-element>+ % <.ws> ]? \n <!{ $0 eq $mdTicks }>}
-    regex text { [\V]* }
+    regex md-header1 { '#' \h* $<head>=(\V*) \n }
+    regex md-header2 { '##' \h* $<head>=(\V*) \n }
+    regex md-header3 { '###' \h* $<head>=(\V*) \n }
+    regex md-header4 { '####' \h* $<head>=(\V*) \n }
+    regex md-header5 { '#####' \h* $<head>=(\V*) \n }
+    regex md-horizontal-line { '---' ['-']* \n }
+    regex md-simple-link { '[' <md-link-name> ']' \h* '(' <md-link-url> ')' }
+    regex md-link-name { <-[\[\]]>* }
+    regex md-link-url { <-[()]>* }
+    regex md-word { (\S+) <!{ $0 ~~ self.md-simple-link }> }
+    regex md-empty-line { \h* \n+ }
+    regex md-text-element { <md-simple-link> || <md-word> }
+    regex md-text-line { \h* $<first>=(<md-text-element>) <ws>? [$<rest>=([<md-text-element>+ % \h+ ])]? \n <!{ $<first>.Str eq $mdTicks }> }
+    regex md-text-block { <md-text-line>+ }
 }

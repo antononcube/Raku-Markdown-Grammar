@@ -10,7 +10,18 @@ class Markdown::Actions::Mathematica {
     method header4($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsection"]'; }
     method header5($/) { make 'Cell[TextData["' ~ $<head> ~ '"], "Subsubsubsection"]'; }
     method horizontal-line($/) { make 'TextCell["\[HorizontalLine]", "Text"]'; }
-    method code-block($/) { make 'Cell[ BoxData["' ~ $<code>.subst(:g, '"', '\"') ~ '"], "Input"]'; }
+    method code-block($/) {
+        my $code = $<code>.Str.subst(:g, '"', '\"');
+        with $<header><lang> {
+            if $<header><lang>.lc ∈ <wl mathematica> {
+                make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+            } else {
+                make 'Cell["'  ~ $code ~ '", "ExternalLanguage", CellEvaluationLanguage->"' ~ $<header><lang>.Str ~ '"]'
+            }
+        } else {
+            make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+        }
+    }
     method simple-link($/) { make 'ButtonBox[' ~ $<link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<link-url>.made ~ ', None}]'; }
     method link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
     method link-url($/) { make 'URL["' ~ make $/.Str ~ '"]'; }
@@ -22,5 +33,11 @@ class Markdown::Actions::Mathematica {
         with $<text2>       { @res.append('"' ~ $<text2>.made ~ '"'); }
         make 'Cell[TextData[{' ~ @res.join(', ') ~ '}], "Text"]';
     }
+#    method md-word($/) { make '"' ~ $/.Str ~ '"'; }
+#    method md-text-element($/) { make $/.values[0].made; }
+#    method text-line($/) {
+#        my @res = $/.values>>.made;
+#        make 'Cell[TextData[{' ~ @res.join(', ') ~ '}], "Text"]';
+#    }
 }
 

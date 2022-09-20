@@ -38,11 +38,38 @@ say to-pretty-table($obj.pick(7));
 ```
 END
 
+
 my $mtext3 = q:to/END/;
 
 ```mathematica
 x + y == Sqrt[Integrate[f[x], {x,0,30}]]
 ```
+
+-----
+
+## References
+
+### Articles
+
+[AA1] Anton Antonov,
+["Introduction to data wrangling with Raku"](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/),
+(2021),
+[RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+END
+
+my $mtext4 = q:to/END/;
+
+Here is a formula:
+
+```mathematica
+x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+```
+
+Hopefully
+you
+got it.
+
+No more formulas...
 
 -----
 
@@ -75,7 +102,7 @@ x + y == Sqrt[Integrate[f[x], {x,0,30}]]
 END
 
 
-my $mtext4 = q:to/END/;
+my $mtext5 = q:to/END/;
 ### Execution steps
 
 Copy the Titanic data into a "pipeline object" and show its dimensions and a sample of it:
@@ -100,4 +127,4 @@ say "=" x 60;
 
 #say md-subparse($mtext3, rule => 'TOP');
 
-say md-interpret($mtext3);
+say md-interpret($mtext4);

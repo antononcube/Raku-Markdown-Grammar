@@ -123,8 +123,17 @@ say $obj.elems;
 Cross tabulate and show the result:
 END
 
+my $mtext6 = q:to/END/;
+### Monads
+
+- LSAMon
+- SMRMon
+  - SBR too
+- ClCon
+END
+
 say "=" x 60;
 
-#say md-subparse($mtext3, rule => 'TOP');
+#say md-subparse($mtext6, rule => 'TOP');
 
-say md-interpret($mtext4);
+say md-interpret($mtext6);

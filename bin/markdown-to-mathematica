@@ -1,0 +1,39 @@
+#!/usr/bin/env raku
+use v6.d;
+
+use Markdown::Grammar;
+use Markdown::Actions::Mathematica;
+
+#-----------------------------------------------------------
+my $pCOMMAND = Markdown::Grammar;
+
+sub md-subparse(Str:D $command, Str:D :$rule = 'TOP') {
+    $pCOMMAND.subparse($command, :$rule);
+}
+
+sub md-parse(Str:D $command, Str:D :$rule = 'TOP') {
+    $pCOMMAND.parse($command, :$rule);
+}
+
+sub md-interpret(Str:D $command,
+                 Str:D:$rule = 'TOP',
+                 :$actions = Markdown::Actions::Mathematica.new) {
+    $pCOMMAND.parse($command, :$rule, :$actions).made;
+}
+
+#-----------------------------------------------------------
+
+#| Converts Markdown files into Mathematica notebooks.
+sub MAIN(Str $file where *.IO.f, #= Input file.
+         Str :o(:$output) = '', #= Output file; if an empty string then the result is printed to stdout.
+         ) {
+
+    my $text = slurp($file);
+    my $res = md-interpret($text);
+
+    if $output.chars > 0 {
+        spurt($output, $res);
+    } else {
+        say $res;
+    }
+}

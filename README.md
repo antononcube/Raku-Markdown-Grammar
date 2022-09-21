@@ -11,9 +11,29 @@ Markdown parser suitable for making converters of Markdown files into files of d
 
 ### Motivation
 
-I am most interested in generating Mathematica and Jupyter notebooks from Markdown. 
-Those notebook formats have syntax that is hard to evaluate the conversions visually. 
-That is why I use Pod6 -- during development it is much easier to evaluate the Pod6 interpretations produced by the package. 
+#### Mathematica notebooks
+
+I am most interested in generating Mathematica notebooks from Markdown. 
+
+I have written fair amount of Raku-related Markdown documents. Many of those Markdown documents
+were generated from Mathematica notebooks using 
+[M2MD](https://github.com/kubaPod/M2MD), [JPp1]. 
+But of course, most of the time, further changes and embellishments were made over those Markdown documents. 
+Hence it would be very nice to be able to go back to Mathematica.
+
+**Remark:** Raku can be used in Mathematica via the so called `RakuMode` -- see [AA1].
+
+**Remark:** Markdown documents with Raku cells can be evaluated with Command Line Interface (CLI)
+scripts of the package 
+["Text::CodeProcessing"](https://raku.land/cpan:ANTONOV/Text::CodeProcessing), [AAp1]. 
+For more details see the article 
+["Connecting Mathematica and Raku"](https://rakuforprediction.wordpress.com/2021/12/30/connecting-mathematica-and-raku/), [AA1].
+
+#### Pod6
+
+The notebook formats have syntax that is hard to evaluate the conversions visually. 
+That is why I use Pod6 -- during development it is much easier to evaluate the Pod6 interpretations 
+produced by the package. 
 (I.e. no need to use another tool to open and evaluate the obtained conversion artifact.)
 
 ------
@@ -201,7 +221,23 @@ The most important items are placed first.
 
 ## References
 
-[JP1] Jakub Podkalicki,
+### Articles
+
+[AA1] Anton Antonov,
+["Connecting Mathematica and Raku"](https://rakuforprediction.wordpress.com/2021/12/30/connecting-mathematica-and-raku/),
+(2021),
+[RakuForPrediction at WordPress]([https://rakuforprediction.wordpress.com/).
+
+
+### Packages
+
+[AAp1] Anton Antonov
+[Text::CodeProcessing Raku package](https://github.com/antononcube/Raku-Text-CodeProcessing),
+(2021-2022),
+[GitHub/antononcube](https://github.com/antononcube).
+
+[JPp1] Jakub Podkalicki,
 [M2MD](https://github.com/kubaPod/M2MD),
+(2018-2022),
 [GitHub/kubaPod](https://github.com/kubaPod).
 

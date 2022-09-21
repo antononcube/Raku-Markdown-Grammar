@@ -43,7 +43,7 @@ Consider the following round tripe translation experiment:
 Here is the corresponding flowchart:
 
 ```mermaid
-graph LR
+graph TD
     wl[Make a Mathematica notebook] --> e
     e["Examine notebooks(s)"] --> m2md
     m2md["Convert to Markdown with M2MD"] --> md2wl
@@ -113,6 +113,8 @@ Echo[Map[ Length, obj], "counts:"]
 (2021),
 [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
 END
+
+say $mtext;
 ```
 ```
 # Here is a data wrangling code:

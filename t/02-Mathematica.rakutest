@@ -21,7 +21,7 @@ sub md-interpret(Str:D $command,
 }
 #===========================================================
 
-plan 8;
+plan 10;
 
 #-----------------------------------------------------------
 ## 1
@@ -74,7 +74,7 @@ x + y == Sqrt[Integrate[f[x], {x,0,30}]]
 END
 
 is md-interpret($mtext3),
-        'Notebook[{Cell[TextData[{""}]], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+        'Notebook[{Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
 "], "Input"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]',
         'WL cell and link';
 
@@ -127,7 +127,7 @@ No more formulas...
 END
 
 is md-interpret($mtext4),
-        'Notebook[{Cell[TextData[{""}]], Cell[TextData[{"Here", " ", "is", " ", "a", " ", "formula:"}], "Text"], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+        'Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "formula:"}], "Text"], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
 "], "Input"], Cell[TextData[{"Hopefully", " ", "you", " ", "got", " ", "it."}], "Text"], Cell[TextData[{"No", " ", "more", " ", "formulas..."}], "Text"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA2]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Увод в обработката на данни с Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2022/05/24/увод-в-обработката-на-данни-с-raku/"], None}], " ", ",", " ", "(2022),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA3]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Raku Text::CodeProcessing\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/07/13/raku-textcodeprocessing/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[HW1]", " ", "Hadley", " ", "Wickham,", " ", ButtonBox["\"The Split-Apply-Combine Strategy for Data Analysis\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/article/view/v040i01"], None}], " ", ",", " ", "(2011),", " ", ButtonBox["Journal of Statistical Software", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/"], None}], " ", "."}], "Text"]}]',
         'Formula and links';
 
@@ -216,5 +216,34 @@ END
 is md-interpret($mtext8),
         'Notebook[{Cell[TextData[{"Images"}], "Subsection"], Cell[TextData[{"Here", " ", "is", " ", "the", " ", "breakdown:"}], "Text"], Cell[ BoxData["Import[URL[\"https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf\"]]"], "Input"], Cell[TextData[{"Here", " ", "is", " ", "the", " ", "\"Ocean\"", " ", "style", " ", "version:"}], "Text"], Cell[ BoxData["Import[URL[\"https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png\"]]"], "Input"]}]',
         'Image links';
+
+#-----------------------------------------------------------
+## 9
+#-----------------------------------------------------------
+my $mtext9 = q:to/END/;
+### Images
+
+Here see the linked PDF:
+
+[![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)]((https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)
+END
+
+ok md-parse($mtext9);
+
+
+#-----------------------------------------------------------
+## 10
+#-----------------------------------------------------------
+my $mtext10 = q:to/END/;
+Here is some code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
+
+More later...
+END
+
+ok md-parse($mtext10);
 
 done-testing;

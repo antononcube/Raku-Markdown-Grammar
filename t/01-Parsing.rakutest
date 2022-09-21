@@ -15,7 +15,7 @@ sub md-parse(Str:D $command, Str:D :$rule = 'TOP') {
 }
 #===========================================================
 
-plan 9;
+plan 10;
 
 #-----------------------------------------------------------
 ## 1
@@ -197,5 +197,20 @@ Here see the linked PDF:
 END
 
 ok md-parse($mtext9);
+
+#-----------------------------------------------------------
+## 10
+#-----------------------------------------------------------
+my $mtext10 = q:to/END/;
+Here is some code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
+
+More later...
+END
+
+ok md-parse($mtext10);
 
 done-testing;

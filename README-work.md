@@ -9,6 +9,13 @@ Markdown parser suitable for making converters of Markdown files into files of d
 - [X] Pod6 file
 - [ ] Org-mode file
 
+### Motivation
+
+I am most interested in generating Mathematica and Jupyter notebooks from Markdown. 
+Those notebook formats have syntax that is hard to evaluate the conversions visually. 
+That is why I use Pod6 -- during development it is much easier to evaluate the Pod6 interpretations produced by the package. 
+(I.e. no need to use another tool to open and evaluate the obtained conversion artifact.)
+
 ------
 
 ## Installation
@@ -71,6 +78,18 @@ graph TD
 *Except this 
 ["this package"](https://github.com/antononcube/Raku-Markdown-Grammar)
 there are no other converters.*
+
+### Jupyter to Markdown
+
+- ["Jupyter"](https://jupyter.org) notebook interfaces have the option to be saved as Markdown files.
+
+### Jupyter <-> Markdown
+
+- ["jupytext"](https://jupytext.readthedocs.io/en/latest/install.html) allows the conversion 
+  of Jupyter notebooks from and to Markdown.
+
+- ["pandoc"](https://pandoc.org)allows the conversion
+  of Jupyter notebooks from and to Markdown.
 
 ------
 

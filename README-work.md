@@ -98,11 +98,9 @@ Consider the following Markdown text:
 my $mtext = q:to/END/;
 Here is a data wrangling code:
 
-\`\`\`mathematica
-obj = dfTitanic;
-obj = GroupBy[ obj, #["passengerSex"]& ];
-Echo[Map[ Length, obj], "counts:"]
-\`\`\`
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
 
 ## References
 
@@ -114,7 +112,7 @@ Echo[Map[ Length, obj], "counts:"]
 [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
 END
 
-say $mtext;
+say $mtext.chars;
 ```
 
 Here is the corresponding Mathematica notebook:
@@ -122,9 +120,8 @@ Here is the corresponding Mathematica notebook:
 
 ```perl6
 use Markdown::Grammar;
-use Markdown::Actions::Mathematica;
 
-Markdown::Grammar.parse($mtext, actions=>Markdown::Actions::Mathematica.new).made
+from-markdown($mtext, to => 'mathematica')
 ```
 
 ------

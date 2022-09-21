@@ -98,11 +98,9 @@ Consider the following Markdown text:
 my $mtext = q:to/END/;
 Here is a data wrangling code:
 
-\`\`\`mathematica
-obj = dfTitanic;
-obj = GroupBy[ obj, #["passengerSex"]& ];
-Echo[Map[ Length, obj], "counts:"]
-\`\`\`
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
 
 ## References
 
@@ -114,25 +112,10 @@ Echo[Map[ Length, obj], "counts:"]
 [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
 END
 
-say $mtext;
+say $mtext.chars;
 ```
 ```
-# Here is a data wrangling code:
-# 
-# \`\`\`mathematica
-# obj = dfTitanic;
-# obj = GroupBy[ obj, #["passengerSex"]& ];
-# Echo[Map[ Length, obj], "counts:"]
-# \`\`\`
-# 
-# ## References
-# 
-# ### Articles
-# 
-# [AA1] Anton Antonov,
-# ["Introduction to data wrangling with Raku"](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/),
-# (2021),
-# [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+# 412
 ```
 
 Here is the corresponding Mathematica notebook:
@@ -140,12 +123,14 @@ Here is the corresponding Mathematica notebook:
 
 ```perl6
 use Markdown::Grammar;
-use Markdown::Actions::Mathematica;
 
-Markdown::Grammar.parse($mtext, actions=>Markdown::Actions::Mathematica.new).made
+from-markdown($mtext, to => 'mathematica')
 ```
 ```
-# Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "data", " ", "wrangling", " ", "code:"}], "Text"], Cell[TextData[{"\`\`\`mathematica", " ", "obj", " ", "=", " ", "dfTitanic;", " ", "obj", " ", "=", " ", "GroupBy[", " ", "obj,", " ", "#[\"passengerSex\"]&", " ", "];", " ", "Echo[Map[", " ", "Length,", " ", "obj],", " ", "\"counts:\"]", " ", "\`\`\`"}], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]
+# Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "data", " ", "wrangling", " ", "code:"}], "Text"], Cell[ BoxData["    obj = dfTitanic;
+#     obj = GroupBy[ obj, #[\"passengerSex\"]& ];
+#     Echo[Map[ Length, obj], \"counts:\"]
+# "], "Input"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{""}]], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{""}]], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]
 ```
 
 ------

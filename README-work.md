@@ -96,7 +96,7 @@ Consider the following Markdown text:
 
 ```perl6
 my $mtext = q:to/END/;
-Here is a data wrangling code:
+Here is data wrangling code:
 
     obj = dfTitanic;
     obj = GroupBy[ obj, #["passengerSex"]& ];
@@ -117,11 +117,16 @@ say $mtext.chars;
 
 Here is the corresponding Mathematica notebook:
 
-
 ```perl6
 use Markdown::Grammar;
 
 from-markdown($mtext, to => 'mathematica')
+```
+
+Here is the corresponding Pod6 text:
+
+```perl6
+from-markdown($mtext, to => 'pod6')
 ```
 
 ------

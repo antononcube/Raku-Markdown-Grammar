@@ -1,0 +1,217 @@
+use v6.d;
+use Test;
+
+use Markdown::Grammar;
+use Markdown::Actions::Mathematica;
+
+#===========================================================
+my $pCOMMAND = Markdown::Grammar;
+
+sub md-parse(Str:D $command, Str:D :$rule = 'TOP') {
+    $pCOMMAND.parse($command, :$rule);
+}
+
+sub md-interpret(Str:D $command,
+                 Str:D:$rule = 'TOP',
+                 :$actions = Markdown::Actions::Mathematica.new) {
+    $pCOMMAND.parse($command, :$rule, :$actions).made;
+}
+#===========================================================
+
+plan 2;
+
+#-----------------------------------------------------------
+## 1
+#-----------------------------------------------------------
+my $mtext1 = q:to/END/;
+### Execution steps
+END
+
+is md-interpret($mtext1),
+        'Notebook[{Cell[TextData[{"Execution", " ", "steps"}], "Subsection"]}]',
+        'Subsection';
+
+#-----------------------------------------------------------
+## 2
+#-----------------------------------------------------------
+my $mtext2 = q:to/END/;
+```perl6
+my $obj = @dfTitanic ;
+say "Titanic dimensions:", dimensions(@dfTitanic);
+say to-pretty-table($obj.pick(7));
+```
+END
+
+is md-interpret($mtext2),
+        'Notebook[{Cell["my $obj = @dfTitanic ;
+say \"Titanic dimensions:\", dimensions(@dfTitanic);
+say to-pretty-table($obj.pick(7));
+", "ExternalLanguage", CellEvaluationLanguage->"Perl6"]}]',
+        'Perl6 cell';
+
+#-----------------------------------------------------------
+## 3
+#-----------------------------------------------------------
+my $mtext3 = q:to/END/;
+
+```mathematica
+x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+```
+
+-----
+
+## References
+
+### Articles
+
+[AA1] Anton Antonov,
+["Introduction to data wrangling with Raku"](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/),
+(2021),
+[RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+END
+
+is md-interpret($mtext3),
+        'Notebook[{Cell[TextData[{""}]], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+"], "Input"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]',
+        'WL cell and link';
+
+#-----------------------------------------------------------
+## 4
+#-----------------------------------------------------------
+
+my $mtext4 = q:to/END/;
+
+Here is a formula:
+
+```mathematica
+x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+```
+
+Hopefully
+you
+got it.
+
+No more formulas...
+
+-----
+
+## References
+
+### Articles
+
+[AA1] Anton Antonov,
+["Introduction to data wrangling with Raku"](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/)
+,
+(2021),
+[RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+
+[AA2] Anton Antonov,
+["Увод в обработката на данни с Raku"](https://rakuforprediction.wordpress.com/2022/05/24/увод-в-обработката-на-данни-с-raku/)
+,
+(2022),
+[RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+
+[AA3] Anton Antonov,
+["Raku Text::CodeProcessing"](https://rakuforprediction.wordpress.com/2021/07/13/raku-textcodeprocessing/),
+(2021),
+[RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+
+[HW1] Hadley Wickham,
+["The Split-Apply-Combine Strategy for Data Analysis"](https://www.jstatsoft.org/article/view/v040i01),
+(2011),
+[Journal of Statistical Software](https://www.jstatsoft.org/).
+
+END
+
+is md-interpret($mtext4),
+        'Notebook[{Cell[TextData[{""}]], Cell[TextData[{"Here", " ", "is", " ", "a", " ", "formula:"}], "Text"], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
+"], "Input"], Cell[TextData[{"Hopefully", " ", "you", " ", "got", " ", "it."}], "Text"], Cell[TextData[{"No", " ", "more", " ", "formulas..."}], "Text"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA2]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Увод в обработката на данни с Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2022/05/24/увод-в-обработката-на-данни-с-raku/"], None}], " ", ",", " ", "(2022),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA3]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Raku Text::CodeProcessing\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/07/13/raku-textcodeprocessing/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[HW1]", " ", "Hadley", " ", "Wickham,", " ", ButtonBox["\"The Split-Apply-Combine Strategy for Data Analysis\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/article/view/v040i01"], None}], " ", ",", " ", "(2011),", " ", ButtonBox["Journal of Statistical Software", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/"], None}], " ", "."}], "Text"]}]',
+        'Formula and links';
+
+#-----------------------------------------------------------
+## 5
+#-----------------------------------------------------------
+my $mtext5 = q:to/END/;
+### Execution steps
+
+Copy the Titanic data into a "pipeline object" and show its dimensions and a sample of it:
+
+```perl6
+my $obj = @dfTitanic ;
+say "Titanic dimensions:", dimensions(@dfTitanic);
+say to-pretty-table($obj.pick(7));
+```
+
+Filter the data and show the number of rows in the result set:
+
+```perl6
+$obj = $obj.grep({ $_{"passengerSex"} eq "male" and $_{"passengerSurvival"} eq "died" or $_{"passengerSurvival"} eq "survived" }).Array ;
+say $obj.elems;
+```
+
+Cross tabulate and show the result:
+END
+
+is md-interpret($mtext5),
+        'Notebook[{Cell[TextData[{"Execution", " ", "steps"}], "Subsection"], Cell[TextData[{"Copy", " ", "the", " ", "Titanic", " ", "data", " ", "into", " ", "a", " ", "\"pipeline", " ", "object\"", " ", "and", " ", "show", " ", "its", " ", "dimensions", " ", "and", " ", "a", " ", "sample", " ", "of", " ", "it:"}], "Text"], Cell["my $obj = @dfTitanic ;
+say \"Titanic dimensions:\", dimensions(@dfTitanic);
+say to-pretty-table($obj.pick(7));
+", "ExternalLanguage", CellEvaluationLanguage->"Perl6"], Cell[TextData[{"Filter", " ", "the", " ", "data", " ", "and", " ", "show", " ", "the", " ", "number", " ", "of", " ", "rows", " ", "in", " ", "the", " ", "result", " ", "set:"}], "Text"], Cell["$obj = $obj.grep({ $_{\"passengerSex\"} eq \"male\" and $_{\"passengerSurvival\"} eq \"died\" or $_{\"passengerSurvival\"} eq \"survived\" }).Array ;
+say $obj.elems;
+", "ExternalLanguage", CellEvaluationLanguage->"Perl6"], Cell[TextData[{"Cross", " ", "tabulate", " ", "and", " ", "show", " ", "the", " ", "result:"}], "Text"]}]',
+        'Code cells';
+
+
+#-----------------------------------------------------------
+## 6
+#-----------------------------------------------------------
+my $mtext6 = q:to/END/;
+### Monads
+
+- LSAMon
+- SMRMon
+  - SBR too
+- ClCon
+END
+
+is md-interpret($mtext6),
+        'Notebook[{Cell[TextData[{"Monads"}], "Subsection"], Cell[TextData[{"LSAMon"}], "Item"], Cell[TextData[{"SMRMon"}], "Item"], Cell[TextData[{"SBR", " ", "too"}], "Subitem"], Cell[TextData[{"ClCon"}], "Item"]}]',
+        'List of items';
+
+#-----------------------------------------------------------
+## 7
+#-----------------------------------------------------------
+my $mtext7 = q:to/END/;
+### Monads
+
+1. LSAMon
+2. SMRMon
+  1. SBR too
+3. ClCon
+4. QRMon
+END
+
+is md-interpret($mtext7),
+        'Notebook[{Cell[TextData[{"Monads"}], "Subsection"], Cell[TextData[{"LSAMon"}], "ItemNumbered"], Cell[TextData[{"SMRMon"}], "ItemNumbered"], Cell[TextData[{"SBR", " ", "too"}], "SubitemNumbered"], Cell[TextData[{"ClCon"}], "ItemNumbered"], Cell[TextData[{"QRMon"}], "ItemNumbered"]}]',
+        'List of numbered items';
+
+#-----------------------------------------------------------
+## 8
+#-----------------------------------------------------------
+my $mtext8 = q:to/END/;
+### Images
+
+Here is the breakdown:
+
+![](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)
+
+Here is the "Ocean" style version:
+
+![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)
+END
+
+is md-interpret($mtext8),
+        'Notebook[{Cell[TextData[{"Images"}], "Subsection"], Cell[TextData[{"Here", " ", "is", " ", "the", " ", "breakdown:"}], "Text"], Cell[ BoxData["Import[URL[\"https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf\"]]"], "Input"], Cell[TextData[{"Here", " ", "is", " ", "the", " ", "\"Ocean\"", " ", "style", " ", "version:"}], "Text"], Cell[ BoxData["Import[URL[\"https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png\"]]"], "Input"]}]',
+        'Image links';
+
+done-testing;

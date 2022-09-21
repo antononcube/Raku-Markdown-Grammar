@@ -34,6 +34,12 @@ class Markdown::Actions::Mathematica {
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
     }
 
+    method md-image-complex-link($/) {
+        my $code = 'Import[' ~ $<md-simple-link><md-link-url>.made ~ ']';
+        $code = $code.Str.subst(:g, '"', '\"');
+        make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+    }
+
     method md-simple-link($/) { make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-url>.made ~ ', None}]'; }
     method md-link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
     method md-link-url($/) { make 'URL["' ~ make $/.Str ~ '"]'; }

@@ -19,11 +19,16 @@ class Markdown::Actions::Pod6 {
     method md-header2($/) { make '=begin head2' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head2'; }
     method md-header3($/) { make '=begin head3' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head3'; }
     method md-header4($/) { make '=begin head4' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head4'; }
-    method md-header6($/) { make '=begin head5' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head5'; }
+    method md-header5($/) { make '=begin head5' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head5'; }
+    method md-header6($/) { make '=begin head6' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head6'; }
 
     method md-horizontal-line($/) { make "=para \n" ~ ('-' x 100); }
 
     method md-image-simple-link($/) {
+        make $<md-simple-link>.made;
+    }
+
+    method md-image-complex-link($/) {
         make $<md-simple-link>.made;
     }
 

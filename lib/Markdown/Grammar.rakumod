@@ -36,10 +36,12 @@ grammar Markdown::Grammar {
     regex md-header3 { '###' \h* <head=.md-text-line> }
     regex md-header4 { '####' \h* <head=.md-text-line> }
     regex md-header5 { '#####' \h* <head=.md-text-line> }
+    regex md-header6 { '######' \h* <head=.md-text-line> }
 
     regex md-horizontal-line { '---' ['-']* \n }
 
     regex md-image-simple-link { '!' <md-simple-link> }
+    regex md-image-complex-link { '[' \h* '!' <md-simple-link> \h* ']' \h* '(' <md-link-url> ')' }
 
     regex md-simple-link { '[' <md-link-name> ']' \h* '(' <md-link-url> ')' }
     regex md-simple-link-strict { ^ <md-simple-link> $ }

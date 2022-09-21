@@ -44,10 +44,10 @@ Here is the corresponding flowchart:
 
 ```mermaid
 graph LR
-    wl[Make Mathematica notebook] --> e
+    wl[Make a Mathematica notebook] --> e
     e["Examine notebooks(s)"] --> m2md
-    m2md["Convert Mathematica notebook into Markdown file with M2MD"] --> md2wl
-    md2wl[Convert Markdown file into Mathematica notebook with  Markdown::Grammar] --> |Compare|e
+    m2md["Convert to Markdown with M2MD"] --> md2wl
+    md2wl["Convert to Mathematica with Markdown::Grammar"] --> |Compare|e
 ```
 
 ------

@@ -29,6 +29,7 @@ class Markdown::Actions::Mathematica {
     method md-header3($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsection"]'; }
     method md-header4($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsection"]'; }
     method md-header5($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsubsection"]'; }
+    method md-header6($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsubsection"]'; }
 
     method md-horizontal-line($/) { make 'Cell[TextData["\[HorizontalLine]"], "Text"]'; }
 

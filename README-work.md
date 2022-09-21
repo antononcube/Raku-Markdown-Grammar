@@ -114,24 +114,6 @@ Echo[Map[ Length, obj], "counts:"]
 [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
 END
 ```
-```
-# Here is a data wrangling code:
-# 
-# \`\`\`mathematica
-# obj = dfTitanic;
-# obj = GroupBy[ obj, #["passengerSex"]& ];
-# Echo[Map[ Length, obj], "counts:"]
-# \`\`\`
-# 
-# ## References
-# 
-# ### Articles
-# 
-# [AA1] Anton Antonov,
-# ["Introduction to data wrangling with Raku"](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/),
-# (2021),
-# [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
-```
 
 Here is the corresponding Mathematica notebook:
 
@@ -141,9 +123,6 @@ use Markdown::Grammar;
 use Markdown::Actions::Mathematica;
 
 Markdown::Grammar.parse($mtext, actions=>Markdown::Actions::Mathematica.new).made
-```
-```
-# Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "data", " ", "wrangling", " ", "code:"}], "Text"], Cell[TextData[{"\`\`\`mathematica", " ", "obj", " ", "=", " ", "dfTitanic;", " ", "obj", " ", "=", " ", "GroupBy[", " ", "obj,", " ", "#[\"passengerSex\"]&", " ", "];", " ", "Echo[Map[", " ", "Length,", " ", "obj],", " ", "\"counts:\"]", " ", "\`\`\`"}], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]
 ```
 
 ------

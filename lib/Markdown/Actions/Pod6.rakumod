@@ -17,7 +17,7 @@ class Markdown::Actions::Pod6 {
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str;
-        make '=begin code' ~ "\n" ~ $code ~ "\n" ~ '=end code';
+        make '=begin code' ~ "\n" ~ $code ~ '=end code';
     }
 
     method md-header1($/) { make '=begin head1' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head1'; }
@@ -85,6 +85,10 @@ class Markdown::Actions::Pod6 {
                 };
 
         make $itemType ~ ' # ' ~ $<content>.made;
+    }
+
+    method md-any-line($/) {
+        make "=para\n" ~ $/.Str;
     }
 }
 

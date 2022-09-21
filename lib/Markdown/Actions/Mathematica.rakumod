@@ -2,7 +2,7 @@ use v6.d;
 
 class Markdown::Actions::Mathematica {
 
-    method TOP($/) { make 'Notebook[{' ~ $<md-block>>>.made.join(', ') ~ '}]' }
+    method TOP($/) { make 'Notebook[{' ~ $<md-block>>>.made.grep({ $_ ne 'Cell[TextData[{""}]]' }).join(', ') ~ '}]' }
 
     method md-block($/) { make $/.values[0].made; }
 

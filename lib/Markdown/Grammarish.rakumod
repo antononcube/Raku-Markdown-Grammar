@@ -8,7 +8,7 @@ role Markdown::Grammarish {
 
     rule TOP { <md-block>+ }
 
-    rule md-block {
+    regex md-block {
         || <md-header5>
         || <md-header4>
         || <md-header3>

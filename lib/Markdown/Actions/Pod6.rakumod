@@ -10,10 +10,9 @@ class Markdown::Actions::Pod6 {
         my $code = $<code>.Str;
         my $lang = '';
         with $<header><lang> {
-            $lang = $<header><lang>.Str;
-        } else {
-            make '=begin code' ~ "\n" ~ $code ~ "\n" ~ '=end code';
+            $lang = ' ' ~ $<header><lang>.Str;
         }
+        make '=begin code' ~ $lang ~ "\n" ~ $code ~ "\n" ~ '=end code';
     }
 
     method md-header1($/) { make '=begin head1' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head1'; }
@@ -25,7 +24,7 @@ class Markdown::Actions::Pod6 {
     method md-horizontal-line($/) { make "=para \n" ~ ('-' x 100); }
 
     method md-image-simple-link($/) {
-        make 'L<' ~ $<md-link-name>.made ~ '|' ~ $<md-link-url>.made ~ '>';
+        make $<md-simple-link>.made;
     }
 
     method md-simple-link($/) { make 'L<' ~ $<md-link-name>.made ~ '|' ~ $<md-link-url>.made ~ '>'; }

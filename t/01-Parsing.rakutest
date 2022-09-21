@@ -12,7 +12,7 @@ sub md-parse(Str:D $command, Str:D :$rule = 'TOP') {
 }
 #===========================================================
 
-plan 8;
+plan 9;
 
 #-----------------------------------------------------------
 ## 1
@@ -182,5 +182,17 @@ END
 
 ok md-parse($mtext8);
 
+#-----------------------------------------------------------
+## 9
+#-----------------------------------------------------------
+my $mtext9 = q:to/END/;
+### Images
+
+Here see the linked PDF:
+
+[![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)]((https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)
+END
+
+ok md-parse($mtext9);
 
 done-testing;

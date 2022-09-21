@@ -1,6 +1,9 @@
 use v6.d;
 use Test;
 
+use lib '.';
+use lib './lib';
+
 use Markdown::Grammar;
 use Markdown::Actions::Mathematica;
 

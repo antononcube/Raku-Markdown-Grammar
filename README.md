@@ -168,7 +168,7 @@ from-markdown($mtext, to => 'mathematica')
 # Notebook[{Cell[TextData[{"Here", " ", "is", " ", "data", " ", "wrangling", " ", "code:"}], "Text"], Cell[ BoxData["    obj = dfTitanic;
 #     obj = GroupBy[ obj, #[\"passengerSex\"]& ];
 #     Echo[Map[ Length, obj], \"counts:\"]
-# "], "Input"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{""}]], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{""}]], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]
+# "], "Input"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]
 ```
 
 Here is the corresponding Pod6 text:
@@ -201,21 +201,21 @@ from-markdown($mtext, to => 'pod6')
 
 ------
 
-## TODO
+## TODOs
 
 The most important items are placed first.
 
-- [ ] Parsing bold, italic, code "phrases."
+- [ ] TODO Parsing bold, italic, code "phrases."
 
-- [ ] Parsing blocks with bold, italic formatting specs
+- [ ] TODO Parsing blocks with bold, italic formatting specs
   
-- [ ] Parsing code blocks given with indentation.
+- [X] DONE Parsing code blocks given with indentation.
 
-- [ ] Parsing and interpretation of "deferred" links. E.g. `[![enter image description here][1]][1]`.
+- [ ] TODO Parsing and interpretation of "deferred" links. E.g. `[![enter image description here][1]][1]`.
 
    - This might be fairly complicated, needing a "second pass" interpreter.  
    
-- [ ] Parsing tables
+- [ ] TODO Parsing tables
 
 ------
 

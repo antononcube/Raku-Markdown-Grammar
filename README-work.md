@@ -170,21 +170,21 @@ from-markdown($mtext, to => 'pod6')
 
 ------
 
-## TODO
+## TODOs
 
 The most important items are placed first.
 
-- [ ] Parsing bold, italic, code "phrases."
+- [ ] TODO Parsing bold, italic, code "phrases."
 
-- [ ] Parsing blocks with bold, italic formatting specs
+- [ ] TODO Parsing blocks with bold, italic formatting specs
   
-- [ ] Parsing code blocks given with indentation.
+- [X] DONE Parsing code blocks given with indentation.
 
-- [ ] Parsing and interpretation of "deferred" links. E.g. `[![enter image description here][1]][1]`.
+- [ ] TODO Parsing and interpretation of "deferred" links. E.g. `[![enter image description here][1]][1]`.
 
    - This might be fairly complicated, needing a "second pass" interpreter.  
    
-- [ ] Parsing tables
+- [ ] TODO Parsing tables
 
 ------
 

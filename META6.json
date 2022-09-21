@@ -16,7 +16,8 @@
     "Markdown::Grammar": "lib/Markdown/Grammar.rakumod"
   },
   "resources": [
-    "Example-document-1.md"
+    "Example-document-1.md",
+    "Mathematica-StackExchange-example-1.md"
   ],
   "license": "Artistic-2.0",
   "tags": [

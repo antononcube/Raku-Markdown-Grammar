@@ -15,6 +15,7 @@ grammar Markdown::Grammar {
         || <md-header1>
         || <md-horizontal-line>
         || <md-code-block>
+        || <md-code-indented-block>
         || <md-image-simple-link>
         || <md-empty-line>
         || <md-item-list-block>
@@ -29,6 +30,12 @@ grammar Markdown::Grammar {
         [ \h* ',' \h* $<params>=(<md-list-of-params>) ]? \h* '}'? \h* \v )
         $<code>=[<!before $mdTicks> .]*
         $mdTicks
+    }
+
+    regex md-code-indented-block {
+        [\h* \n]
+        $<code>=([[\h ** 4] \V+ \n]+)
+        [\h* \n]
     }
 
     regex md-header1 { '#' \h* <head=.md-text-line> }
@@ -52,7 +59,7 @@ grammar Markdown::Grammar {
     regex md-empty-line { \h* \n }
 
     regex md-text-element { <md-simple-link> || <md-word> }
-    regex md-text-line { \h* $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
+    regex md-text-line { \h ** ^4 $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
     regex md-text-block { <md-text-line>+ }
 
     regex md-item-list-block { <md-item-list-element>+ }

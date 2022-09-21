@@ -19,6 +19,10 @@ class Markdown::Actions::Mathematica {
         }
     }
 
+    method md-code-indented-block($/) {
+        my $code = $<code>.Str.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
+        make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+    }
 
     method md-header1($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Title"]'; }
     method md-header2($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Section"]'; }

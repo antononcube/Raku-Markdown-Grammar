@@ -1,71 +1,44 @@
 use v6.d;
 
-constant $mdTicks = '```';
+use Markdown::Grammarish;
+use Markdown::Actions::Mathematica;
+use Markdown::Actions::Pod6;
 
-constant $mdItemListMarker = '-';
+grammar Markdown::Grammar
+        does Markdown::Grammarish {
+}
 
-grammar Markdown::Grammar {
+#-----------------------------------------------------------
+sub md-interpret(Str:D $command,
+                 Str:D:$rule = 'TOP',
+                 :$actions = Markdown::Actions::Mathematica.new) {
+    return Markdown::Grammar.parse($command, :$rule, :$actions).made;
+}
 
-    rule TOP { <md-block>+ }
-    rule md-block {
-        || <md-header5>
-        || <md-header4>
-        || <md-header3>
-        || <md-header2>
-        || <md-header1>
-        || <md-horizontal-line>
-        || <md-code-block>
-        || <md-code-indented-block>
-        || <md-image-simple-link>
-        || <md-empty-line>
-        || <md-item-list-block>
-        || <md-numbered-list-block>
-        || <md-text-block>
+#-----------------------------------------------------------
+#| Converts Markdown files into Mathematica notebooks.
+#| $md -- A markdown string or file name.
+#| t(:$to) = 'mathematica' -- Format to convert to. (One of 'mathematica' or 'pod6'.)
+our proto from-markdown(Str $md,
+                        Str :t(:$to) = 'mathematica') is export {*}
+
+
+multi from-markdown(Str $file where *.IO.f, Str :t(:$to) = 'mathematica') {
+
+    my $text = slurp($file);
+    return from-markdown($text, :to);
+}
+
+
+multi from-markdown(Str $text, Str :t(:$to) = 'mathematica' --> Str) {
+
+    my $res;
+    given $to.lc {
+        when  $_ ∈ <mathematica wl> { $res = md-interpret($text, actions => Markdown::Actions::Mathematica.new); }
+        when  $_ ∈ <pod pod6> { $res = md-interpret($text, actions => Markdown::Actions::Pod6.new); }
+        default {
+            die 'Unknown output format.'
+        }
     }
-
-    regex md-code-block {
-        $<header>=(
-        $mdTicks '{'? \h* $<lang>=(\w*)
-        [ \h+ $<name>=(<alpha>+) ]?
-        [ \h* ',' \h* $<params>=(<md-list-of-params>) ]? \h* '}'? \h* \v )
-        $<code>=[<!before $mdTicks> .]*
-        $mdTicks
-    }
-
-    regex md-code-indented-block {
-        [\h* \n]
-        $<code>=([[\h ** 4] \V+ \n]+)
-        [\h* \n]
-    }
-
-    regex md-header1 { '#' \h* <head=.md-text-line> }
-    regex md-header2 { '##' \h* <head=.md-text-line> }
-    regex md-header3 { '###' \h* <head=.md-text-line> }
-    regex md-header4 { '####' \h* <head=.md-text-line> }
-    regex md-header5 { '#####' \h* <head=.md-text-line> }
-    regex md-header6 { '######' \h* <head=.md-text-line> }
-
-    regex md-horizontal-line { '---' ['-']* \n }
-
-    regex md-image-simple-link { '!' <md-simple-link> }
-    regex md-image-complex-link { '[' \h* '!' <md-simple-link> \h* ']' \h* '(' <md-link-url> ')' }
-
-    regex md-simple-link { '[' <md-link-name> ']' \h* '(' <md-link-url> ')' }
-    regex md-simple-link-strict { ^ <md-simple-link> $ }
-    regex md-link-name { <-[\[\]]>* }
-    regex md-link-url { <-[()]>* }
-
-    regex md-word { (\S+) <!{ so $0.Str ~~ self.md-simple-link-strict }> }
-    regex md-empty-line { \h* \n }
-
-    regex md-text-element { <md-simple-link> || <md-word> }
-    regex md-text-line { \h ** ^4 $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
-    regex md-text-block { <md-text-line>+ }
-
-    regex md-item-list-block { <md-item-list-element>+ }
-    regex md-item-list-element { $<indent>=(\h*) $mdItemListMarker \h+ <content=.md-text-line> }
-
-    regex md-numbered-list-block { <md-numbered-list-element>+ }
-    regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }
-
+    return $res;
 }

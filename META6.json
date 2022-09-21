@@ -13,7 +13,8 @@
   "provides": {
     "Markdown::Actions::Mathematica": "lib/Markdown/Actions/Mathematica.rakumod",
     "Markdown::Actions::Pod6": "lib/Markdown/Actions/Pod6.rakumod",
-    "Markdown::Grammar": "lib/Markdown/Grammar.rakumod"
+    "Markdown::Grammar": "lib/Markdown/Grammar.rakumod",
+    "Markdown::Grammarish": "lib/Markdown/Grammarish.rakumod"
   },
   "resources": [
     "Example-document-1.md",

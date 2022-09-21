@@ -2,25 +2,6 @@
 use v6.d;
 
 use Markdown::Grammar;
-use Markdown::Actions::Mathematica;
-use Markdown::Actions::Pod6;
-
-#-----------------------------------------------------------
-my $pCOMMAND = Markdown::Grammar;
-
-sub md-subparse(Str:D $command, Str:D :$rule = 'TOP') {
-    $pCOMMAND.subparse($command, :$rule);
-}
-
-sub md-parse(Str:D $command, Str:D :$rule = 'TOP') {
-    $pCOMMAND.parse($command, :$rule);
-}
-
-sub md-interpret(Str:D $command,
-                 Str:D:$rule = 'TOP',
-                 :$actions = Markdown::Actions::Mathematica.new) {
-    $pCOMMAND.parse($command, :$rule, :$actions).made;
-}
 
 #-----------------------------------------------------------
 
@@ -32,14 +13,7 @@ sub MAIN(Str $file where *.IO.f,       #= Input file.
 
     my $text = slurp($file);
 
-    my $res;
-    given $to.lc {
-        when  $_ ∈ <mathematica wl> { $res = md-interpret($text, actions => Markdown::Actions::Mathematica.new); }
-        when  $_ ∈ <pod pod6>       { $res = md-interpret($text, actions => Markdown::Actions::Pod6.new); }
-        default {
-            die 'Unknown output format.'
-        }
-    }
+    my $res = from-markdown($text, :$to);
 
     if $output.chars > 0 {
         spurt($output, $res);

@@ -14,7 +14,7 @@ class Markdown::Actions::Mathematica {
             @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
             for %references.kv -> $k, $v {
                 @mdBlocks = do for @mdBlocks -> $b {
-                    if $b.contains('"Input"') {
+                    if $b ~~ / ^ 'Cell[' .* '"Input"]' $ / {
                         $b.subst($k, $v.subst('"','\"'):g):g
                     } else {
                         $b.subst($k, $v):g

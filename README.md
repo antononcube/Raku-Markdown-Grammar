@@ -38,12 +38,12 @@ graph TD
     GE{Good enough?}-->|yes|CN
     CN[Convert notebook to Markdown]-->P
     P["Publish (GitHUb/WordPress)"]-->SP
-    SP-->|no|R
+    SP-->|yes|R
     R[Review and modify]-->P
     GE-->|no|LT
-    SP{Stable publication?}-->|yes|CM
+    SP{Needs refinement?}-->|no|CM
     CM[Convert Markdown document to notebook]-->PC
-    PC[Publish to Community]
+    PC["Publish to Community.wolfram.com"]   
 ```
 
 #### Pod6

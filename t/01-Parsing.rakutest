@@ -9,7 +9,7 @@ use Markdown::Actions::Mathematica;
 
 #===========================================================
 
-plan 10;
+plan 11;
 
 #-----------------------------------------------------------
 ## 1
@@ -206,5 +206,19 @@ More later...
 END
 
 ok md-parse($mtext10);
+
+#-----------------------------------------------------------
+## 11
+#-----------------------------------------------------------
+my $mtext11 = q:to/END/;
+[enter image description here][1]
+
+[![enter image description here][2]][2]
+
+[1]: https://i.stack.imgur.com/cUxHw.png
+[2]: https://i.stack.imgur.com/XWrJB.png
+END
+
+ok md-parse($mtext11);
 
 done-testing;

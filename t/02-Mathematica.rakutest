@@ -9,7 +9,7 @@ use Markdown::Actions::Mathematica;
 
 #===========================================================
 
-plan 10;
+plan 11;
 
 #-----------------------------------------------------------
 ## 1
@@ -216,7 +216,9 @@ Here see the linked PDF:
 [![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)]((https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)
 END
 
-ok md-parse($mtext9);
+is md-interpret($mtext9),
+        'Notebook[{Cell[TextData[{"Images"}], "Subsection"], Cell[TextData[{"Here", " ", "see", " ", "the", " ", "linked", " ", "PDF:"}], "Text"], Cell[TextData[{"[![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)]((https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map.pdf)"}], "Text"]}]',
+        'Complex link';
 
 
 #-----------------------------------------------------------
@@ -232,6 +234,29 @@ Here is some code:
 More later...
 END
 
-ok md-parse($mtext10);
+is md-interpret($mtext10).subst(/ \s /, ''):g,
+        'Notebook[{Cell[TextData[{"Here", " ", "is", " ", "some", " ", "code:"}], "Text"], Cell[ BoxData["    obj = dfTitanic;
+    obj = GroupBy[ obj, #[\"passengerSex\"]& ];
+    Echo[Map[ Length, obj], \"counts:\"]
+"], "Input"], Cell[TextData[{"More", " ", "later..."}], "Text"]}]'.subst(/ \s /, ''):g,
+        'Code block with indentation';
+
+
+#-----------------------------------------------------------
+## 11
+#-----------------------------------------------------------
+my $mtext11 = q:to/END/;
+[enter image description here][1]
+
+[![enter image description here][2]][2]
+
+[1]: https://i.stack.imgur.com/cUxHw.png
+[2]: https://i.stack.imgur.com/XWrJB.png
+END
+
+is md-interpret($mtext11),
+    'Notebook[{Cell[TextData[{ButtonBox["enter image description here", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://i.stack.imgur.com/cUxHw.png"], None}]}], "Text"], Cell[ BoxData["Import[URL[\"https://i.stack.imgur.com/XWrJB.png\"]]"], "Input"]}]',
+    'Links with references';
+
 
 done-testing;

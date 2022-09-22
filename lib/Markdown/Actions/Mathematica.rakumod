@@ -12,10 +12,16 @@ class Markdown::Actions::Mathematica {
         } else {
             my %references = @mdBlocks.grep({ $_ ~~ Pair });
             @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
-            $res = @mdBlocks.join(', ');
             for %references.kv -> $k, $v {
-                $res = $res.subst($k, $v):g;
+                @mdBlocks = do for @mdBlocks -> $b {
+                    if $b.contains('"Input"') {
+                        $b.subst($k, $v.subst('"','\"'):g):g
+                    } else {
+                        $b.subst($k, $v):g
+                    }
+                }
             }
+            $res = @mdBlocks.join(', ');
         }
         make 'Notebook[{' ~ $res ~ '}]'
     }

@@ -29,6 +29,23 @@ scripts of the package
 For more details see the article 
 ["Connecting Mathematica and Raku"](https://rakuforprediction.wordpress.com/2021/12/30/connecting-mathematica-and-raku/), [AA1].
 
+Here is a flowchart that gives better idea of the workflow outlined above:
+
+```mermaid
+graph TD
+    Rnb[Make Raku notebook in Mathematica]-->LT
+    LT[Literate programming]-->GE
+    GE{Good enough?}-->|yes|CN
+    CN[Convert notebook to Markdown]-->P
+    P["Publish (GitHUb/WordPress)"]-->SP
+    SP-->|no|R
+    R[Review and modify]-->P
+    GE-->|no|LT
+    SP{Stable publication?}-->|yes|CM
+    CM[Convert Markdown document to notebook]-->PC
+    PC[Publish to Community]
+```
+
 #### Pod6
 
 The notebook formats have syntax that is hard to evaluate the conversions visually. 
@@ -56,7 +73,7 @@ zef install https://github.com/antononcube/Raku-Markdown-Grammar.git
 
 # Round trip translation
 
-Consider the following round tripe translation experiment:
+Consider the following round trip translation experiment:
 
 1. Make a Mathematica notebook
 
@@ -180,9 +197,10 @@ The most important items are placed first.
   
 - [X] DONE Parsing code blocks given with indentation.
 
-- [ ] TODO Parsing and interpretation of "deferred" links. E.g. `[![enter image description here][1]][1]`.
+- [X] DONE Parsing and interpretation of "deferred" links. E.g. `[![enter image description here][1]][1]`.
 
-   - This might be fairly complicated, needing a "second pass" interpreter.  
+   - This is somewhat complicated, needing a "second pass" interpreter.
+   - The "second pass" is handled in the TOP action methods.
    
 - [ ] TODO Parsing tables
 

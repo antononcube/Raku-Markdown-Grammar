@@ -2,7 +2,23 @@ use v6.d;
 
 class Markdown::Actions::Mathematica {
 
-    method TOP($/) { make 'Notebook[{' ~ $<md-block>>>.made.grep({ $_ ne 'Cell[TextData[{""}]]' }).join(', ') ~ '}]' }
+    method TOP($/) {
+        my @mdBlocks = $<md-block>>>.made;
+        @mdBlocks = $<md-block>>>.made.grep({ $_ ne 'Cell[TextData[{""}]]' });
+
+        my $res;
+        if @mdBlocks.all ~~ Str {
+            $res = @mdBlocks.join(', ');
+        } else {
+            my %references = @mdBlocks.grep({ $_ ~~ Pair });
+            @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
+            $res = @mdBlocks.join(', ');
+            for %references.kv -> $k, $v {
+                $res = $res.subst($k, $v):g;
+            }
+        }
+        make 'Notebook[{' ~ $res ~ '}]'
+    }
 
     method md-block($/) { make $/.values[0].made; }
 
@@ -34,20 +50,36 @@ class Markdown::Actions::Mathematica {
     method md-horizontal-line($/) { make 'Cell[TextData["\[HorizontalLine]"], "Text"]'; }
 
     method md-image-simple-link($/) {
-        my $code = 'Import[' ~ $<md-simple-link><md-link-url>.made ~ ']';
+        my $link = $<md-link><md-simple-link> ?? $<md-link><md-simple-link><md-link-url>.made !! $<md-link><md-reference-link><md-link-label>.made;
+        my $code = 'Import[' ~ $link ~ ']';
         $code = $code.Str.subst(:g, '"', '\"');
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
     }
 
     method md-image-complex-link($/) {
-        my $code = 'Import[' ~ $<md-simple-link><md-link-url>.made ~ ']';
+        my $link = $<md-link><md-simple-link> ?? $<md-link><md-simple-link><md-link-url>.made !! $<md-link><md-reference-link><md-link-label>.made;
+        my $code = 'Import[' ~  $link ~ ']';
         $code = $code.Str.subst(:g, '"', '\"');
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
     }
 
-    method md-simple-link($/) { make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-url>.made ~ ', None}]'; }
+    method md-image-complex-link-to($/) { make $/.values[0].made; }
+    method md-image-complex-link-url($/) { make $/.values[0].made; }
+    method md-image-complex-link-reference($/) { make $/.values[0].made; }
+
+    method md-link($/) { make $/.values[0].made; }
+    method md-simple-link($/) {
+        make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-url>.made ~ ', None}]';
+    }
+
+    method md-reference-link($/) {
+        make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-label>.made ~ ', None}]';
+    }
+    method md-reference($/) { make $<md-link-label>.made => $<md-link-url>.made; }
+
     method md-link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
-    method md-link-url($/) { make 'URL["' ~ make $/.Str ~ '"]'; }
+    method md-link-url($/) { make 'URL["' ~ $/.Str ~ '"]'; }
+    method md-link-label($/) { make 'Label[' ~ $/.Str ~ ']'; }
 
     method md-word($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
     method md-text-element($/) { make $/.values[0].made; }

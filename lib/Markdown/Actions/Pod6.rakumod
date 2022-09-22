@@ -2,7 +2,21 @@ use v6.d;
 
 class Markdown::Actions::Pod6 {
 
-    method TOP($/) { make $<md-block>>>.made.join("\n"); }
+    method TOP($/) {
+        my @mdBlocks = $<md-block>>>.made;
+
+        if @mdBlocks.all ~~ Str {
+            make @mdBlocks.join("\n");
+        } else {
+            my %references = @mdBlocks.grep({ $_ ~~ Pair }).map({ '[' ~ $_.key ~ ']' => $_.value });
+            @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
+            my $res = @mdBlocks.join("\n");
+            for %references.kv -> $k, $v {
+                $res = $res.subst($k, $v):g;
+            }
+            make $res;
+        }
+    }
 
     method md-block($/) { make $/.values[0].made; }
 
@@ -29,17 +43,25 @@ class Markdown::Actions::Pod6 {
 
     method md-horizontal-line($/) { make "=para \n" ~ ('-' x 100); }
 
-    method md-image-simple-link($/) {
-        make $<md-simple-link>.made;
-    }
+    method md-image-simple-link($/) { make $<md-simple-link>.made; }
 
     method md-image-complex-link($/) {
-        make $<md-simple-link>.made;
+        make $<md-link>.made;
     }
 
+    method md-image-complex-link-to($/) { make $/.values[0].made; }
+    method md-image-complex-link-url($/) { make $/.values[0].made; }
+    method md-image-complex-link-reference($/) { make $/.values[0].made; }
+
+    method md-link($/) { make $/.values[0].made; }
     method md-simple-link($/) { make 'L<' ~ $<md-link-name>.made ~ '|' ~ $<md-link-url>.made ~ '>'; }
+
+    method md-reference-link($/) { make 'L<' ~ $<md-link-name>.made ~ '|[' ~ $<md-link-label>.made ~ ']>'; }
+    method md-reference($/) { make $<md-link-label>.made => $<md-link-url>.made; }
+
     method md-link-name($/) { make $/.Str; }
-    method md-link-url($/) { make make $/.Str; }
+    method md-link-url($/) { make $/.Str; }
+    method md-link-label($/) { make $/.Str; }
 
     method md-word($/) { make $/.Str; }
     method md-text-element($/) { make $/.values[0].made; }

@@ -9,9 +9,17 @@ grammar Markdown::Grammar
 }
 
 #-----------------------------------------------------------
-sub md-interpret(Str:D $command,
-                 Str:D:$rule = 'TOP',
-                 :$actions = Markdown::Actions::Mathematica.new) {
+our sub md-subparse(Str:D $command, Str:D :$rule = 'TOP') is export {
+    Markdown::Grammar.subparse($command, :$rule);
+}
+
+our sub md-parse(Str:D $command, Str:D :$rule = 'TOP') is export {
+    Markdown::Grammar.parse($command, :$rule);
+}
+
+our sub md-interpret(Str:D $command,
+                       Str:D:$rule = 'TOP',
+                       :$actions = Markdown::Actions::Mathematica.new) is export {
     return Markdown::Grammar.parse($command, :$rule, :$actions).made;
 }
 

@@ -8,18 +8,6 @@ use Markdown::Grammar;
 use Markdown::Actions::Mathematica;
 
 #===========================================================
-my $pCOMMAND = Markdown::Grammar;
-
-sub md-parse(Str:D $command, Str:D :$rule = 'TOP') {
-    $pCOMMAND.parse($command, :$rule);
-}
-
-sub md-interpret(Str:D $command,
-                 Str:D:$rule = 'TOP',
-                 :$actions = Markdown::Actions::Mathematica.new) {
-    $pCOMMAND.parse($command, :$rule, :$actions).made;
-}
-#===========================================================
 
 plan 10;
 

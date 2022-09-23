@@ -9,7 +9,7 @@ use Markdown::Actions::Mathematica;
 
 #===========================================================
 
-plan 12;
+plan 13;
 
 #-----------------------------------------------------------
 ## 1
@@ -255,8 +255,8 @@ my $mtext11 = q:to/END/;
 END
 
 is md-interpret($mtext11),
-    'Notebook[{Cell[TextData[{ButtonBox["enter image description here", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://i.stack.imgur.com/cUxHw.png"], None}]}], "Text"], Cell[ BoxData["Import[URL[\"https://i.stack.imgur.com/XWrJB.png\"]]"], "Input"]}]',
-    'Links with references';
+        'Notebook[{Cell[TextData[{ButtonBox["enter image description here", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://i.stack.imgur.com/cUxHw.png"], None}]}], "Text"], Cell[ BoxData["Import[URL[\"https://i.stack.imgur.com/XWrJB.png\"]]"], "Input"]}]',
+        'Links with references';
 
 #-----------------------------------------------------------
 ## 12
@@ -273,5 +273,23 @@ is md-interpret($mtext12),
         'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points."}], "ItemParagraph", Background->GrayLevel[0.97]], Cell[TextData[{">", " ", ">", " ", "Pick", " ", "the", " ", StyleBox["points", FontSlant->"Italic"], " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "Text"]}]',
         'Quote block';
 
+
+#-----------------------------------------------------------
+## 13
+#-----------------------------------------------------------
+my $mtext13 = q:to/END/;
+They said:
+
+**Select QR parameters to extract the "near constant y" points.**
+*Pick the *points* around produced regression quantile.*
+
+And more:
+
+***Experiment!!***
+END
+
+is md-interpret($mtext13),
+        'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points."}], "Text", FontWeight->"Bold"], Cell[TextData[{"Pick", " ", "the", " ", StyleBox["points", FontSlant->"Italic"], " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "Text", FontSlant->"Italic"], Cell[TextData[{"And", " ", "more:"}], "Text"], Cell[TextData[{"Experiment!!"}], "Text", FontWeight->"Bold", FontSlant->"Italic"]}]',
+        'Emphasize block';
 
 done-testing;

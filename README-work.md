@@ -204,7 +204,7 @@ The most important items are placed first.
    - This is somewhat complicated, needing a "second pass" interpreter.
    - The "second pass" is handled in the TOP action methods.
    
-- [ ] TODO Parsing quote lines and quote blocks
+- [X] DONE Parsing quote lines and quote blocks
 
 - [ ] TODO Parsing tables
 

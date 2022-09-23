@@ -2,8 +2,6 @@ use v6.d;
 
 constant $mdTicks = '```';
 
-constant $mdItemListMarker = '-';
-
 role Markdown::Grammarish {
 
     rule TOP { <md-block>+ }
@@ -69,14 +67,18 @@ role Markdown::Grammarish {
     regex md-link-label { <-[\[\]\v]>* }
 
     regex md-word { (\S+) <!{ (so $0.Str ~~ self.md-simple-link-strict) || (so $0.Str ~~ self.md-reference-link-strict) }> }
+    regex md-word-bold { ('**' | '__') <md-word> $0 }
+    regex md-word-italic { ('*' | '_') <md-word> $0 }
+    regex md-word-code { ('`' | '```') <md-word> $0 }
     regex md-empty-line { \h* \n }
 
-    regex md-text-element { <md-link> || <md-word> }
+    regex md-text-element { <md-link> || <md-word-bold> || <md-word-italic> || <md-word-code> || <md-word> }
     regex md-text-line { \h ** ^4 $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
     regex md-text-block { <md-text-line>+ }
 
     regex md-item-list-block { <md-item-list-element>+ }
-    regex md-item-list-element { $<indent>=(\h*) $mdItemListMarker \h+ <content=.md-text-line> }
+    token md-item-list-marker { '-' | '+' | '*' }
+    regex md-item-list-element { $<indent>=(\h*) <md-item-list-marker> \h+ <content=.md-text-line> }
 
     regex md-numbered-list-block { <md-numbered-list-element>+ }
     regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }

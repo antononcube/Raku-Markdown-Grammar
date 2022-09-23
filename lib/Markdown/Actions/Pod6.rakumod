@@ -64,6 +64,12 @@ class Markdown::Actions::Pod6 {
     method md-link-label($/) { make $/.Str; }
 
     method md-word($/) { make $/.Str; }
+    method md-word-bold($/) { make 'B<' ~ $/.Str.substr(2, *-2) ~ '>'; }
+    method md-word-italic($/) { make 'I<' ~ $/.Str.substr(1, *-1) ~ '>'; }
+    # Markdown does not allow underlined text
+    # method md-word-underlined($/) { make 'U<' ~ $/.Str ~ '>'; }
+    method md-word-code($/) { make 'C<' ~ $/.Str.substr(1, *-1) ~ '>'; }
+
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make ''; }
     method md-text-line($/) {

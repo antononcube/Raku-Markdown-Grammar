@@ -14,6 +14,8 @@ class Markdown::Actions::Mathematica {
             @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
             for %references.kv -> $k, $v {
                 @mdBlocks = do for @mdBlocks -> $b {
+                    # The image links are represented in the Mathematica notebook with an Import statement.
+                    # Hence, we have to check the do we have a code cell.
                     if $b ~~ / ^ 'Cell[' .* '"Input"]' $ / {
                         $b.subst($k, $v.subst('"','\"'):g):g
                     } else {
@@ -88,6 +90,10 @@ class Markdown::Actions::Mathematica {
     method md-link-label($/) { make 'Label[' ~ $/.Str ~ ']'; }
 
     method md-word($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
+    method md-word-bold($/) { make 'StyleBox["' ~ $/.Str.substr(2,*-2).subst(:g, '"', '\"') ~ '", FontWeight->"Bold"]'; }
+    method md-word-italic($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).subst(:g, '"', '\"') ~ '", FontSlant->"Italic"]'; }
+    method md-word-code($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).subst(:g, '"', '\"') ~ '", "Program"]'; }
+
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }
     method md-text-line($/) {

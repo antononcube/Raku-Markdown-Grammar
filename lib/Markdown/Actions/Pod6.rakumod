@@ -80,7 +80,7 @@ class Markdown::Actions::Pod6 {
     }
 
     method md-item-list-block($/) {
-        make  $<md-item-list-element>>>.made.join(', ');
+        make  $<md-item-list-element>>>.made.join("\n");
     }
     method md-item-list-element($/) {
         my $itemType =
@@ -95,7 +95,7 @@ class Markdown::Actions::Pod6 {
     }
 
     method md-numbered-list-block($/) {
-        make  $<md-numbered-list-element>>>.made.join(', ');
+        make  $<md-numbered-list-element>>>.made.join("\n");
     }
     method md-numbered-list-element($/) {
         my $itemType =

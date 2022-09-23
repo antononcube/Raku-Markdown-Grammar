@@ -222,6 +222,8 @@ from-markdown($mtext, to => 'pod6')
 
 The most important items are placed first.
 
+- [X] DONE Parsing bold, italic, code "words."
+
 - [ ] TODO Parsing bold, italic, code "phrases."
 
 - [ ] TODO Parsing blocks with bold, italic formatting specs
@@ -233,6 +235,8 @@ The most important items are placed first.
    - This is somewhat complicated, needing a "second pass" interpreter.
    - The "second pass" is handled in the TOP action methods.
    
+- [ ] TODO Parsing quote lines and quote blocks
+
 - [ ] TODO Parsing tables
 
 ------

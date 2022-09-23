@@ -289,7 +289,7 @@ And more:
 END
 
 is md-interpret($mtext13),
-        'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points."}], "Text", FontWeight->"Bold"], Cell[TextData[{"Pick", " ", "the", " ", StyleBox["points", FontSlant->"Italic"], " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "Text", FontSlant->"Italic"], Cell[TextData[{"And", " ", "more:"}], "Text"], Cell[TextData[{"Experiment!!"}], "Text", FontWeight->"Bold", FontSlant->"Italic"]}]',
+        'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points."}], "Text", FontWeight->"Bold"], Cell[TextData[{"Pick", " ", "the", " ", "*points*", " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "Text", FontSlant->"Italic"], Cell[TextData[{"And", " ", "more:"}], "Text"], Cell[TextData[{"Experiment!!"}], "Text", FontWeight->"Bold", FontSlant->"Italic"]}]',
         'Emphasize block';
 
 done-testing;

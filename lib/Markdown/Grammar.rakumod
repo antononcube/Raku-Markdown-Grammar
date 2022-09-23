@@ -25,8 +25,8 @@ our sub md-interpret(Str:D $command,
 
 #-----------------------------------------------------------
 #| Converts Markdown files into Mathematica notebooks.
-#| $md -- A markdown string or file name.
-#| t(:$to) = 'mathematica' -- Format to convert to. (One of 'mathematica' or 'pod6'.)
+#| C<$md> -- A markdown string or file name.
+#| C<:t(:$to)> = 'mathematica' -- Format to convert to. (One of 'mathematica' or 'pod6'.)
 our proto from-markdown(Str $md,
                         Str :t(:$to) = 'mathematica') is export {*}
 
@@ -34,7 +34,7 @@ our proto from-markdown(Str $md,
 multi from-markdown(Str $file where *.IO.f, Str :t(:$to) = 'mathematica') {
 
     my $text = slurp($file);
-    return from-markdown($text, :to);
+    return from-markdown($text, :$to);
 }
 
 

@@ -9,7 +9,7 @@ use Markdown::Actions::Mathematica;
 
 #===========================================================
 
-plan 11;
+plan 12;
 
 #-----------------------------------------------------------
 ## 1
@@ -219,6 +219,17 @@ my $mtext11 = q:to/END/;
 [2]: https://i.stack.imgur.com/XWrJB.png
 END
 
-ok md-parse($mtext11);
+#-----------------------------------------------------------
+## 12
+#-----------------------------------------------------------
+my $mtext12 = q:to/END/;
+They said:
+
+> Select QR parameters to extract the "near constant y" points.
+>
+> Pick the *points* around produced regression quantile.
+END
+
+ok md-parse($mtext12);
 
 done-testing;

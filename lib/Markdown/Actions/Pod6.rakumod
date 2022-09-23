@@ -5,17 +5,19 @@ class Markdown::Actions::Pod6 {
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
 
+        my $res;
         if @mdBlocks.all ~~ Str {
-            make @mdBlocks.join("\n");
+            $res = @mdBlocks.join("\n");
         } else {
             my %references = @mdBlocks.grep({ $_ ~~ Pair }).map({ '[' ~ $_.key ~ ']' => $_.value });
             @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
-            my $res = @mdBlocks.join("\n");
+            $res = @mdBlocks.join("\n");
             for %references.kv -> $k, $v {
                 $res = $res.subst($k, $v):g;
             }
-            make $res;
         }
+
+        make "=begin \n" ~ $res ~ "\n=end pod";
     }
 
     method md-block($/) { make $/.values[0].made; }
@@ -74,6 +76,9 @@ class Markdown::Actions::Pod6 {
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make ''; }
     method md-text-line($/) {
+        make $<md-text-line-tail>.made;
+    }
+    method md-text-line-tail($/) {
         my @res;
         with $<rest> {
             @res = [$<first><md-text-element>.made, |$<rest><md-text-element>>>.made];
@@ -84,6 +89,13 @@ class Markdown::Actions::Pod6 {
     }
     method md-text-block($/) {
         make "=para\n" ~ $/.values>>.made.join("\n");
+    }
+
+    method md-quote-line($/) {
+        make $<md-text-line-tail>.made;
+    }
+    method md-quote-block($/) {
+        make "=para Qoute\n" ~ $/.values>>.made.join("\n");
     }
 
     method md-item-list-block($/) {

@@ -97,7 +97,7 @@ class Markdown::Actions::Mathematica {
 
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }
-    method md-text-line($/) {
+    method md-text-line-tail($/) {
         my @res;
         with $<rest> {
             @res = [$<first><md-text-element>.made, |$<rest><md-text-element>>>.made];
@@ -106,8 +106,20 @@ class Markdown::Actions::Mathematica {
         }
         make @res.join(', " ", ');
     }
+    method md-text-line($/) { make $<md-text-line-tail>.made; }
     method md-text-block($/) {
         make 'Cell[TextData[{' ~ $/.values>>.made.join(', " ", ') ~ '}], "Text"]';
+    }
+
+    method md-quote-line($/) {
+        with $<md-text-line-tail> {
+            make $<md-text-line-tail>.made
+        } else {
+            make '"\\n\\n"';
+        }
+    }
+    method md-quote-block($/) {
+        make 'Cell[TextData[{' ~ $/.values>>.made.join(', " ", ') ~ '}], "ItemParagraph", Background->GrayLevel[0.97]]';
     }
 
     method md-item-list-block($/) {

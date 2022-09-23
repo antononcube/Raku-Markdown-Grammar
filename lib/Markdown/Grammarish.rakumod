@@ -83,7 +83,13 @@ role Markdown::Grammarish {
     regex md-quote-line { '>' \h+ [ <md-text-line-tail> \n || \n ] }
     regex md-quote-block { <md-quote-line>+ }
 
-    regex md-emphasize-block { $<emph>=( '***' | '**' | '*' | '___' | '__' | '_' ) [<md-text-line-tail> | <md-text-line-tail>+ % \n] $<emph> }
+    regex md-emphasize-text-element { <md-link> || <md-word-code> || <md-word> }
+    regex md-emphasize-text-line { <md-emphasize-text-element>+ % \h+ }
+
+    regex md-emphasize-block {
+        $<emph>=( '***' || '**' || '*' || '___' || '__' || '_' )
+        <md-emphasize-text-line>+ % \n $<emph> \h* \n
+    }
 
     regex md-item-list-block { <md-item-list-element>+ }
     token md-item-list-marker { '-' | '+' | '*' }

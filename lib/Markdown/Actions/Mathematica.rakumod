@@ -127,15 +127,20 @@ class Markdown::Actions::Mathematica {
         make 'Cell[TextData[{' ~ $/.values>>.made.join(', " ", ') ~ '}], "ItemParagraph", Background->GrayLevel[0.97]]';
     }
 
+    method md-emphasize-text-element($/) { make $/.values[0].made; }
+    method md-emphasize-text-line($/) {
+        my @res = $<md-emphasize-text-element>>>.made;
+        make @res.join(', " ", ');
+    }
     method md-emphasize-block($/) {
         my $emph = $<emph>.Str;
-        my @res = $<md-text-line-tail>>>.made.map({ $_.subst(/ ^ $emph /, '') });
+        my @res = $<md-emphasize-text-line>>>.made.map({ $_.subst(/ ^ $emph /, '') });
         my $opts = do given $emph.chars {
             when 1 { 'FontSlant->"Italic"' }
             when 2 { 'FontWeight->"Bold"' }
             when 3 { 'FontWeight->"Bold", FontSlant->"Italic"' }
         }
-        make 'Cell[TextData[{' ~ @res.join(', "\\n", ') ~ '}], "Text", ' ~ $opts ~ ']';
+        make 'Cell[TextData[{' ~ @res.join(', " ", ') ~ '}], "Text", ' ~ $opts ~ ']';
     }
 
     method md-item-list-block($/) {

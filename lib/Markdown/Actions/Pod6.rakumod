@@ -98,15 +98,21 @@ class Markdown::Actions::Pod6 {
         make "=para Qoute\n" ~ $/.values>>.made.join("\n");
     }
 
+    method md-emphasize-text-element($/) { make $/.values[0].made; }
+    method md-emphasize-text-line($/) {
+        my @res = $<md-emphasize-text-element>>>.made;
+        make @res.join(' ');
+    }
+
     method md-emphasize-block($/) {
         my $emph = $<emph>.Str;
-        my @res = $<md-text-line-tail>>>.made.map({ $_.subst(/ ^ $emph /, '') });
+        my @res = $<md-emphasize-text-line>>>.made.join("\n");
         given $emph.chars {
             when 1 { @res = @res.map({ 'I<' ~ $_ ~ '>' }) }
             when 2 { @res = @res.map({ 'B<' ~ $_ ~ '>' }) }
             when 3 { @res = @res.map({ 'B>I<' ~ $_ ~ '>>' }) }
         }
-        make "=para\n" ~ @res.join("\n");
+         make "=para\n" ~ @res.join("\n");
     }
 
     method md-item-list-block($/) {

@@ -22,6 +22,7 @@ role Markdown::Grammarish {
         || <md-item-list-block>
         || <md-numbered-list-block>
         || <md-quote-block>
+        || <md-emphasize-block>
         || <md-text-block>
     }
 
@@ -75,12 +76,14 @@ role Markdown::Grammarish {
     regex md-empty-line { \h* \n }
 
     regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-code> || <md-word> }
-    regex md-text-line-tail { $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
-    regex md-text-line { \h ** ^4 <md-text-line-tail> }
+    regex md-text-line-tail { $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* <!{ $<first>.Str eq $mdTicks }> }
+    regex md-text-line { \h ** ^4 <md-text-line-tail> \n }
     regex md-text-block { <md-text-line>+ }
 
-    regex md-quote-line { '>' \h+ [ <md-text-line-tail> || \n ] }
+    regex md-quote-line { '>' \h+ [ <md-text-line-tail> \n || \n ] }
     regex md-quote-block { <md-quote-line>+ }
+
+    regex md-emphasize-block { $<emph>=( '***' | '**' | '*' | '___' | '__' | '_' ) [<md-text-line-tail> | <md-text-line-tail>+ % \n] $<emph> }
 
     regex md-item-list-block { <md-item-list-element>+ }
     token md-item-list-marker { '-' | '+' | '*' }

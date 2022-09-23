@@ -219,6 +219,11 @@ The most important items are placed first.
 (2021),
 [RakuForPrediction at WordPress]([https://rakuforprediction.wordpress.com/).
 
+### Guides
+
+[MG1] [Markdown Guide](https://www.markdownguide.org).
+
+[RD1] [Raku Pod6](https://docs.raku.org/language/pod).
 
 ### Packages
 

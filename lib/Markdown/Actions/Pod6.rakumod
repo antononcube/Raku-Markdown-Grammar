@@ -64,6 +64,7 @@ class Markdown::Actions::Pod6 {
     method md-link-label($/) { make $/.Str; }
 
     method md-word($/) { make $/.Str; }
+    method md-word-bold-italic($/) { make 'B<I<' ~ $/.Str.substr(3, *-3) ~ '>>'; }
     method md-word-bold($/) { make 'B<' ~ $/.Str.substr(2, *-2) ~ '>'; }
     method md-word-italic($/) { make 'I<' ~ $/.Str.substr(1, *-1) ~ '>'; }
     # Markdown does not allow underlined text

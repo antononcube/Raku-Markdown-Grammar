@@ -90,6 +90,7 @@ class Markdown::Actions::Mathematica {
     method md-link-label($/) { make 'Label[' ~ $/.Str ~ ']'; }
 
     method md-word($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
+    method md-word-bold-italic($/) { make 'StyleBox["' ~ $/.Str.substr(3,*-3).subst(:g, '"', '\"') ~ '", FontWeight->"Bold", FontSlant->"Italic"]'; }
     method md-word-bold($/) { make 'StyleBox["' ~ $/.Str.substr(2,*-2).subst(:g, '"', '\"') ~ '", FontWeight->"Bold"]'; }
     method md-word-italic($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).subst(:g, '"', '\"') ~ '", FontSlant->"Italic"]'; }
     method md-word-code($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).subst(:g, '"', '\"') ~ '", "Program"]'; }

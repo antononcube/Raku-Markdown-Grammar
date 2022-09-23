@@ -67,12 +67,13 @@ role Markdown::Grammarish {
     regex md-link-label { <-[\[\]\v]>* }
 
     regex md-word { (\S+) <!{ (so $0.Str ~~ self.md-simple-link-strict) || (so $0.Str ~~ self.md-reference-link-strict) }> }
+    regex md-word-bold-italic { ('***' | '___') <md-word> $0 }
     regex md-word-bold { ('**' | '__') <md-word> $0 }
     regex md-word-italic { ('*' | '_') <md-word> $0 }
     regex md-word-code { ('`' | '```') <md-word> $0 }
     regex md-empty-line { \h* \n }
 
-    regex md-text-element { <md-link> || <md-word-bold> || <md-word-italic> || <md-word-code> || <md-word> }
+    regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-code> || <md-word> }
     regex md-text-line { \h ** ^4 $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* \n <!{ $<first>.Str eq $mdTicks }> }
     regex md-text-block { <md-text-line>+ }
 

@@ -25,6 +25,11 @@ class Markdown::Actions::Mathematica {
             }
             $res = @mdBlocks.join(', ');
         }
+
+        # Special treatment of monadic symbols.
+        if $res.contains('⟹') {
+            $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
+        }
         make 'Notebook[{' ~ $res ~ '}]'
     }
 

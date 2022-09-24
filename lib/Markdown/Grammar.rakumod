@@ -27,23 +27,22 @@ our sub md-interpret(Str:D $command,
 #| Converts Markdown files into Mathematica notebooks.
 #| C<$md> -- A markdown string or file name.
 #| C<:t(:$to)> = 'mathematica' -- Format to convert to. (One of 'mathematica' or 'pod6'.)
-our proto from-markdown(Str $md,
-                        Str :t(:$to) = 'mathematica') is export {*}
+our proto from-markdown(Str:D $md,
+                        Str :t(:$to) = 'mathematica' --> Str) is export {*}
 
-
-multi from-markdown(Str $file where *.IO.f, Str :t(:$to) = 'mathematica') {
+multi from-markdown(Str:D $file where *.IO.f, Str :t(:$to) = 'mathematica' --> Str) {
 
     my $text = slurp($file);
     return from-markdown($text, :$to);
 }
 
-
-multi from-markdown(Str $text, Str :t(:$to) = 'mathematica' --> Str) {
+multi from-markdown(Str:D $text, Str :t(:$to) = 'mathematica' --> Str) {
 
     my $res;
+    my $ending = $text ~~ / .* \n $$ / ?? '' !! "\n";
     given $to.lc {
-        when  $_ ∈ <mathematica wl> { $res = md-interpret($text, actions => Markdown::Actions::Mathematica.new); }
-        when  $_ ∈ <pod pod6> { $res = md-interpret($text, actions => Markdown::Actions::Pod6.new); }
+        when  $_ ∈ <mathematica wl> { $res = md-interpret($text ~ $ending, actions => Markdown::Actions::Mathematica.new); }
+        when  $_ ∈ <pod pod6> { $res = md-interpret($text ~ $ending, actions => Markdown::Actions::Pod6.new); }
         default {
             die 'Unknown output format.'
         }

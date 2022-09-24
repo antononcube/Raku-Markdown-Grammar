@@ -1,4 +1,4 @@
-# Markdown::Grammar (Raku package)
+# Raku Markdown::Grammar
 
 ## In brief
 
@@ -15,7 +15,7 @@ Markdown parser suitable for making converters of Markdown files into files of d
 
 I am most interested in generating Mathematica notebooks from Markdown. 
 
-I have written fair amount of Raku-related Markdown documents. Many of those Markdown documents
+I have written a fair amount of Raku-related Markdown documents. Many of those Markdown documents
 were generated from Mathematica notebooks using 
 [M2MD](https://github.com/kubaPod/M2MD), [JPp1]. 
 But of course, most of the time, further changes and embellishments were made over those Markdown documents. 
@@ -23,7 +23,7 @@ Hence it would be very nice to be able to go back to Mathematica.
 
 **Remark:** Raku can be used in Mathematica via the so called `RakuMode` -- see [AA1].
 
-**Remark:** Markdown documents with Raku cells can be evaluated with Command Line Interface (CLI)
+**Remark:** Markdown documents with Raku code cells can be evaluated with Command Line Interface (CLI)
 scripts of the package 
 ["Text::CodeProcessing"](https://raku.land/cpan:ANTONOV/Text::CodeProcessing), [AAp1]. 
 For more details see the article 
@@ -73,7 +73,7 @@ zef install https://github.com/antononcube/Raku-Markdown-Grammar.git
 
 ------
 
-# Round trip translation
+## Round trip translation
 
 Consider the following round trip translation experiment:
 
@@ -91,7 +91,7 @@ Here is the corresponding flowchart:
 ```mermaid
 graph TD
     WL[Make a Mathematica notebook] --> E
-    E["Examine notebooks(s)"] --> M2MD
+    E["Examine notebook(s)"] --> M2MD
     M2MD["Convert to Markdown with M2MD"] --> MG
     MG["Convert to Mathematica with Markdown::Grammar"] --> |Compare|E
 ```

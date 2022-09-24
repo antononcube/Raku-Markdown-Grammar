@@ -24,6 +24,7 @@ role Markdown::Grammarish {
         || <md-quote-block>
         || <md-emphasize-block>
         || <md-text-block>
+        || <md-any-block>
     }
 
     regex md-code-block {
@@ -101,5 +102,6 @@ role Markdown::Grammarish {
 
     regex md-numbered-list-block { <md-numbered-list-element>+ }
     regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }
-    regex md-any-line { \V* \n }
+    regex md-any-line { \V+ \n }
+    regex md-any-block { <md-any-line>+ }
 }

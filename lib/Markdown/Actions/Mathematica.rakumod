@@ -172,7 +172,11 @@ class Markdown::Actions::Mathematica {
     }
 
     method md-any-line($/) {
-        make 'Cell[TextData[{' ~ $/.Str ~ '}], "Text"]';
+        make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"';
+    }
+
+    method md-any-block($/) {
+        make 'Cell[TextData[{' ~ $<md-any-line>>>.made.join(', "\\n", ') ~ '}], "Text"]';
     }
 }
 

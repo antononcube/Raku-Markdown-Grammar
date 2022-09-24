@@ -146,7 +146,11 @@ class Markdown::Actions::Pod6 {
     }
 
     method md-any-line($/) {
-        make "=para\n" ~ $/.Str;
+        make $/.Str;
+    }
+
+    method md-any-block($/) {
+        make "=para\n" ~ $<md-any-line>>>.made.join("\n");
     }
 }
 

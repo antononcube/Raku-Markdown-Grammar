@@ -57,9 +57,13 @@ role Markdown::Grammarish {
     regex md-image-complex-link-reference { '[' <md-link-label> ']' }
 
     regex md-link { <md-reference-link> | <md-simple-link> }
-    regex md-simple-link { '[' <md-link-name> ']' \h* '(' <md-link-url> ')' }
+    # To create a link, enclose the link text in brackets (e.g., [Duck Duck Go]) and
+    # then follow it immediately with the URL in parentheses (e.g., (https://duckduckgo.com)).
+    regex md-simple-link { '[' <md-link-name> '](' <md-link-url> ')' }
     regex md-simple-link-strict { ^ <md-simple-link> $ }
 
+    # Although not required, you can include a space between the first and second set of brackets.
+    # The label in the second set of brackets is not case sensitive and can include letters, numbers, spaces, or punctuation.
     regex md-reference-link { '[' <md-link-name> ']' \h* '[' <md-link-label> ']' }
     regex md-reference-link-strict { ^ <md-reference-link> $ }
     regex md-reference { '[' <md-link-label> ']:' \h* <md-link-url>}

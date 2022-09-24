@@ -41,9 +41,11 @@ graph TD
     SP-->|yes|R
     R[Review and modify]-->P
     GE-->|no|LT
-    SP{Needs refinement?}-->|no|CM
+    SP{Needs refinement?}-->|no|SD
+    SD{Significantly different?}-->|yes|CM
+    SD-->|no|PC
     CM[Convert Markdown document to notebook]-->PC
-    PC["Publish to Community.wolfram.com"]   
+    PC["Publish to notebook Community.wolfram.com"]   
 ```
 
 #### Pod6
@@ -88,10 +90,10 @@ Here is the corresponding flowchart:
 
 ```mermaid
 graph TD
-    wl[Make a Mathematica notebook] --> e
-    e["Examine notebooks(s)"] --> m2md
-    m2md["Convert to Markdown with M2MD"] --> md2wl
-    md2wl["Convert to Mathematica with Markdown::Grammar"] --> |Compare|e
+    WL[Make a Mathematica notebook] --> E
+    E["Examine notebooks(s)"] --> M2MD
+    M2MD["Convert to Markdown with M2MD"] --> MG
+    MG["Convert to Mathematica with Markdown::Grammar"] --> |Compare|E
 ```
 
 ------
@@ -118,7 +120,7 @@ there are no other converters.*
 
 ### Jupyter to Markdown
 
-- ["Jupyter"](https://jupyter.org) notebook interfaces have the option to be saved as Markdown files.
+- ["Jupyter"](https://jupyter.org) notebook interfaces have the option to be saved (downloaded) as Markdown files.
 
 ### Jupyter <-> Markdown
 
@@ -240,6 +242,12 @@ The most important items are placed first.
 - [X] DONE Parsing quote lines and quote blocks
 
 - [ ] TODO Parsing tables
+
+- [ ] TODO Parsing escaping characters
+
+- [ ] TODO Parsing HTML
+
+- [ ] TODO Parsing most or all of the elements of the [extended syntax](https://www.markdownguide.org/extended-syntax/), [MC1] 
 
 ------
 

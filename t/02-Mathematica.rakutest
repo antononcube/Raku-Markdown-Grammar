@@ -5,7 +5,6 @@ use lib '.';
 use lib './lib';
 
 use Markdown::Grammar;
-use Markdown::Actions::Mathematica;
 
 #===========================================================
 

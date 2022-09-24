@@ -73,7 +73,7 @@ zef install https://github.com/antononcube/Raku-Markdown-Grammar.git
 
 ------
 
-# Round trip translation
+## Round trip translation
 
 Consider the following round trip translation experiment:
 
@@ -91,7 +91,7 @@ Here is the corresponding flowchart:
 ```mermaid
 graph TD
     WL[Make a Mathematica notebook] --> E
-    E["Examine notebooks(s)"] --> M2MD
+    E["Examine notebook(s)"] --> M2MD
     M2MD["Convert to Markdown with M2MD"] --> MG
     MG["Convert to Mathematica with Markdown::Grammar"] --> |Compare|E
 ```

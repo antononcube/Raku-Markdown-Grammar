@@ -146,6 +146,31 @@ The package provides a Command Line Interface (CLI) script, `from-markdown`. Her
 #    -o|--output=<Str>    Output file; if an empty string then the result is printed to stdout. [default: '']
 ```
 
+The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:
+
+```shell
+> from-markdown -to=pod6 'Here is data wrangling code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
+
+## References'
+
+# =begin
+# =para
+# Here is data wrangling code:
+# =begin code
+# obj = dfTitanic;
+# obj = GroupBy[ obj, #["passengerSex"]& ];
+# Echo[Map[ Length, obj], "counts:"]
+# =end code
+# =begin head2
+# References
+# =end head2
+# =end pod
+```
+
 ------
 
 ## Usage example

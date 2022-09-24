@@ -146,6 +146,31 @@ The package provides a Command Line Interface (CLI) script, `from-markdown`. Her
 #    -o|--output=<Str>    Output file; if an empty string then the result is printed to stdout. [default: '']
 ```
 
+The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:
+
+```shell
+> from-markdown -to=pod6 'Here is data wrangling code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
+
+## References'
+
+# =begin
+# =para
+# Here is data wrangling code:
+# =begin code
+# obj = dfTitanic;
+# obj = GroupBy[ obj, #["passengerSex"]& ];
+# Echo[Map[ Length, obj], "counts:"]
+# =end code
+# =begin head2
+# References
+# =end head2
+# =end pod
+```
+
 ------
 
 ## Usage example
@@ -184,9 +209,9 @@ use Markdown::Grammar;
 from-markdown($mtext, to => 'mathematica')
 ```
 ```
-# Notebook[{Cell[TextData[{"Here", " ", "is", " ", "data", " ", "wrangling", " ", "code:"}], "Text"], Cell[ BoxData["    obj = dfTitanic;
-#     obj = GroupBy[ obj, #[\"passengerSex\"]& ];
-#     Echo[Map[ Length, obj], \"counts:\"]
+# Notebook[{Cell[TextData[{"Here", " ", "is", " ", "data", " ", "wrangling", " ", "code:"}], "Text"], Cell[ BoxData["obj = dfTitanic;
+# obj = GroupBy[ obj, #[\"passengerSex\"]& ];
+# Echo[Map[ Length, obj], \"counts:\"]
 # "], "Input"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]
 ```
 
@@ -196,13 +221,13 @@ Here is the corresponding Pod6 text:
 from-markdown($mtext, to => 'pod6')
 ```
 ```
-# =begin 
+# =begin
 # =para
 # Here is data wrangling code:
 # =begin code
-#     obj = dfTitanic;
-#     obj = GroupBy[ obj, #["passengerSex"]& ];
-#     Echo[Map[ Length, obj], "counts:"]
+# obj = dfTitanic;
+# obj = GroupBy[ obj, #["passengerSex"]& ];
+# Echo[Map[ Length, obj], "counts:"]
 # =end code
 # =begin head2
 # References

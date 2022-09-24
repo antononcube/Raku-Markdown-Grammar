@@ -1,0 +1,90 @@
+use v6.d;
+use Test;
+
+use lib '.';
+use lib './lib';
+
+use Markdown::Grammar;
+
+#===========================================================
+
+plan 5;
+
+#-----------------------------------------------------------
+## 1
+#-----------------------------------------------------------
+ok from-markdown('Here is data wrangling code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+               Echo[Map[ Length, obj], "counts:"]
+
+## References', to=>'Mathematica');
+
+#-----------------------------------------------------------
+## 2
+#-----------------------------------------------------------
+is from-markdown('## Section', to=>'Mathematica'),
+        'Notebook[{Cell[TextData[{"Section"}], "Section"]}]',
+        'Simple one line Mathematica';
+
+
+#-----------------------------------------------------------
+## 3
+#-----------------------------------------------------------
+my $res3 = q:to/END/;
+=begin
+=begin head2
+Section
+=end head2
+=end pod
+END
+
+is from-markdown('## Section', to=>'pod6'),
+        $res3.trim,
+        'Simple one line Pod6';
+
+#-----------------------------------------------------------
+## 4
+#-----------------------------------------------------------
+my Str $code = q:to/INIT/;
+Here is a variable:
+```raku
+my $answer = 42;
+```
+```
+# OUTPUT := 42
+```
+Here is its value squared:
+```raku
+$answer ** 2
+```
+```
+# OUTPUT := 1764
+```
+
+Here are cubed and cubed of the squared:
+```{raku}
+$answer ** 3
+$answer ** 2 ** 3
+```
+```
+# FAILURE := Two terms in a row across lines (missing semicolon or comma?)
+# OUTPUT := Nil
+```
+INIT
+
+
+my $doc-file = $*TMPDIR.child("temp_doc.md");
+$doc-file.spurt($code);
+
+ok from-markdown($doc-file, to=>'pod6'),
+        'Over file path object';
+
+#-----------------------------------------------------------
+## 5
+#-----------------------------------------------------------
+ok from-markdown($doc-file.Str, to=>'pod6'),
+        'Over file path string';
+
+done-testing;

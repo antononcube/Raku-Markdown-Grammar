@@ -112,7 +112,7 @@ graph TD
 
 ### Markdown to Pod6
 
-*Except this 
+*Except 
 ["this package"](https://github.com/antononcube/Raku-Markdown-Grammar)
 there are no other converters.*
 
@@ -125,7 +125,7 @@ there are no other converters.*
 - ["jupytext"](https://jupytext.readthedocs.io/en/latest/install.html) allows the conversion 
   of Jupyter notebooks from and to Markdown.
 
-- ["pandoc"](https://pandoc.org)allows the conversion
+- ["pandoc"](https://pandoc.org) allows the conversion
   of Jupyter notebooks from and to Markdown.
 
 ------
@@ -135,7 +135,7 @@ there are no other converters.*
 The package provides a Command Line Interface (CLI) script, `from-markdown`. Here is its usage message:
 
 ```shell
->from-markdown --help
+> from-markdown --help
 # Usage:
 #  from-markdown [-t|--to=<Str>] [-o|--output=<Str>] <file> -- Converts Markdown files into Mathematica notebooks.
 #  
@@ -194,6 +194,7 @@ Here is the corresponding Pod6 text:
 from-markdown($mtext, to => 'pod6')
 ```
 ```
+# =begin 
 # =para
 # Here is data wrangling code:
 # =begin code
@@ -214,6 +215,7 @@ from-markdown($mtext, to => 'pod6')
 # L<"Introduction to data wrangling with Raku"|https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/> ,
 # (2021),
 # L<RakuForPrediction at WordPress|https://rakuforprediction.wordpress.com> .
+# =end pod
 ```
 
 ------
@@ -226,7 +228,7 @@ The most important items are placed first.
 
 - [ ] TODO Parsing bold, italic, code "phrases."
 
-- [ ] TODO Parsing blocks with bold, italic formatting specs
+- [X] DONE Parsing blocks with bold, italic formatting specs
   
 - [X] DONE Parsing code blocks given with indentation.
 
@@ -252,9 +254,11 @@ The most important items are placed first.
 
 ### Guides
 
-[MG1] [Markdown Guide](https://www.markdownguide.org).
+[JG1] John Gruber, [Markdown: Syntax](https://daringfireball.net/projects/markdown/).
 
-[RD1] [Raku Pod6](https://docs.raku.org/language/pod).
+[MC1] Matt Cone, [Markdown Guide](https://www.markdownguide.org).
+
+[RC1] Raku Community, [Raku Pod6](https://docs.raku.org/language/pod).
 
 ### Packages
 

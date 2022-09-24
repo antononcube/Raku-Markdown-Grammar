@@ -112,7 +112,7 @@ graph TD
 
 ### Markdown to Pod6
 
-*Except this 
+*Except 
 ["this package"](https://github.com/antononcube/Raku-Markdown-Grammar)
 there are no other converters.*
 
@@ -125,7 +125,7 @@ there are no other converters.*
 - ["jupytext"](https://jupytext.readthedocs.io/en/latest/install.html) allows the conversion 
   of Jupyter notebooks from and to Markdown.
 
-- ["pandoc"](https://pandoc.org)allows the conversion
+- ["pandoc"](https://pandoc.org) allows the conversion
   of Jupyter notebooks from and to Markdown.
 
 ------
@@ -135,7 +135,7 @@ there are no other converters.*
 The package provides a Command Line Interface (CLI) script, `from-markdown`. Here is its usage message:
 
 ```shell
->from-markdown --help
+> from-markdown --help
 # Usage:
 #  from-markdown [-t|--to=<Str>] [-o|--output=<Str>] <file> -- Converts Markdown files into Mathematica notebooks.
 #  
@@ -195,7 +195,7 @@ The most important items are placed first.
 
 - [ ] TODO Parsing bold, italic, code "phrases."
 
-- [ ] TODO Parsing blocks with bold, italic formatting specs
+- [X] DONE Parsing blocks with bold, italic formatting specs
   
 - [X] DONE Parsing code blocks given with indentation.
 
@@ -221,9 +221,11 @@ The most important items are placed first.
 
 ### Guides
 
-[MG1] [Markdown Guide](https://www.markdownguide.org).
+[JG1] John Gruber, [Markdown: Syntax](https://daringfireball.net/projects/markdown/).
 
-[RD1] [Raku Pod6](https://docs.raku.org/language/pod).
+[MC1] Matt Cone, [Markdown Guide](https://www.markdownguide.org).
+
+[RC1] Raku Community, [Raku Pod6](https://docs.raku.org/language/pod).
 
 ### Packages
 

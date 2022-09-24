@@ -170,5 +170,9 @@ class Markdown::Actions::Mathematica {
 
         make 'Cell[TextData[{' ~ $<content>.made ~ '}], "' ~ $itemType ~ '"]';
     }
+
+    method md-any-line($/) {
+        make 'Cell[TextData[{' ~ $/.Str ~ '}], "Text"]';
+    }
 }
 

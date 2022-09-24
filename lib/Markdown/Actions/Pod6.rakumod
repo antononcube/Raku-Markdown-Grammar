@@ -47,7 +47,7 @@ class Markdown::Actions::Pod6 {
 
     method md-horizontal-line($/) { make "=para \n" ~ ('-' x 100); }
 
-    method md-image-simple-link($/) { make $<md-simple-link>.made; }
+    method md-image-simple-link($/) { make $<md-link>.made; }
 
     method md-image-complex-link($/) {
         make $<md-link>.made;

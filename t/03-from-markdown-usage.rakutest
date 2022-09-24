@@ -87,4 +87,34 @@ ok from-markdown($doc-file, to=>'pod6'),
 ok from-markdown($doc-file.Str, to=>'pod6'),
         'Over file path string';
 
+#-----------------------------------------------------------
+## 6
+#-----------------------------------------------------------
+
+# README example
+my $res6 = q:to/END/;
+=begin
+=para
+Here is data wrangling code:
+=begin code
+obj = dfTitanic;
+obj = GroupBy[ obj, #["passengerSex"]& ];
+Echo[Map[ Length, obj], "counts:"]
+=end code
+=begin head2
+References
+=end head2
+=end pod
+END
+
+is from-markdown( 'Here is data wrangling code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
+
+## References', to=>'pod6'),
+        $res6.trim,
+        'README CLI example';
+
 done-testing;

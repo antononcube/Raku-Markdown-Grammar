@@ -1,5 +1,9 @@
 use v6.d;
 
+sub to-wl-text(Str $s) {
+    $s.subst(:g, '\\', '\\\\').subst(:g, '"', '\"')
+}
+
 class Markdown::Actions::Mathematica {
 
     method TOP($/) {
@@ -30,7 +34,7 @@ class Markdown::Actions::Mathematica {
         if $res.contains('⟹') {
             $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
         }
-        make 'Notebook[{' ~ $res ~ '}]'
+        make 'NotebookPut @ Notebook[{' ~ $res ~ '}]'
     }
 
     method md-block($/) { make $/.values[0].made; }
@@ -67,14 +71,14 @@ class Markdown::Actions::Mathematica {
     method md-image-simple-link($/) {
         my $link = $<md-link><md-simple-link> ?? $<md-link><md-simple-link><md-link-url>.made !! $<md-link><md-reference-link><md-link-label>.made;
         my $code = 'Import[' ~ $link ~ ']';
-        $code = $code.Str.subst(:g, '"', '\"');
+        $code = $code.Str.&to-wl-text;
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
     }
 
     method md-image-complex-link($/) {
         my $link = $<md-link><md-simple-link> ?? $<md-link><md-simple-link><md-link-url>.made !! $<md-link><md-reference-link><md-link-label>.made;
         my $code = 'Import[' ~  $link ~ ']';
-        $code = $code.Str.subst(:g, '"', '\"');
+        $code = $code.Str.&to-wl-text;
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
     }
 
@@ -92,15 +96,15 @@ class Markdown::Actions::Mathematica {
     }
     method md-reference($/) { make $<md-link-label>.made => $<md-link-url>.made; }
 
-    method md-link-name($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
+    method md-link-name($/) { make '"' ~ $/.Str.&to-wl-text ~ '"'; }
     method md-link-url($/) { make 'URL["' ~ $/.Str ~ '"]'; }
     method md-link-label($/) { make 'Label[' ~ $/.Str ~ ']'; }
 
-    method md-word($/) { make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"'; }
-    method md-word-bold-italic($/) { make 'StyleBox["' ~ $/.Str.substr(3,*-3).subst(:g, '"', '\"') ~ '", FontWeight->"Bold", FontSlant->"Italic"]'; }
-    method md-word-bold($/) { make 'StyleBox["' ~ $/.Str.substr(2,*-2).subst(:g, '"', '\"') ~ '", FontWeight->"Bold"]'; }
-    method md-word-italic($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).subst(:g, '"', '\"') ~ '", FontSlant->"Italic"]'; }
-    method md-word-code($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).subst(:g, '"', '\"') ~ '", "Program"]'; }
+    method md-word($/) { make '"' ~ $/.Str.&to-wl-text ~ '"'; }
+    method md-word-bold-italic($/) { make 'StyleBox["' ~ $/.Str.substr(3,*-3).&to-wl-text ~ '", FontWeight->"Bold", FontSlant->"Italic"]'; }
+    method md-word-bold($/) { make 'StyleBox["' ~ $/.Str.substr(2,*-2).&to-wl-text ~ '", FontWeight->"Bold"]'; }
+    method md-word-italic($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).&to-wl-text ~ '", FontSlant->"Italic"]'; }
+    method md-word-code($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).&to-wl-text ~ '", "Program"]'; }
 
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }
@@ -174,7 +178,7 @@ class Markdown::Actions::Mathematica {
     }
 
     method md-any-line($/) {
-        make '"' ~ $/.Str.subst(:g, '"', '\"') ~ '"';
+        make '"' ~ $/.Str.&to-wl-text ~ '"';
     }
 
     method md-any-block($/) {

@@ -48,7 +48,7 @@ graph TD
 
 #### Pod6
 
-The notebook formats have syntax that is hard to evaluate the conversions visually. 
+The notebook formats have syntax that makes it hard to evaluate the conversions visually. 
 That is why I use Pod6 -- during development it is much easier to evaluate the Pod6 interpretations 
 produced by the package. 
 (I.e. no need to use another tool to open and evaluate the obtained conversion artifact.)

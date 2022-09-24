@@ -50,6 +50,8 @@ class Markdown::Actions::Mathematica {
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
+        $code = $code.subst(/ ^ \h ** 4 /, ''):g;
+        $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
     }
 

@@ -33,6 +33,8 @@ class Markdown::Actions::Pod6 {
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str;
+        $code = $code.subst(/ ^ \h ** 4 /, ''):g;
+        $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
         make '=begin code' ~ "\n" ~ $code ~ '=end code';
     }
 

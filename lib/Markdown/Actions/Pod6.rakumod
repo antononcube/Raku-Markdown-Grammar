@@ -17,7 +17,7 @@ class Markdown::Actions::Pod6 {
             }
         }
 
-        make "=begin \n" ~ $res ~ "\n=end pod";
+        make "=begin\n" ~ $res ~ "\n=end pod";
     }
 
     method md-block($/) { make $/.values[0].made; }

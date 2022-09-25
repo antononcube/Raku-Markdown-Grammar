@@ -34,7 +34,7 @@ class Markdown::Actions::Mathematica {
         if $res.contains('⟹') {
             $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
         }
-        make 'NotebookPut @ Notebook[{' ~ $res ~ '}]'
+        make 'Notebook[{' ~ $res ~ '}]'
     }
 
     method md-block($/) { make $/.values[0].made; }

@@ -107,7 +107,7 @@ role Markdown::Grammarish {
     regex md-table-block { $<header>=(<md-table-row>) <.md-table-header-sep> $<rows>=(<md-table-row>+) }
     regex md-table-field { \h* $<field>=(<md-text-element>* % \h+) \h* <!{ $<field>.Str.contains('|') }>}
     regex md-table-row { '|' \h* [ <md-table-field>* % '|' ] \h* '|' \n }
-    regex md-table-header-sep { '|' \h* '---' [ '|' | '-' | '+' | \h ]* \n }
+    regex md-table-header-sep { '|' \h* '---' [ '|' | '-' | '+' | ':' | \h ]* \n }
 
     regex md-any-line { \V+ \n }
     regex md-any-block { <md-any-line>+ }

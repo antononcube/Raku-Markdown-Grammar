@@ -34,7 +34,7 @@ class Markdown::Actions::Mathematica {
         if $res.contains('⟹') {
             $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
         }
-        make 'Notebook[{' ~ $res ~ '}]'
+        make 'NotebookPut @ Notebook[{' ~ $res ~ '}]'
     }
 
     method md-block($/) { make $/.values[0].made; }
@@ -175,6 +175,28 @@ class Markdown::Actions::Mathematica {
                 };
 
         make 'Cell[TextData[{' ~ $<content>.made ~ '}], "' ~ $itemType ~ '"]';
+    }
+
+    method md-table-block($/) {
+        my $code = '{' ~ $<rows><md-table-row>>>.made.join(', ') ~ '}';
+        $code = 'TableForm[' ~ $code ~ ', TableHeadings -> {None, ' ~ $<header><md-table-row>.made ~ '}]';
+        $code ~= ' /. {ButtonBox[n_, BaseStyle -> "Hyperlink",ButtonData -> { URL[u_], None}] :> Hyperlink[n, URL[u]]}';
+        $code = $code.&to-wl-text;
+
+        make 'Cell[BoxData["' ~ $code ~ '"], "Input"]';
+    }
+    method md-table-row($/) {
+        make $<md-table-field> ?? '{' ~ $<md-table-field>>>.made.join(', ') ~ '}' !! 'Nothing';
+    }
+    method md-table-field($/) {
+        my @res = $<field><md-text-element>>>.made;
+        my $res;
+        if @res.elems > 0 {
+            $res = 'Row[{' ~ @res.join(', ') ~ '}]';
+        } else {
+            $res = @res.join('')
+        }
+        make $res;
     }
 
     method md-any-line($/) {

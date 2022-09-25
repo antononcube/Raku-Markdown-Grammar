@@ -147,6 +147,10 @@ class Markdown::Actions::Pod6 {
         make $itemType ~ ' # ' ~ $<content>.made;
     }
 
+    method md-table-block($/) {
+        make "=para\n" ~ $/.Str;
+    }
+
     method md-any-line($/) {
         make $/.Str;
     }

@@ -23,6 +23,7 @@ role Markdown::Grammarish {
         || <md-numbered-list-block>
         || <md-quote-block>
         || <md-emphasize-block>
+        || <md-table-block>
         || <md-text-block>
         || <md-any-block>
     }
@@ -102,6 +103,12 @@ role Markdown::Grammarish {
 
     regex md-numbered-list-block { <md-numbered-list-element>+ }
     regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }
+
+    regex md-table-block { $<header>=(<md-table-row>) <.md-table-header-sep> $<rows>=(<md-table-row>+) }
+    regex md-table-field { \h* $<field>=(<md-text-element>* % \h+) \h* <!{ $<field>.Str.contains('|') }>}
+    regex md-table-row { '|' \h* [ <md-table-field>* % '|' ] \h* '|' \n }
+    regex md-table-header-sep { '|' \h* '---' [ '|' | '-' | '+' | \h ]* \n }
+
     regex md-any-line { \V+ \n }
     regex md-any-block { <md-any-line>+ }
 }

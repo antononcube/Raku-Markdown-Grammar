@@ -22,6 +22,11 @@ class Markdown::Actions::Pod6 {
 
     method md-block($/) { make $/.values[0].made; }
 
+    method md-math-block($/) {
+        my $code = $<code>.Str;
+        make '=begin code' ~ "\n" ~ $code ~ "\n" ~ '=end code';
+    }
+
     method md-code-block($/) {
         my $code = $<code>.Str;
         my $lang = '';

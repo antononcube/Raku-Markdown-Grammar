@@ -13,6 +13,7 @@ role Markdown::Grammarish {
         || <md-header2>
         || <md-header1>
         || <md-horizontal-line>
+        || <md-math-block>
         || <md-code-block>
         || <md-code-indented-block>
         || <md-reference>
@@ -26,6 +27,15 @@ role Markdown::Grammarish {
         || <md-table-block>
         || <md-text-block>
         || <md-any-block>
+    }
+
+    regex md-math-block {
+        $<header>=($mdTicks 'math') \h* \v
+        $<code>=[<!before $<header>> .]*
+        $mdTicks |
+        $<header>=('$$'|'\[') \h* \v
+        $<code>=[<!before $<header>> .]*
+        $<header>
     }
 
     regex md-code-block {

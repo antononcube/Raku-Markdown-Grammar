@@ -233,7 +233,11 @@ The most important items are placed first.
    
 - [X] DONE Parsing quote lines and quote blocks
 
-- [ ] TODO Parsing tables
+- [X] DONE Parsing tables
+
+- [ ] TODO Parsing LaTeX and/or [math blocks](https://github.com/fletcher/MultiMarkdown/wiki/MultiMarkdown-Syntax-Guide#math-support) 
+
+- [ ] TODO Parsing alternate syntax for heading 1 and 2
 
 - [ ] TODO Parsing escaping characters
 

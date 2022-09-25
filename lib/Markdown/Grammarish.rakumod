@@ -68,7 +68,7 @@ role Markdown::Grammarish {
     # The label in the second set of brackets is not case sensitive and can include letters, numbers, spaces, or punctuation.
     regex md-reference-link { '[' <md-link-name> ']' \h* '[' <md-link-label> ']' }
     regex md-reference-link-strict { ^ <md-reference-link> $ }
-    regex md-reference { '[' <md-link-label> ']:' \h* <md-link-url>}
+    regex md-reference { \h ** ^4 '[' <md-link-label> ']:' \h* <md-link-url>}
 
     regex md-link-name { <-[\[\]\v]>* }
     regex md-link-url { <-[()\v]>* }

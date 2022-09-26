@@ -89,7 +89,7 @@ role Markdown::Grammarish {
     regex md-word-bold { ('**' | '__') <md-word> $0 }
     regex md-word-italic { ('*' | '_') <md-word> $0 }
     regex md-word-code { $<delim>=('`' | '```') <md-word> $<delim> }
-    regex md-word-math { $<delim>=('$' | '````') <md-word> $<delim> }
+    regex md-word-math { $<delim>=('$' | '````') <-[$`]>* $<delim> }
     regex md-empty-line { \h* \n }
 
     regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-math> || <md-word-code> || <md-word> }

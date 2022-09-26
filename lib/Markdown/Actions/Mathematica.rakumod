@@ -111,7 +111,14 @@ class Markdown::Actions::Mathematica {
     method md-word-bold-italic($/) { make 'StyleBox["' ~ $/.Str.substr(3,*-3).&to-wl-text ~ '", FontWeight->"Bold", FontSlant->"Italic"]'; }
     method md-word-bold($/) { make 'StyleBox["' ~ $/.Str.substr(2,*-2).&to-wl-text ~ '", FontWeight->"Bold"]'; }
     method md-word-italic($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).&to-wl-text ~ '", FontSlant->"Italic"]'; }
-    method md-word-code($/) { make 'StyleBox["' ~ $/.Str.substr(1,*-1).&to-wl-text ~ '", "Program"]'; }
+    method md-word-code($/) {
+        my $off = $<delim>.Str.chars;
+        make 'StyleBox["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", "Program"]';
+    }
+    method md-word-math($/) {
+        my $off = $<delim>.Str.chars;
+        make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
+    }
 
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }

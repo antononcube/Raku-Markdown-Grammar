@@ -78,7 +78,12 @@ class Markdown::Actions::Pod6 {
     method md-word-italic($/) { make 'I<' ~ $/.Str.substr(1, *-1) ~ '>'; }
     # Markdown does not allow underlined text
     # method md-word-underlined($/) { make 'U<' ~ $/.Str ~ '>'; }
-    method md-word-code($/) { make 'C<' ~ $/.Str.substr(1, *-1) ~ '>'; }
+    method md-word-code($/) {
+        my $off = $<delim>.Str.chars;
+        make 'C<' ~ $/.Str.substr($off, *-$off) ~ '>'; }
+    method md-math-code($/) {
+        my $off = $<delim>.Str.chars;
+        make 'C<' ~ $/.Str.substr($off, *-$off) ~ '>'; }
 
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make ''; }

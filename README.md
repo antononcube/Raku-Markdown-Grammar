@@ -280,7 +280,7 @@ The most important items are placed first.
 
 ## Acknowledgments
 
-Many thanks to Jakub (Kuba) Podkalicki for programming the package M2MD, and helping me to understand
+Many thanks to Jakub (Kuba) Podkalicki for programming the package "M2MD", and helping me to understand
 a fair amount of Mathematica's 
 [low-Level notebook programming](https://reference.wolfram.com/language/guide/LowLevelNotebookProgramming.html).
 

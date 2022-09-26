@@ -239,6 +239,9 @@ is md-interpret($mtext10).subst(/ \s /, ''):g,
 #-----------------------------------------------------------
 ## 11
 #-----------------------------------------------------------
+
+# Note that lines with reference links might have some some leading spaces.
+# (As in StackExchange Markdown.)
 my $mtext11 = q:to/END/;
 [enter image description here][1]
 

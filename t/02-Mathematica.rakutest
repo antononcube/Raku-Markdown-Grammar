@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 13;
+plan 14;
 
 #-----------------------------------------------------------
 ## 1
@@ -35,8 +35,7 @@ END
 is md-interpret($mtext2),
         'Notebook[{Cell["my $obj = @dfTitanic ;
 say \"Titanic dimensions:\", dimensions(@dfTitanic);
-say to-pretty-table($obj.pick(7));
-", "ExternalLanguage", CellEvaluationLanguage->"Perl6"]}]',
+say to-pretty-table($obj.pick(7));", "ExternalLanguage", CellEvaluationLanguage->"Perl6"]}]',
         'Perl6 cell';
 
 #-----------------------------------------------------------
@@ -61,8 +60,7 @@ x + y == Sqrt[Integrate[f[x], {x,0,30}]]
 END
 
 is md-interpret($mtext3),
-        'Notebook[{Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
-"], "Input"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]',
+        'Notebook[{Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]"], "Input"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"]}]',
         'WL cell and link';
 
 #-----------------------------------------------------------
@@ -114,8 +112,7 @@ No more formulas...
 END
 
 is md-interpret($mtext4),
-        'Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "formula:"}], "Text"], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]
-"], "Input"], Cell[TextData[{"Hopefully", " ", "you", " ", "got", " ", "it."}], "Text"], Cell[TextData[{"No", " ", "more", " ", "formulas..."}], "Text"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA2]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Увод в обработката на данни с Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2022/05/24/увод-в-обработката-на-данни-с-raku/"], None}], " ", ",", " ", "(2022),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA3]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Raku Text::CodeProcessing\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/07/13/raku-textcodeprocessing/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[HW1]", " ", "Hadley", " ", "Wickham,", " ", ButtonBox["\"The Split-Apply-Combine Strategy for Data Analysis\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/article/view/v040i01"], None}], " ", ",", " ", "(2011),", " ", ButtonBox["Journal of Statistical Software", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/"], None}], " ", "."}], "Text"]}]',
+        'Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "formula:"}], "Text"], Cell[ BoxData["x + y == Sqrt[Integrate[f[x], {x,0,30}]]"], "Input"], Cell[TextData[{"Hopefully", " ", "you", " ", "got", " ", "it."}], "Text"], Cell[TextData[{"No", " ", "more", " ", "formulas..."}], "Text"], Cell[TextData["\[HorizontalLine]"], "Text"], Cell[TextData[{"References"}], "Section"], Cell[TextData[{"Articles"}], "Subsection"], Cell[TextData[{"[AA1]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Introduction to data wrangling with Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA2]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Увод в обработката на данни с Raku\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2022/05/24/увод-в-обработката-на-данни-с-raku/"], None}], " ", ",", " ", "(2022),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[AA3]", " ", "Anton", " ", "Antonov,", " ", ButtonBox["\"Raku Text::CodeProcessing\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com/2021/07/13/raku-textcodeprocessing/"], None}], " ", ",", " ", "(2021),", " ", ButtonBox["RakuForPrediction at WordPress", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://rakuforprediction.wordpress.com"], None}], " ", "."}], "Text"], Cell[TextData[{"[HW1]", " ", "Hadley", " ", "Wickham,", " ", ButtonBox["\"The Split-Apply-Combine Strategy for Data Analysis\"", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/article/view/v040i01"], None}], " ", ",", " ", "(2011),", " ", ButtonBox["Journal of Statistical Software", BaseStyle -> "Hyperlink", ButtonData -> { URL["https://www.jstatsoft.org/"], None}], " ", "."}], "Text"]}]',
         'Formula and links';
 
 #-----------------------------------------------------------
@@ -145,10 +142,8 @@ END
 is md-interpret($mtext5),
         'Notebook[{Cell[TextData[{"Execution", " ", "steps"}], "Subsection"], Cell[TextData[{"Copy", " ", "the", " ", "Titanic", " ", "data", " ", "into", " ", "a", " ", "\"pipeline", " ", "object\"", " ", "and", " ", "show", " ", "its", " ", "dimensions", " ", "and", " ", "a", " ", "sample", " ", "of", " ", "it:"}], "Text"], Cell["my $obj = @dfTitanic ;
 say \"Titanic dimensions:\", dimensions(@dfTitanic);
-say to-pretty-table($obj.pick(7));
-", "ExternalLanguage", CellEvaluationLanguage->"Perl6"], Cell[TextData[{"Filter", " ", "the", " ", "data", " ", "and", " ", "show", " ", "the", " ", "number", " ", "of", " ", "rows", " ", "in", " ", "the", " ", "result", " ", "set:"}], "Text"], Cell["$obj = $obj.grep({ $_{\"passengerSex\"} eq \"male\" and $_{\"passengerSurvival\"} eq \"died\" or $_{\"passengerSurvival\"} eq \"survived\" }).Array ;
-say $obj.elems;
-", "ExternalLanguage", CellEvaluationLanguage->"Perl6"], Cell[TextData[{"Cross", " ", "tabulate", " ", "and", " ", "show", " ", "the", " ", "result:"}], "Text"]}]',
+say to-pretty-table($obj.pick(7));", "ExternalLanguage", CellEvaluationLanguage->"Perl6"], Cell[TextData[{"Filter", " ", "the", " ", "data", " ", "and", " ", "show", " ", "the", " ", "number", " ", "of", " ", "rows", " ", "in", " ", "the", " ", "result", " ", "set:"}], "Text"], Cell["$obj = $obj.grep({ $_{\"passengerSex\"} eq \"male\" and $_{\"passengerSurvival\"} eq \"died\" or $_{\"passengerSurvival\"} eq \"survived\" }).Array ;
+say $obj.elems;", "ExternalLanguage", CellEvaluationLanguage->"Perl6"], Cell[TextData[{"Cross", " ", "tabulate", " ", "and", " ", "show", " ", "the", " ", "result:"}], "Text"]}]',
         'Code cells';
 
 
@@ -250,7 +245,7 @@ my $mtext11 = q:to/END/;
 [![enter image description here][2]][2]
 
 [1]: https://i.stack.imgur.com/cUxHw.png
-[2]: https://i.stack.imgur.com/XWrJB.png
+  [2]: https://i.stack.imgur.com/XWrJB.png
 END
 
 is md-interpret($mtext11),
@@ -290,5 +285,28 @@ END
 is md-interpret($mtext13),
         'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points."}], "Text", FontWeight->"Bold"], Cell[TextData[{"Pick", " ", "the", " ", "*points*", " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "Text", FontSlant->"Italic"], Cell[TextData[{"And", " ", "more:"}], "Text"], Cell[TextData[{"Experiment!!"}], "Text", FontWeight->"Bold", FontSlant->"Italic"]}]',
         'Emphasize block';
+
+#-----------------------------------------------------------
+## 14
+#-----------------------------------------------------------
+
+my $mtext14 = q:to/END/;
+```math
+\mathbb{N} = \{ a \in \mathbb{Z} : a > 0 \}
+```
+
+Another one:
+
+$$
+P \left( A=2 \, \middle| \, \dfrac{A^2}{B}>4 \right)
+$$
+END
+
+my $res14 =
+Q (Notebook[{Cell[ BoxData["ToExpression[\"\\\\mathbb{N} = \\\\{ a \\\\in \\\\mathbb{Z} : a > 0 \\\\}\", TeXForm]"], "Input"], Cell[TextData[{"Another", " ", "one:"}], "Text"], Cell[ BoxData["ToExpression[\"P \\\\left( A=2 \\\\, \\\\middle| \\\\, \\\\dfrac{A^2}{B}>4 \\\\right)\", TeXForm]"], "Input"]}]);
+
+is md-interpret($mtext14),
+        $res14,
+        'Math blocks';
 
 done-testing;

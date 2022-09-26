@@ -235,7 +235,9 @@ The most important items are placed first.
 
 - [X] DONE Parsing tables
 
-- [ ] TODO Parsing LaTeX and/or [math blocks](https://github.com/fletcher/MultiMarkdown/wiki/MultiMarkdown-Syntax-Guide#math-support) 
+- [X] DONE Parsing LaTeX and/or [math blocks](https://github.com/fletcher/MultiMarkdown/wiki/MultiMarkdown-Syntax-Guide#math-support) 
+
+- [ ] TODO Parsing inlined LaTeX code.
 
 - [ ] TODO Parsing alternate syntax for heading 1 and 2
 

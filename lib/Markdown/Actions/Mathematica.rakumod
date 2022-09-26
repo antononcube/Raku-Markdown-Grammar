@@ -40,7 +40,7 @@ class Markdown::Actions::Mathematica {
     method md-block($/) { make $/.values[0].made; }
 
     method md-math-block($/) {
-        my $code = $<code>.Str;
+        my $code = $<code>.Str.trim;
         $code = 'ToExpression["' ~ $code ~ '", TeXForm]';
         $code = $code.&to-wl-text.subst(:g, '\\\\"', <\\\\\">).subst(:g, '\\\\', <\\\\\\\\>);
         make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';

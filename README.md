@@ -100,8 +100,6 @@ graph TD
 
 ## Related work
 
-## Related work
-
 Here is a table of converters from- or to Markdown:
 
 | From \ To   | HTML                                                                                                                                             | Jupyter                                           | Markdown                                                                     | Mathematica                                                                                                                       | Pod6                                                                     |

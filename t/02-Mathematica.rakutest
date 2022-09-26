@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 14;
+plan 16;
 
 #-----------------------------------------------------------
 ## 1
@@ -311,5 +311,32 @@ Q (Notebook[{Cell[ BoxData["ToExpression[\"\\\\mathbb{N} = \\\\{ a \\\\in \\\\ma
 is md-interpret($mtext14),
         $res14,
         'Math blocks';
+
+
+#-----------------------------------------------------------
+## 15
+#-----------------------------------------------------------
+
+my $mtext15 = q:to/END/;
+Math expression ````\frac{1+8}{x^3} = x^y + \sqrt{x}```` to consider.
+END
+
+
+my $res15 =
+        Q (Notebook[{Cell[TextData[{"Math", " ", "expression", " ", Cell[BoxData[ToBoxes[ToExpression["\\frac{1+8}{x^3} = x^y + \\sqrt{x}", TeXForm, Defer], TraditionalForm]]], " ", "to", " ", "consider."}], "Text"]}]);
+
+is md-interpret($mtext15),
+        $res15,
+        'Math inlined expression';
+
+#-----------------------------------------------------------
+## 16
+#-----------------------------------------------------------
+
+my $mtext16 = q:to/END/;
+Math expression  $\frac{1+8}{x^3} = x^y + \sqrt{x}$ to consider.
+END
+
+is md-interpret($mtext16), md-interpret($mtext15), 'Math inlined expression, alt spec';
 
 done-testing;

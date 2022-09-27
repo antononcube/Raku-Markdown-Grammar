@@ -90,6 +90,7 @@ role Markdown::Grammarish {
     regex md-word-italic { ('*' | '_') <md-word> $0 }
     regex md-word-code { $<delim>=('`' | '```') <md-word> $<delim> }
     regex md-word-math { $<delim>=('$' | '````') <-[$`\v]>* $<delim> }
+    regex md-no-word { \h+  }
     regex md-empty-line { \h* \n }
 
     regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-math> || <md-word-code> || <md-word> }
@@ -116,9 +117,10 @@ role Markdown::Grammarish {
     regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }
 
     regex md-table-block { $<header>=(<md-table-row>) <.md-table-header-sep> $<rows>=(<md-table-row>+) }
-    regex md-table-field { \h* $<field>=(<md-text-element>* % \h+) \h* <!{ $<field>.Str.contains('|') }>}
-    regex md-table-row { '|' \h* [ <md-table-field>* % '|' ] \h* '|' \n }
+    regex md-table-field { \h* $<field>=(<md-text-element>* % <md-table-field-sep>) \h* <!{ $<field>.Str.contains('|') }>}
+    regex md-table-row { '|' \h* [ <md-table-field>* % '|' ] \h* '|' \h* \n }
     regex md-table-header-sep { '|' \h* '---' [ '|' | '-' | '+' | ':' | \h ]* \n }
+    regex md-table-field-sep { \h+ | \h* [',' | ';'] \h* }
 
     regex md-any-line { \V+ \n }
     regex md-any-block { <md-any-line>+ }

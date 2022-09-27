@@ -119,9 +119,10 @@ class Markdown::Actions::Mathematica {
         my $off = $<delim>.Str.chars;
         make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
     }
+    method md-no-word($/) { make '""'; }
+    method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }
 
     method md-text-element($/) { make $/.values[0].made; }
-    method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }
     method md-text-line-tail($/) {
         my @res;
         with $<rest> {
@@ -200,18 +201,26 @@ class Markdown::Actions::Mathematica {
         make 'Cell[BoxData["' ~ $code ~ '"], "Input"]';
     }
     method md-table-row($/) {
-        make $<md-table-field> ?? '{' ~ $<md-table-field>>>.made.join(', ') ~ '}' !! 'Nothing';
+        make $<md-table-field> ?? '{' ~ $<md-table-field>>>.made.join(', ') ~ '}' !! '""';
     }
     method md-table-field($/) {
         my @res = $<field><md-text-element>>>.made;
+        my @sep = $<field><md-table-field-sep>>>.made;
+        @sep.append('');
         my $res;
-        if @res.elems > 0 {
-            $res = 'Row[{' ~ @res.join(', ') ~ '}]';
+        if @res {
+            if  @res.elems == @sep.elems {
+                @sep = @sep.map({ ', "' ~ $_ ~ '"'});
+                $res = 'Row[{' ~ (@res Z~ @sep).join(', ') ~ '}]';
+            } else {
+                $res = 'Row[{' ~ @res.join(', ",", ') ~ '}]';
+            }
         } else {
-            $res = @res.join('')
+            $res = '""';
         }
         make $res;
     }
+    method md-table-field-sep($/) { make $/.Str;}
 
     method md-any-line($/) {
         make '"' ~ $/.Str.&to-wl-text ~ '"';

@@ -73,7 +73,7 @@ class Markdown::Actions::Mathematica {
     method md-header5($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsubsection"]'; }
     method md-header6($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsubsubsection"]'; }
 
-    method md-horizontal-line($/) { make 'Cell[TextData["\[HorizontalLine]"], "Text"]'; }
+    method md-horizontal-line($/) { make 'Cell["\t", ShowCellBracket -> Automatic, TabFilling -> "\[LongDash]\[NegativeThickSpace]", TabSpacings -> Scaled[1], FontColor -> GrayLevel[.4]]'; }
 
     method md-image-simple-link($/) {
         my $link = $<md-link><md-simple-link> ?? $<md-link><md-simple-link><md-link-url>.made !! $<md-link><md-reference-link><md-link-label>.made;

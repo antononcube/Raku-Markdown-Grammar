@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 16;
+plan 17;
 
 #-----------------------------------------------------------
 ## 1
@@ -338,5 +338,53 @@ Math expression  $\frac{1+8}{x^3} = x^y + \sqrt{x}$ to consider.
 END
 
 is md-interpret($mtext16), md-interpret($mtext15), 'Math inlined expression, alt spec';
+
+
+#-----------------------------------------------------------
+## 17
+#-----------------------------------------------------------
+
+## Note that this test will not pass if there is no empty last line.
+my $mtext17 = q:to/END/;
+Estimated Ellipses:
+
+    components =
+      ComponentMeasurements[
+       watershedComponents, {"Centroid", "SemiAxes", "Orientation"}];
+
+    Show[stretched, Graphics[
+      {
+       Red,
+       components /.
+        {
+         (n_ -> {centroid_, semiAxes_, orientation_}) :>
+          {
+           Rotate[Circle[centroid, semiAxes], orientation, centroid],
+           Text[n, centroid]
+           }
+         }
+       }]]
+
+END
+
+is md-interpret($mtext17),
+        'Notebook[{Cell[TextData[{"Estimated", " ", "Ellipses:"}], "Text"], Cell[ BoxData["components =
+  ComponentMeasurements[
+   watershedComponents, {\"Centroid\", \"SemiAxes\", \"Orientation\"}];
+
+Show[stretched, Graphics[
+  {
+   Red,
+   components /.
+    {
+     (n_ -> {centroid_, semiAxes_, orientation_}) :>
+      {
+       Rotate[Circle[centroid, semiAxes], orientation, centroid],
+       Text[n, centroid]
+       }
+     }
+   }]]
+"], "Input"]}]',
+        'Code block with indentation and empty line in between';
 
 done-testing;

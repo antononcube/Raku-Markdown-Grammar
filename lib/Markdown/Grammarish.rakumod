@@ -49,7 +49,7 @@ role Markdown::Grammarish {
 
     regex md-code-indented-block {
         [\h* \n]
-        $<code>=([[\h ** 4] \V+ \n]+)
+        $<code>=(\h ** 4 \V* \n [\h* \n | \h ** 4 \V* \n]*)
         [\h* \n]
     }
 

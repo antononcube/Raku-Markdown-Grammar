@@ -1,8 +1,40 @@
 use v6.d;
 
+#============================================================
 sub to-wl-text(Str $s) {
     $s.subst(:g, '\\', '\\\\').subst(:g, '"', '\"')
 }
+
+#============================================================
+# DockedCells
+#============================================================
+
+my $dockedCellsExpression = q:to/END/;
+DockedCells -> {
+   ToBoxes@Button[
+     "Convert RakuLaTeX",
+     Module[{cells, inlineCells, replaceRakuLaTeX},
+      cells = Cells[EvaluationNotebook[], CellStyle -> {"RakuLaTeX"}];
+      inlineCells = Cells[#, CellStyle -> {"RakuLaTeX"}] & /@ Cells[] // Flatten;
+      replaceRakuLaTeX[cell_CellObject, targetStyle_String : "DisplayFormula"] := Module[
+        {latex},
+        latex = First@NotebookRead[cell];
+        NotebookWrite[cell,
+         Cell[BoxData@ToBoxes[ToExpression[latex, TeXForm, Defer], TraditionalForm], targetStyle]]
+        ];
+
+      replaceRakuLaTeX /@ cells;
+      replaceRakuLaTeX[#, "InlineFormula"] & /@ inlineCells;
+      CurrentValue[EvaluationNotebook[], DockedCells] = Inherited
+      ],
+     Method -> "Queued"]
+   }
+END
+
+
+#============================================================
+# The actions class
+#============================================================
 
 class Markdown::Actions::Mathematica {
 
@@ -34,7 +66,7 @@ class Markdown::Actions::Mathematica {
         if $res.contains('⟹') {
             $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
         }
-        make 'Notebook[{' ~ $res ~ '}]'
+        make 'Notebook[{' ~ $res ~ '}]';
     }
 
     method md-block($/) { make $/.values[0].made; }
@@ -49,7 +81,7 @@ class Markdown::Actions::Mathematica {
     method md-code-block($/) {
         my $code = $<code>.Str.trim.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
         with $<header><lang> {
-            if $<header><lang>.lc ∈ <wl mathematica> {
+            if $<header><lang>.lc ∈ ('wl', 'mathematica', 'wolfram language') {
                 make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
             } else {
                 make 'Cell["'  ~ $code ~ '", "ExternalLanguage", CellEvaluationLanguage->"' ~ $<header><lang>.Str.tc ~ '"]'

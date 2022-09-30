@@ -176,7 +176,10 @@ class Markdown::Actions::Mathematica {
         if $!addDockedCells {
             make 'Cell["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", "' ~ $!rakuLaTeXCellName ~ '"]';
         } else {
-            make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
+            # This does not work, that is why there is code for a "DockedCell solution."
+            # Hence we it is replaced with just text cell.
+            # make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
+            make 'StyleBox["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", FontSlant->"Italic", Background->RGBColor[1,1,0.85]]';
         }
     }
     method md-no-word($/) { make '""'; }

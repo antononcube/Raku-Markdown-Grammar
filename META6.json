@@ -1,7 +1,7 @@
 {
   "name": "Markdown::Grammar",
   "description": "Grammar for parsing Markdown documents and converting them to notebook-, org-, or Pod6 files.",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"

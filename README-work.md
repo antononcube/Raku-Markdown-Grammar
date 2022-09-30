@@ -11,7 +11,8 @@ Markdown parser suitable for making converters of Markdown files into files of d
 
 See the video 
 ["Markdown to Mathematica converter (CLI and StackExchange examples)"](https://www.youtube.com/watch?v=39ekokgnoqE), [AAv1],
-for a (quick, 7.5 min) demo.
+for a (quick, 7.5 min) demo. 
+The video [AAv2] shows the conversion of a Jupyter notebook into a Mathematica notebook via Markdown representation.
 
 ### Motivation
 
@@ -136,10 +137,11 @@ The package provides a Command Line Interface (CLI) script, `from-markdown`. Her
 ```shell
 > from-markdown --help
 # Usage:
-#  from-markdown [-t|--to=<Str>] [-o|--output=<Str>] <file> -- Converts Markdown files into Mathematica notebooks.
+#  from-markdown [-t|--to=<Str>] [-d|--docked-cells] [-o|--output=<Str>] <text> -- Converts Markdown files into Mathematica notebooks or Pod6 files.
 #  
-#    <file>               Input file.
+#    <text>               Input file or Markdown text.
 #    -t|--to=<Str>        Format to convert to. (One of 'mathematica' or 'pod6'.) [default: 'mathematica']
+#    -d|--docked-cells    Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
 #    -o|--output=<Str>    Output file; if an empty string then the result is printed to stdout. [default: '']
 ```
 
@@ -236,6 +238,8 @@ The most important items are placed first.
 
 - [X] DONE Parsing inlined LaTeX code.
 
+- [X] DONE Parsing LaTeX code with a docked cell button in the generated Mathematica notebook.
+
 - [ ] TODO Parsing alternate syntax for heading 1 and 2
 
 - [ ] TODO Parsing escaping characters
@@ -298,5 +302,10 @@ a fair amount of Mathematica's
 
 [AAv1] Anton Antonov,
 ["Markdown to Mathematica converter (CLI and StackExchange examples)"](https://www.youtube.com/watch?v=39ekokgnoqE),
+(2022),
+[Anton A. Antonov's channel at YouTube](https://www.youtube.com/channel/UC5qMPIsJeztfARXWdIw3Xzw).
+
+[AAv2] Anton Antonov,
+["Markdown to Mathematica converter (Jupyter notebook example)"](https://www.youtube.com/watch?v=Htmiu3ZI05w),
 (2022),
 [Anton A. Antonov's channel at YouTube](https://www.youtube.com/channel/UC5qMPIsJeztfARXWdIw3Xzw).

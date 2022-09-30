@@ -323,7 +323,7 @@ END
 
 
 my $res15 =
-        Q (Notebook[{Cell[TextData[{"Math", " ", "expression", " ", Cell[BoxData[ToBoxes[ToExpression["\\frac{1+8}{x^3} = x^y + \\sqrt{x}", TeXForm, Defer], TraditionalForm]]], " ", "to", " ", "consider."}], "Text"]}]);
+        Q (Notebook[{Cell[TextData[{"Math", " ", "expression", " ", StyleBox["\\frac{1+8}{x^3} = x^y + \\sqrt{x}", FontSlant->"Italic", Background->RGBColor[1,1,0.85]], " ", "to", " ", "consider."}], "Text"]}]);
 
 is md-interpret($mtext15),
         $res15,

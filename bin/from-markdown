@@ -6,10 +6,10 @@ use Markdown::Grammar;
 #-----------------------------------------------------------
 
 #| Converts Markdown files into Mathematica notebooks or Pod6 files.
-sub MAIN(Str $text,                    #= Input file or Markdown text.
-         Str :t(:$to) = 'mathematica', #= Format to convert to. (One of 'mathematica' or 'pod6'.)
-         Bool :d(:$docked-cells),      #= Should formula conversion button be added as a docked cell or not? (Mathematica only.)
-         Str :o(:$output) = '',        #= Output file; if an empty string then the result is printed to stdout.
+sub MAIN(Str $text,                       #= Input file or Markdown text.
+         Str :t(:$to) = 'mathematica',    #= Format to convert to. (One of 'mathematica' or 'pod6'.)
+         Bool :d(:$docked-cells) = False, #= Should formula conversion button be added as a docked cell or not? (Mathematica only.)
+         Str :o(:$output) = '',           #= Output file; if an empty string then the result is printed to stdout.
          ) {
 
     my $res = from-markdown($text, :$to, :$docked-cells);

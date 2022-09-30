@@ -9,12 +9,12 @@ sub to-wl-text(Str $s) {
 # DockedCells
 #============================================================
 
-my $dockedCellsExpression = q:to/END/;
+my Str $dockedCellsExpression = q:to/END/;
 DockedCells->{
   ButtonBox[
   "\"Convert RakuLaTeX\"", ButtonFunction :>
-   Module[{$CellContext`cells, $CellContext`inlineCells, \
-$CellContext`replaceRakuLaTeX}, $CellContext`cells = Cells[
+   Module[{$CellContext`cells, $CellContext`inlineCells, $CellContext`replaceRakuLaTeX},
+      $CellContext`cells = Cells[
         EvaluationNotebook[],
         CellStyle -> {"RakuLaTeX"}]; $CellContext`inlineCells = Flatten[
         Map[Cells[#, CellStyle -> {"RakuLaTeX"}]& ,
@@ -39,6 +39,10 @@ $CellContext`replaceRakuLaTeX}, $CellContext`cells = Cells[
    Appearance -> Automatic, Evaluator -> Automatic]}
 END
 
+sub docked-cells-wl-code( Str $button-name = 'Convert RakuLaTeX', Str $cell-name = 'RakuLaTeX') {
+    return $dockedCellsExpression.subst(:g, '"\"Convert RakuLaTeX\""', '"\"' ~ $button-name ~ '\""').subst(:g, '"RakuLaTeX"', '"' ~ $cell-name ~ '"');
+}
+
 #============================================================
 # The actions class
 #============================================================
@@ -46,6 +50,8 @@ END
 class Markdown::Actions::Mathematica {
 
     has Bool $.addDockedCells = False;
+    has Str $.fromLaTeXButtonName = 'Convert RakuLaTeX';
+    has Str $.rakuLaTeXCellName = 'RakuLaTeX';
 
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
@@ -75,8 +81,8 @@ class Markdown::Actions::Mathematica {
         if $res.contains('⟹') {
             $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
         }
-        if $res.contains('RakuLaTeX') && $!addDockedCells {
-            make 'Notebook[{' ~ $res ~ '}, ' ~ $dockedCellsExpression ~ ']';
+        if $res.contains($!rakuLaTeXCellName) && $!addDockedCells {
+            make 'Notebook[{' ~ $res ~ '}, ' ~ docked-cells-wl-code($!fromLaTeXButtonName, $!rakuLaTeXCellName) ~ ']';
         } else {
             make 'Notebook[{' ~ $res ~ '}]';
         }
@@ -88,7 +94,7 @@ class Markdown::Actions::Mathematica {
         my $code = $<code>.Str.trim;
         if $!addDockedCells {
             $code = $code.&to-wl-text;
-            make 'Cell["' ~ $code ~ '", "RakuLaTeX"]';
+            make 'Cell["' ~ $code ~ '", "' ~ $!rakuLaTeXCellName ~ '"]';
         } else {
             $code = 'ToExpression["' ~ $code ~ '", TeXForm]';
             $code = $code.&to-wl-text.subst(:g, '\\\\"', <\\\\\">).subst(:g, '\\\\', <\\\\\\\\>);
@@ -168,7 +174,7 @@ class Markdown::Actions::Mathematica {
     method md-word-math($/) {
         my $off = $<delim>.Str.chars;
         if $!addDockedCells {
-            make 'Cell["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", "RakuLaTeX"]';
+            make 'Cell["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", "' ~ $!rakuLaTeXCellName ~ '"]';
         } else {
             make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
         }

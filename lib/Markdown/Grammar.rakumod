@@ -18,8 +18,8 @@ our sub md-parse(Str:D $command, Str:D :$rule = 'TOP') is export {
 }
 
 our sub md-interpret(Str:D $command,
-                       Str:D:$rule = 'TOP',
-                       :$actions = Markdown::Actions::Mathematica.new) is export {
+                     Str:D:$rule = 'TOP',
+                     :$actions = Markdown::Actions::Mathematica.new) is export {
     return Markdown::Grammar.parse($command, :$rule, :$actions).made;
 }
 
@@ -50,10 +50,14 @@ multi from-markdown(Str:D $text,
                     Bool :$docked-cells = False --> Str) {
 
     my $res;
-    my $ending = $text.substr(*-1,*) eq "\n" ?? '' !! "\n";
+    my $ending = $text.substr(*- 1, *) eq "\n" ?? '' !! "\n";
     given $to.lc {
         when  $_ ∈ <mathematica wl> {
-            $res = md-interpret($text ~ $ending, actions => Markdown::Actions::Mathematica.new(addDockedCells => $docked-cells));
+            $res = md-interpret($text ~ $ending,
+                    actions => Markdown::Actions::Mathematica.new(
+                            addDockedCells => $docked-cells,
+                            fromLaTeXButtonName => 'Convert found formulas',
+                            rakuLaTeXCellName => 'RakuFoundLaTeX'));
         }
         when  $_ ∈ <pod pod6> {
             $res = md-interpret($text ~ $ending, actions => Markdown::Actions::Pod6.new);

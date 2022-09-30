@@ -10,33 +10,42 @@ sub to-wl-text(Str $s) {
 #============================================================
 
 my $dockedCellsExpression = q:to/END/;
-DockedCells -> {
-   ToBoxes@Button[
-     "Convert RakuLaTeX",
-     Module[{cells, inlineCells, replaceRakuLaTeX},
-      cells = Cells[EvaluationNotebook[], CellStyle -> {"RakuLaTeX"}];
-      inlineCells = Cells[#, CellStyle -> {"RakuLaTeX"}] & /@ Cells[] // Flatten;
-      replaceRakuLaTeX[cell_CellObject, targetStyle_String : "DisplayFormula"] := Module[
-        {latex},
-        latex = First@NotebookRead[cell];
-        NotebookWrite[cell,
-         Cell[BoxData@ToBoxes[ToExpression[latex, TeXForm, Defer], TraditionalForm], targetStyle]]
-        ];
-
-      replaceRakuLaTeX /@ cells;
-      replaceRakuLaTeX[#, "InlineFormula"] & /@ inlineCells;
-      CurrentValue[EvaluationNotebook[], DockedCells] = Inherited
-      ],
-     Method -> "Queued"]
-   }
+DockedCells->{
+  ButtonBox[
+  "\"Convert RakuLaTeX\"", ButtonFunction :>
+   Module[{$CellContext`cells, $CellContext`inlineCells, \
+$CellContext`replaceRakuLaTeX}, $CellContext`cells = Cells[
+        EvaluationNotebook[],
+        CellStyle -> {"RakuLaTeX"}]; $CellContext`inlineCells = Flatten[
+        Map[Cells[#, CellStyle -> {"RakuLaTeX"}]& ,
+         Cells[]]]; $CellContext`replaceRakuLaTeX[
+        Pattern[$CellContext`cell,
+         Blank[CellObject]],
+        Optional[
+         Pattern[$CellContext`targetStyle,
+          Blank[String]], "DisplayFormula"]] :=
+      Module[{$CellContext`latex}, $CellContext`latex = First[
+           NotebookRead[$CellContext`cell]];
+        NotebookWrite[$CellContext`cell,
+          Cell[
+           BoxData[
+            ToBoxes[
+             ToExpression[$CellContext`latex, TeXForm, Defer],
+             TraditionalForm]], $CellContext`targetStyle]]];
+     Map[$CellContext`replaceRakuLaTeX, $CellContext`cells];
+     Map[$CellContext`replaceRakuLaTeX[#,
+        "InlineFormula"]& , $CellContext`inlineCells]; CurrentValue[
+        EvaluationNotebook[], DockedCells] = Inherited], Method -> "Queued",
+   Appearance -> Automatic, Evaluator -> Automatic]}
 END
-
 
 #============================================================
 # The actions class
 #============================================================
 
 class Markdown::Actions::Mathematica {
+
+    has Bool $.addDockedCells = False;
 
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
@@ -66,16 +75,25 @@ class Markdown::Actions::Mathematica {
         if $res.contains('⟹') {
             $res = $res.subst('⟹', '\[DoubleLongRightArrow]'):g
         }
-        make 'Notebook[{' ~ $res ~ '}]';
+        if $res.contains('RakuLaTeX') && $!addDockedCells {
+            make 'Notebook[{' ~ $res ~ '}, ' ~ $dockedCellsExpression ~ ']';
+        } else {
+            make 'Notebook[{' ~ $res ~ '}]';
+        }
     }
 
     method md-block($/) { make $/.values[0].made; }
 
     method md-math-block($/) {
         my $code = $<code>.Str.trim;
-        $code = 'ToExpression["' ~ $code ~ '", TeXForm]';
-        $code = $code.&to-wl-text.subst(:g, '\\\\"', <\\\\\">).subst(:g, '\\\\', <\\\\\\\\>);
-        make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+        if $!addDockedCells {
+            $code = $code.&to-wl-text;
+            make 'Cell["' ~ $code ~ '", "RakuLaTeX"]';
+        } else {
+            $code = 'ToExpression["' ~ $code ~ '", TeXForm]';
+            $code = $code.&to-wl-text.subst(:g, '\\\\"', <\\\\\">).subst(:g, '\\\\', <\\\\\\\\>);
+            make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+        }
     }
 
     method md-code-block($/) {
@@ -149,7 +167,11 @@ class Markdown::Actions::Mathematica {
     }
     method md-word-math($/) {
         my $off = $<delim>.Str.chars;
-        make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
+        if $!addDockedCells {
+            make 'Cell["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", "RakuLaTeX"]';
+        } else {
+            make 'Cell[BoxData[ToBoxes[ToExpression["' ~ $/.Str.substr($off,*-$off).&to-wl-text ~ '", TeXForm, Defer], TraditionalForm]]]';
+        }
     }
     method md-no-word($/) { make '""'; }
     method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }

@@ -40,7 +40,7 @@ role Markdown::Grammarish {
 
     regex md-code-block {
         $<header>=(
-        $mdTicks '{'? \h* $<lang>=(\w*)
+        $mdTicks '{'? \h* $<lang>=(\w* | 'Wolfram Language')
         [ \h+ $<name>=(<alpha>+) ]?
         [ \h* ',' \h* $<params>=(<md-list-of-params>) ]? \h* '}'? \h* \v )
         $<code>=[<!before $mdTicks> .]*

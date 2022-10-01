@@ -6,13 +6,22 @@ use Markdown::Grammar;
 #-----------------------------------------------------------
 
 #| Converts Markdown files into Mathematica notebooks or Pod6 files.
-sub MAIN(Str $text,                       #= Input file or Markdown text.
-         Str :t(:$to) = 'mathematica',    #= Format to convert to. (One of 'mathematica' or 'pod6'.)
-         Bool :d(:$docked-cells) = False, #= Should formula conversion button be added as a docked cell or not? (Mathematica only.)
-         Str :o(:$output) = '',           #= Output file; if an empty string then the result is printed to stdout.
+sub MAIN(Str $text,                                  #= Input file or Markdown text.
+         Str :t(:$to) = 'mathematica',               #= Format to convert to. (One of 'mathematica' or 'pod6'.)
+         Str :l(:$default-language) = 'Mathematica', #= Default language.
+         Str :$raku-code-cell-name = 'Whatever',     #= Raku code cell name.
+         Bool :d(:$docked-cells) = False,            #= Should formula conversion button be added as a docked cell or not? (Mathematica only.)
+         Str :o(:$output) = '',                      #= Output file; if an empty string then the result is printed to stdout.
          ) {
 
-    my $res = from-markdown($text, :$to, :$docked-cells);
+
+    my $defaultLang = (!$default-language || $default-language.lc ∈ <whatever automatic>) ?? Whatever !! $default-language;
+
+    my $rakuCodeCellName = (!$$raku-code-cell-name || $$raku-code-cell-name.lc ∈ <whatever automatic>) ?? Whatever !! $raku-code-cell-name;
+
+    my $res = from-markdown($text, :$to, :$docked-cells,
+            default-language => $defaultLang,
+            raku-code-cell-name => $rakuCodeCellName);
 
     if $output.chars > 0 {
         spurt($output, $res);

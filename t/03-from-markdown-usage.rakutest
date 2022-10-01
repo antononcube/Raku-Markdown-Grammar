@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 6;
+plan 9;
 
 #-----------------------------------------------------------
 ## 1
@@ -116,5 +116,56 @@ is from-markdown( 'Here is data wrangling code:
 ## References', to=>'pod6'),
         $res6.trim,
         'README CLI example';
+
+#-----------------------------------------------------------
+## 7
+#-----------------------------------------------------------
+
+my $mtext7 = q:to/END/;
+Here is a Python cell:
+
+```python
+1 + 1_000
+```
+
+Here is an "unspecified language" code cell:
+
+```
+say 404;
+```
+END
+
+my $res7 = q:to/END/;
+Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "Python", " ", "cell:"}], "Text"], Cell["1 + 1_000", "ExternalLanguage", CellEvaluationLanguage->"Python"], Cell[TextData[{"Here", " ", "is", " ", "an", " ", "\"unspecified", " ", "language\"", " ", "code", " ", "cell:"}], "Text"], Cell["say 404;", "ExternalLanguage", CellEvaluationLanguage->"Raku"]}]
+END
+
+is from-markdown($mtext7, to=>'wl', default-language => 'Raku', raku-code-cell-name => Whatever, :!docked-cells).trim,
+        $res7.trim,
+        'Code cells with default language Raku';
+
+#-----------------------------------------------------------
+## 8
+#-----------------------------------------------------------
+
+my $res8 = q:to/END/;
+Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "Python", " ", "cell:"}], "Text"], Cell["1 + 1_000", "ExternalLanguage", CellEvaluationLanguage->"Python"], Cell[TextData[{"Here", " ", "is", " ", "an", " ", "\"unspecified", " ", "language\"", " ", "code", " ", "cell:"}], "Text"], Cell["say 404;", "RakuInputExecute", FormatType->"TextForm"]}]
+END
+
+is from-markdown($mtext7, to=>'wl', default-language => 'Raku', raku-code-cell-name => 'RakuInputExecute', :!docked-cells).trim,
+        $res8.trim,
+        'Code cells with default language Raku and special Raku code cell';
+
+
+#-----------------------------------------------------------
+## 9
+#-----------------------------------------------------------
+
+my $res9 = q:to/END/;
+Notebook[{Cell[TextData[{"Here", " ", "is", " ", "a", " ", "Python", " ", "cell:"}], "Text"], Cell["1 + 1_000", "ExternalLanguage", CellEvaluationLanguage->"Python"], Cell[TextData[{"Here", " ", "is", " ", "an", " ", "\"unspecified", " ", "language\"", " ", "code", " ", "cell:"}], "Text"], Cell[ BoxData["say 404;"], "Input"]}]
+END
+
+is from-markdown($mtext7, to=>'wl', default-language => Whatever, raku-code-cell-name => Whatever, :!docked-cells).trim,
+        $res9.trim,
+        'Code cells with Whatever default language and Whatever Raku code cell';
 
 done-testing;

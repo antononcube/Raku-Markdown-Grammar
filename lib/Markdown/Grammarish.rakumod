@@ -31,9 +31,9 @@ role Markdown::Grammarish {
 
     regex md-math-block {
         $<header>=($mdTicks 'math') \h* \v
-        $<code>=[<!before $<header>> .]*
+        $<code>=[<!before $<header>> .]*?
         $mdTicks |
-        $<header>=('$$'|'\[') \h* \v
+        $<header>=('$$'|'\[') \h* \v?
         $<code>=[<!before $<header>> .]*?
         $<header>
     }

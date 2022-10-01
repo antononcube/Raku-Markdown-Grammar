@@ -137,12 +137,15 @@ The package provides a Command Line Interface (CLI) script, `from-markdown`. Her
 ```shell
 > from-markdown --help
 # Usage:
-#  from-markdown [-t|--to=<Str>] [-d|--docked-cells] [-o|--output=<Str>] <text> -- Converts Markdown files into Mathematica notebooks or Pod6 files.
+#  from-markdown [-t|--to=<Str>] [-l|--default-language=<Str>] [--raku-code-cell-name=<Str>] [-d|--docked-cells] [-o|--output=<Str>] <text> -- Converts Markdown files into Mathematica notebooks or Pod6 files.
 #  
-#    <text>               Input file or Markdown text.
-#    -t|--to=<Str>        Format to convert to. (One of 'mathematica' or 'pod6'.) [default: 'mathematica']
-#    -d|--docked-cells    Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
-#    -o|--output=<Str>    Output file; if an empty string then the result is printed to stdout. [default: '']
+#    <text>                         Input file or Markdown text.
+#    -t|--to=<Str>                  Format to convert to. (One of 'mathematica' or 'pod6'.) [default: 'mathematica']
+#    -l|--default-language=<Str>    Default language. [default: 'Mathematica']
+#    --raku-code-cell-name=<Str>    Raku code cell name. [default: 'Whatever']
+#    -d|--docked-cells              Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
+#    -o|--output=<Str>              Output file; if an empty string then the result is printed to stdout. [default: '']
+(
 ```
 
 The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:
@@ -169,6 +172,10 @@ The CLI script `from-markdown` takes both file names and (Markdown) text. Here i
 # =end head2
 # =end pod
 ```
+
+**Remark:** Using the CLI script with the option setting `--raku-cell-code-name=RakuInputExecute` produces
+Raku cells that require the Mathematica package "RakuMode.m", [AAp2], to be loaded and the command `RakuMode[]` 
+to be executed in the result notebook. 
 
 ------
 
@@ -240,6 +247,12 @@ The most important items are placed first.
 
 - [X] DONE Parsing LaTeX code with a docked cell button in the generated Mathematica notebook.
 
+- [X] DONE Have option(s) for default language for code cells.
+
+- [X] DONE Have option(s) for Raku code cell name.
+
+- [ ] TODO Have option(s) for skipping horizontal line specs.
+
 - [ ] TODO Parsing alternate syntax for heading 1 and 2
 
 - [ ] TODO Parsing escaping characters
@@ -287,6 +300,11 @@ a fair amount of Mathematica's
 [Text::CodeProcessing Raku package](https://github.com/antononcube/Raku-Text-CodeProcessing),
 (2021-2022),
 [GitHub/antononcube](https://github.com/antononcube).
+
+[AAp2] Anton Antonov
+[RakuMode Mathematica package](https://github.com/antononcube/ConversationalAgents/blob/master/Packages/WL/RakuMode.m),
+(2021),
+[ConversationalAgents at GitHub/antononcube](https://github.com/antononcube/ConversationalAgents).
 
 [FZp1] Faizon Zaman,
 [Markdown2WL Mathematica package](https://github.com/dishmint/Markdown2WL),

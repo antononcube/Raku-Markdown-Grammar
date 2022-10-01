@@ -23,6 +23,12 @@ Here is a Python cell:
 1 + 1_000 
 ```
 
+Here is an "unspecified language" code cell:
+
+```
+say 404;
+```
+
 ----
 
 ## Lists

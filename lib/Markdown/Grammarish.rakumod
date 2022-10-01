@@ -60,7 +60,7 @@ role Markdown::Grammarish {
     regex md-header5 { '#####' \h* <head=.md-text-line> }
     regex md-header6 { '######' \h* <head=.md-text-line> }
 
-    regex md-horizontal-line { '---' ['-']* \n }
+    regex md-horizontal-line { '-' ** 3..* \n }
 
     regex md-image-simple-link { '!' <md-link> }
     regex md-image-complex-link { '[' \h* '!' <md-link> \h* ']' \h* <md-image-complex-link-to> };

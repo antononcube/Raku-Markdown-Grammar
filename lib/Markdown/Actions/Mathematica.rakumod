@@ -49,9 +49,11 @@ sub docked-cells-wl-code( Str $button-name = 'Convert RakuLaTeX', Str $cell-name
 
 class Markdown::Actions::Mathematica {
 
+    has $.defaultLang = 'Mathematica';
     has Bool $.addDockedCells = False;
     has Str $.fromLaTeXButtonName = 'Convert RakuLaTeX';
     has Str $.rakuLaTeXCellName = 'RakuLaTeX';
+    has $.rakuCodeCellName = Whatever; # 'RakuInputExecute';
 
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
@@ -102,24 +104,43 @@ class Markdown::Actions::Mathematica {
         }
     }
 
-    method md-code-block($/) {
-        my $code = $<code>.Str.trim.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
-        with $<header><lang> {
-            if $<header><lang>.lc ∈ ('wl', 'mathematica', 'wolfram language') {
-                make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
-            } else {
-                make 'Cell["'  ~ $code ~ '", "ExternalLanguage", CellEvaluationLanguage->"' ~ $<header><lang>.Str.tc ~ '"]'
-            }
-        } else {
-            make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+    method code-cell(Str $code is copy, $lang, Bool :$code-as-is = True) {
+        if !$code-as-is {
+            $code = $code.trim.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
         }
+
+        given $lang {
+            when $lang ~~ Str && $lang.lc ∈ ('wl', 'mathematica', 'wolfram language') {
+                'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+            }
+            when $lang ~~ Str && $lang.lc ∈ <raku perl6> && $!rakuCodeCellName ~~ Str {
+                'Cell["' ~ $code ~ '", "' ~ $!rakuCodeCellName ~ '", FormatType->"TextForm"]';
+            }
+            when $lang ~~ Str {
+                'Cell["'  ~ $code ~ '", "ExternalLanguage", CellEvaluationLanguage->"' ~ $lang.tc ~ '"]'
+            }
+            default {
+                'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+            }
+        }
+    }
+
+    method md-code-block($/) {
+
+        my $code = $<code>.Str.trim.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
+        my $lang = $!defaultLang;
+        if $<header><lang>.defined && $<header><lang>.Str {
+            $lang = $<header><lang>.Str;
+        }
+
+        make self.code-cell($code, $lang):code-as-is;
     }
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str.subst(:g, '"', '\"').subst(:g, '\\\\"', <\\\\\">);
         $code = $code.subst(/ ^ \h ** 4 /, ''):g;
         $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
-        make 'Cell[ BoxData["' ~ $code ~ '"], "Input"]';
+        make self.code-cell($code, $!defaultLang):code-as-is;
     }
 
     method md-header1($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Title"]'; }

@@ -32,21 +32,27 @@ our proto from-markdown($md,
 
 multi from-markdown(IO::Path $file,
                     Str :t(:$to) = 'mathematica',
+                    :l(:$default-language) = 'mathematica',
+                    :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
     my $text = slurp($file);
-    return from-markdown($text, :$to, :$docked-cells);
+    return from-markdown($text, :$to, :$default-language, :$raku-code-cell-name, :$docked-cells);
 }
 
 multi from-markdown(Str:D $file where *.IO.f,
                     Str :t(:$to) = 'mathematica',
+                    :l(:$default-language) = 'mathematica',
+                    :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
 
     my $text = slurp($file);
-    return from-markdown($text, :$to, :$docked-cells);
+    return from-markdown($text, :$to, :$default-language, :$raku-code-cell-name, :$docked-cells);
 }
 
 multi from-markdown(Str:D $text,
                     Str :t(:$to) = 'mathematica',
+                    :l(:$default-language) = 'mathematica',
+                    :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
 
     my $res;
@@ -55,7 +61,9 @@ multi from-markdown(Str:D $text,
         when  $_ ∈ <mathematica wl> {
             $res = md-interpret($text ~ $ending,
                     actions => Markdown::Actions::Mathematica.new(
+                            defaultLang => $default-language,
                             addDockedCells => $docked-cells,
+                            rakuCodeCellName => $raku-code-cell-name,
                             fromLaTeXButtonName => 'Convert found formulas',
                             rakuLaTeXCellName => 'RakuFoundLaTeX'));
         }

@@ -63,9 +63,9 @@ multi from-markdown(Str:D $text,
                     actions => Markdown::Actions::Mathematica.new(
                             defaultLang => $default-language,
                             addDockedCells => $docked-cells,
-                            rakuCodeCellName => $raku-code-cell-name,
                             fromLaTeXButtonName => 'Convert found formulas',
-                            rakuLaTeXCellName => 'RakuFoundLaTeX'));
+                            rakuLaTeXCellName => 'RakuFoundLaTeX',
+                            rakuCodeCellName => $raku-code-cell-name));
         }
         when  $_ ∈ <pod pod6> {
             $res = md-interpret($text ~ $ending, actions => Markdown::Actions::Pod6.new);

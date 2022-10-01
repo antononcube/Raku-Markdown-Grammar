@@ -34,7 +34,7 @@ role Markdown::Grammarish {
         $<code>=[<!before $<header>> .]*
         $mdTicks |
         $<header>=('$$'|'\[') \h* \v
-        $<code>=[<!before $<header>> .]*
+        $<code>=[<!before $<header>> .]*?
         $<header>
     }
 
@@ -43,7 +43,7 @@ role Markdown::Grammarish {
         $mdTicks '{'? \h* $<lang>=(\w* | 'Wolfram Language')
         [ \h+ $<name>=(<alpha>+) ]?
         [ \h* ',' \h* $<params>=(<md-list-of-params>) ]? \h* '}'? \h* \v )
-        $<code>=[<!before $mdTicks> .]*
+        $<code>=[<!before $mdTicks> .]*?
         $mdTicks
     }
 

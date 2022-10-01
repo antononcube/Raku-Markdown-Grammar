@@ -403,9 +403,7 @@ $$
 
 In the light of this, the [theorem on the derivation under the integral sign][2] is applicable, it is possible to derive both members twice as much as $a$, obtaining:
 
-$$
-\int_0^{\infty} \frac{x\,\cos(a\,x)}{e^{2 \pi x} - 1}\,\text{d}x = \frac{1}{2\,a^2} + \frac{1}{2\left(2 - e^{-a} - e^a\right)}
-$$
+$$\int_0^{\infty} \frac{x\,\cos(a\,x)}{e^{2 \pi x} - 1}\,\text{d}x = \frac{1}{2\,a^2} + \frac{1}{2\left(2 - e^{-a} - e^a\right)}$$
 
 where, in both cases, $a \ne 0$ (for $a = 0$ everything is trivialized). If at this point you set $x = \sqrt{t}$ and $a = n$, you get:
 

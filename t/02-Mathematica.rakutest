@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 17;
+plan 18;
 
 #-----------------------------------------------------------
 ## 1
@@ -306,7 +306,7 @@ $$
 END
 
 my $res14 =
-Q (Notebook[{Cell[ BoxData["ToExpression[\"\\\\mathbb{N} = \\\\{ a \\\\in \\\\mathbb{Z} : a > 0 \\\\}\", TeXForm]"], "Input"], Cell[TextData[{"Another", " ", "one:"}], "Text"], Cell[ BoxData["ToExpression[\"P \\\\left( A=2 \\\\, \\\\middle| \\\\, \\\\dfrac{A^2}{B}>4 \\\\right)\", TeXForm]"], "Input"]}]);
+        Q (Notebook[{Cell[ BoxData["ToExpression[\"\\\\mathbb{N} = \\\\{ a \\\\in \\\\mathbb{Z} : a > 0 \\\\}\", TeXForm]"], "Input"], Cell[TextData[{"Another", " ", "one:"}], "Text"], Cell[ BoxData["ToExpression[\"P \\\\left( A=2 \\\\, \\\\middle| \\\\, \\\\dfrac{A^2}{B}>4 \\\\right)\", TeXForm]"], "Input"]}]);
 
 is md-interpret($mtext14),
         $res14,
@@ -386,5 +386,38 @@ Show[stretched, Graphics[
    }]]
 "], "Input"]}]',
         'Code block with indentation and empty line in between';
+
+#-----------------------------------------------------------
+## 18
+#-----------------------------------------------------------
+
+# https://mathematica.stackexchange.com/a/151161/
+my $mtext18 = q:to/END/;
+In these cases, it is a good habit to consult the manual for excellence:
+"Table of Integrals, Series and Products [Seventh Edition] - Gradshteyn, Ryzhik"
+(1220 pages). In particular, the integral that resembles the one in question is the following:
+
+$$
+\int_0^{\infty} \frac{1-\cos(a\,x)}{e^{2 \pi x}-1}\,\frac{\text{d}x}{x} = \frac{a}{4} + \frac{1}{2}\,\ln\left(\frac{1-e^{-a}}{a}\right).
+$$
+
+In the light of this, the [theorem on the derivation under the integral sign][2] is applicable, it is possible to derive both members twice as much as $a$, obtaining:
+
+$$
+\int_0^{\infty} \frac{x\,\cos(a\,x)}{e^{2 \pi x} - 1}\,\text{d}x = \frac{1}{2\,a^2} + \frac{1}{2\left(2 - e^{-a} - e^a\right)}
+$$
+
+where, in both cases, $a \ne 0$ (for $a = 0$ everything is trivialized). If at this point you set $x = \sqrt{t}$ and $a = n$, you get:
+
+$$
+\int_0^{\infty} \frac{\cos(n\,\sqrt{t})}{e^{2 \pi \sqrt{t}} - 1}\,\text{d}t = \frac{1}{n^2} + \frac{1}{2 - e^{-n} - e^n}.
+$$
+END
+
+my $res18 = Q (Notebook[{Cell[TextData[{"In", " ", "these", " ", "cases,", " ", "it", " ", "is", " ", "a", " ", "good", " ", "habit", " ", "to", " ", "consult", " ", "the", " ", "manual", " ", "for", " ", "excellence:", " ", "\"Table", " ", "of", " ", "Integrals,", " ", "Series", " ", "and", " ", "Products", " ", "[Seventh", " ", "Edition]", " ", "-", " ", "Gradshteyn,", " ", "Ryzhik\"", " ", "(1220", " ", "pages).", " ", "In", " ", "particular,", " ", "the", " ", "integral", " ", "that", " ", "resembles", " ", "the", " ", "one", " ", "in", " ", "question", " ", "is", " ", "the", " ", "following:"}], "Text"], Cell[ BoxData["ToExpression[\"\\\\int_0^{\\\\infty} \\\\frac{1-\\\\cos(a\\\\,x)}{e^{2 \\\\pi x}-1}\\\\,\\\\frac{\\\\text{d}x}{x} = \\\\frac{a}{4} + \\\\frac{1}{2}\\\\,\\\\ln\\\\left(\\\\frac{1-e^{-a}}{a}\\\\right).\", TeXForm]"], "Input"], Cell[TextData[{"In", " ", "the", " ", "light", " ", "of", " ", "this,", " ", "the", " ", ButtonBox["theorem on the derivation under the integral sign", BaseStyle -> "Hyperlink", ButtonData -> { Label[2], None}], " ", "is", " ", "applicable,", " ", "it", " ", "is", " ", "possible", " ", "to", " ", "derive", " ", "both", " ", "members", " ", "twice", " ", "as", " ", "much", " ", "as", " ", StyleBox["a", FontSlant->"Italic", Background->RGBColor[1,1,0.85]], " ", ",", " ", "obtaining:"}], "Text"], Cell[ BoxData["ToExpression[\"\\\\int_0^{\\\\infty} \\\\frac{x\\\\,\\\\cos(a\\\\,x)}{e^{2 \\\\pi x} - 1}\\\\,\\\\text{d}x = \\\\frac{1}{2\\\\,a^2} + \\\\frac{1}{2\\\\left(2 - e^{-a} - e^a\\\\right)}\", TeXForm]"], "Input"], Cell[TextData[{"where,", " ", "in", " ", "both", " ", "cases,", " ", StyleBox["a \\ne 0", FontSlant->"Italic", Background->RGBColor[1,1,0.85]], " ", "(for", " ", StyleBox["a = 0", FontSlant->"Italic", Background->RGBColor[1,1,0.85]], " ", "everything", " ", "is", " ", "trivialized).", " ", "If", " ", "at", " ", "this", " ", "point", " ", "you", " ", "set", " ", StyleBox["x = \\sqrt{t}", FontSlant->"Italic", Background->RGBColor[1,1,0.85]], " ", "and", " ", StyleBox["a = n", FontSlant->"Italic", Background->RGBColor[1,1,0.85]], " ", ",", " ", "you", " ", "get:"}], "Text"], Cell[ BoxData["ToExpression[\"\\\\int_0^{\\\\infty} \\\\frac{\\\\cos(n\\\\,\\\\sqrt{t})}{e^{2 \\\\pi \\\\sqrt{t}} - 1}\\\\,\\\\text{d}t = \\\\frac{1}{n^2} + \\\\frac{1}{2 - e^{-n} - e^n}.\", TeXForm]"], "Input"]}]);
+
+is md-interpret($mtext18).trim,
+        $res18.trim,
+        'Multiple formula specs';
 
 done-testing;

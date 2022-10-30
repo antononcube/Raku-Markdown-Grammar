@@ -46,8 +46,8 @@ graph TD
     SP-->|yes|R
     R[Review and modify]-->P
     GE-->|no|LT
-    SP{Needs refinement?}-->|no|SD
-    SD{Significantly different?}-->|yes|CM
+    SP{Needs <br /> refinement?}-->|no|SD
+    SD{Significantly <br /> different?}-->|yes|CM
     SD-->|no|PC
     CM[Convert Markdown document to notebook]-->PC
     PC["Publish to notebook Community.wolfram.com"]   
@@ -107,13 +107,13 @@ graph TD
 
 Here is a table of converters from- or to Markdown:
 
-| From \ To   | HTML                                                                                                                                           | Jupyter                                           | Markdown                                                                    | Mathematica                                                                                                                      | Pod6                                                                     |
-|-------------|------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| HTML        |                                                                                                                                                | [pandoc](https://pandoc.org)                      | [pandoc](https://pandoc.org)                                                |                                                                                                                                  |                                                                          |
-| Jupyter     | [Jupyter](https://jupyter.org)                                                                                                                 |                                                   | [Jupyter](https://jupyter.org), [jupytext](https://jupytext.readthedocs.io) |                                                                                                                                  |                                                                          |
-| Markdown    | [pandoc](https://pandoc.org), [Markit](https://raku.land/cpan:UZLUISF/Markit), [Text::Markdown](https://raku.land/zef:JJMERELO/Text::Markdown) | [jupytext](https://jupytext.readthedocs.io)       |                                                                             | [Markdown2WL](https://github.com/dishmint/Markdown2WL), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) |
-| Mathematica |                                                                                                                                                |                                                   | [M2MD](https://github.com/kubaPod/M2MD)                                     |                                                                                                                                  |                                                                          |
-| Pod6        |                                                                                                                                                |                                                   | [Pod::To::Markdown](https://raku.land/cpan:SOFTMOTH/Pod::To::Markdown)      |                                                                                                                                  |                                                                          |
+| From \ To   | HTML                                                                                                                                           | Jupyter                                           | Markdown                                                                    | Mathematica                                                                                                                                                                    | Pod6                                                                     |
+|-------------|------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| HTML        |                                                                                                                                                | [pandoc](https://pandoc.org)                      | [pandoc](https://pandoc.org)                                                |                                                                                                                                                                                |                                                                          |
+| Jupyter     | [Jupyter](https://jupyter.org)                                                                                                                 |                                                   | [Jupyter](https://jupyter.org), [jupytext](https://jupytext.readthedocs.io) |                                                                                                                                                                                |                                                                          |
+| Markdown    | [pandoc](https://pandoc.org), [Markit](https://raku.land/cpan:UZLUISF/Markit), [Text::Markdown](https://raku.land/zef:JJMERELO/Text::Markdown) | [jupytext](https://jupytext.readthedocs.io)       |                                                                             | [Markdown2WL](https://github.com/dishmint/Markdown2WL), [md2nb](https://github.com/ConnorGray/md2nb), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) |
+| Mathematica |                                                                                                                                                |                                                   | [M2MD](https://github.com/kubaPod/M2MD)                                     |                                                                                                                                                                                |                                                                          |
+| Pod6        |                                                                                                                                                |                                                   | [Pod::To::Markdown](https://raku.land/cpan:SOFTMOTH/Pod::To::Markdown)      |                                                                                                                                                                                |                                                                          |
 
 
 **Remark:** [Pandoc](https://pandoc.org) attempts to be an universal converter, applicable for all couples of formats.
@@ -127,6 +127,10 @@ there are no other converters from Markdown to
 The package 
 ["Markdown2WL"](https://github.com/dishmint/Markdown2WL) 
 attempts that, but unfortunately it is fairly incomplete.
+
+**Remark:** When starting this project I did not know about Connor's package 
+["md2nb"](https://github.com/ConnorGray/md2nb). (Written in Rust.)
+If I knew about it, most likely, I would have not written my this package.
 
 ------
 

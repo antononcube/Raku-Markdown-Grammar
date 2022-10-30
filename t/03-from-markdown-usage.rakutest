@@ -33,7 +33,7 @@ is from-markdown('## Section', to=>'Mathematica'),
 ## 3
 #-----------------------------------------------------------
 my $res3 = q:to/END/;
-=begin
+=begin pod
 =begin head2
 Section
 =end head2
@@ -93,7 +93,7 @@ ok from-markdown($doc-file.Str, to=>'pod6'),
 
 # README example
 my $res6 = q:to/END/;
-=begin
+=begin pod
 =para
 Here is data wrangling code:
 =begin code

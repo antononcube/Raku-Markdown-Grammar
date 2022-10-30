@@ -163,7 +163,7 @@ The CLI script `from-markdown` takes both file names and (Markdown) text. Here i
 
 ## References'
 
-# =begin
+# =begin pod
 # =para
 # Here is data wrangling code:
 # =begin code

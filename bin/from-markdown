@@ -3,6 +3,8 @@ use v6.d;
 
 use Markdown::Grammar;
 
+my %*SUB-MAIN-OPTS = :named-anywhere;
+
 #-----------------------------------------------------------
 
 #| Converts Markdown files into Mathematica notebooks or Pod6 files.

@@ -40,7 +40,7 @@ class Markdown::Actions::Pod6 {
         my $code = $<code>.Str;
         $code = $code.subst(/ ^ \h ** 4 /, ''):g;
         $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
-        make '=begin code' ~ "\n" ~ $code.trim ~ '=end code';
+        make '=begin code' ~ "\n" ~ $code.trim-trailing ~ "\n" ~ '=end code';
     }
 
     method md-header1($/) { make '=begin head1' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head1'; }

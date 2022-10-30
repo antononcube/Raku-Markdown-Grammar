@@ -33,14 +33,14 @@ class Markdown::Actions::Pod6 {
         with $<header><lang> {
             $lang = ' :lang<' ~ $<header><lang>.Str ~ '>';
         }
-        make '=begin code' ~ $lang ~ "\n" ~ $code ~ "\n" ~ '=end code';
+        make '=begin code' ~ $lang ~ "\n" ~ $code.trim-trailing ~ "\n" ~ '=end code';
     }
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str;
         $code = $code.subst(/ ^ \h ** 4 /, ''):g;
         $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
-        make '=begin code' ~ "\n" ~ $code ~ '=end code';
+        make '=begin code' ~ "\n" ~ $code.trim ~ '=end code';
     }
 
     method md-header1($/) { make '=begin head1' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head1'; }

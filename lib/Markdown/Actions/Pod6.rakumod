@@ -24,14 +24,14 @@ class Markdown::Actions::Pod6 {
 
     method md-math-block($/) {
         my $code = $<code>.Str;
-        make '=begin code' ~ "\n" ~ $code ~ "\n" ~ '=end code';
+        make '=begin code :lang<math>' ~ "\n" ~ $code ~ "\n" ~ '=end code';
     }
 
     method md-code-block($/) {
         my $code = $<code>.Str;
         my $lang = '';
         with $<header><lang> {
-            $lang = ' ' ~ $<header><lang>.Str;
+            $lang = ' :lang<' ~ $<header><lang>.Str ~ '>';
         }
         make '=begin code' ~ $lang ~ "\n" ~ $code ~ "\n" ~ '=end code';
     }

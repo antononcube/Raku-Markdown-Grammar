@@ -1,0 +1,32 @@
+use v6.d;
+use Test;
+
+use lib '.';
+use lib './lib';
+
+use Markdown::Grammar;
+
+#===========================================================
+
+plan 1;
+
+#-----------------------------------------------------------
+## 1
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/1
+my $mtext1 = q:to/END/;
+line1
+END
+
+my $res1 = q:to/END/;
+=begin pod
+=para
+line1
+=end pod
+END
+
+is from-markdown($mtext1, to => 'pod6'),
+        $res1.trim,
+        'Simple';
+
+done-testing;

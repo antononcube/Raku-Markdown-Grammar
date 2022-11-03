@@ -2,7 +2,7 @@ use v6.d;
 
 constant $mdTicks = '```';
 
-role Markdown::Grammarish {
+role Markdown::Grammarish  {
 
     rule TOP { <md-block>+ }
 
@@ -93,8 +93,17 @@ role Markdown::Grammarish {
     regex md-no-word { \h+  }
     regex md-empty-line { \h* \n }
 
+    # I am not happy with repeating the definition of the code block header.
+    # See its use in <md-text-line-tail>.
+    my regex non-text-start {
+      $mdTicks '{'? \h* [\w* | 'Wolfram Language']
+      [ \h+ <.alpha>+ ]?
+      [ \h* ',' \h* <.md-list-of-params> ]? \h* '}'?
+    }
+
     regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-math> || <md-word-code> || <md-word> }
-    regex md-text-line-tail { $<first>=(<md-text-element>) \h*? [$<rest>=([<md-text-element>+ % \h* ])]? \h* <!{ $<first>.Str eq $mdTicks }> }
+    regex md-text-line-tail { $<first>=(<md-text-element>) [$<sep>=(\h*)]? [$<rest>=([<md-text-element>+ % \h* ])]? \h*
+                                <!{ my $t = ($<first>.Str ~ ($<sep> // '').Str ~ ($<rest> // '').Str); (so $t ~~ / ^ &non-text-start /) }> }
     regex md-text-line { \h ** ^4 <md-text-line-tail> \n }
     regex md-text-block { <md-text-line>+ }
 

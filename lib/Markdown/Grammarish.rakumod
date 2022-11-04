@@ -25,7 +25,7 @@ role Markdown::Grammarish  {
         || <md-quote-block>
         || <md-emphasize-block>
         || <md-table-block>
-        || <md-text-block>
+        || <md-text-line>
         || <md-any-block>
     }
 
@@ -93,26 +93,13 @@ role Markdown::Grammarish  {
     regex md-no-word { \h+ }
     regex md-empty-line { \h* \n }
 
-    # I am not happy with repeating the definition of the code block header.
-    # See its use in <md-text-line-tail>.
-    my regex non-text-start {
-      $mdTicks '{'? \h* [\w* | 'Wolfram Language']
-      [ \h+ <.alpha>+ ]?
-      [ \h* ',' \h* <.md-list-of-params> ]? \h* '}'?
-    }
-
     regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-math> || <md-word-code> || <md-word> }
     regex md-text-element-list { <md-text-element>+ % \h* }
-    regex md-text-line-tail { $<first>=(<md-text-element>) [$<sep>=(\h*)]? [$<rest>=([<md-text-element>+ % \h* ])]? \h*
-    <!{
-        my $t = ($<first>.Str ~ ($<sep> // '').Str ~ ($<rest> // '').Str);
-        (so $t ~~ / ^ &non-text-start /) || (so ($<first> // '').Str ~~ / '#' ** 1..6 / )
-    }>
-    }
+    regex md-text-line-tail { $<first>=(<md-text-element>) [$<sep>=(\h*)]? [$<rest>=([<md-text-element>+ % \h* ])]? \h* }
     regex md-text-line { \h ** ^4 <md-text-line-tail> \n }
     regex md-text-block { <md-text-line>+ }
 
-    regex md-quote-line { '>' \h+ [ <md-text-element-list> \n || \n ] }
+    regex md-quote-line { '>' [ \h+ <md-text-element-list> \n || \h* \n ] }
     regex md-quote-block { <md-quote-line>+ }
 
     regex md-emphasize-text-element { <md-link> || <md-word-math> || <md-word-code> || <md-word> }

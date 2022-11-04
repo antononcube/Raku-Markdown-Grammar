@@ -1,4 +1,4 @@
-use v6.d;
+  use v6.d;
 
 class Markdown::Actions::Pod6 {
 
@@ -9,7 +9,29 @@ class Markdown::Actions::Pod6 {
         if @mdBlocks.all ~~ Str {
             $res = @mdBlocks.join("\n");
         } else {
-            my %references = @mdBlocks.grep({ $_ ~~ Pair }).map({ '[' ~ $_.key ~ ']' => $_.value });
+            # Obtain references
+            my %references = @mdBlocks.grep({ $_ ~~ Pair && $_.key ne 'TEXTLINE' }).map({ '[' ~ $_.key ~ ']' => $_.value });
+
+            # Consolidate text lines into text blocks
+            my @mdBlocks2;
+            my $textBlock = '';
+            for @mdBlocks -> $b {
+                if $b ~~ Pair && $b.key eq 'TEXTLINE' {
+                    $textBlock ~= "\n" ~ $b.value;
+                } elsif $textBlock {
+                    @mdBlocks2.append("=para\n" ~ $textBlock.trim);
+                    $textBlock = '';
+                    @mdBlocks2.append($b)
+                } else {
+                    @mdBlocks2.append($b)
+                }
+            }
+            if $textBlock {
+                @mdBlocks2.append("=para\n" ~ $textBlock.trim);
+            }
+            @mdBlocks = @mdBlocks2;
+
+            # Process references
             @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
             $res = @mdBlocks.join("\n");
             for %references.kv -> $k, $v {
@@ -88,7 +110,7 @@ class Markdown::Actions::Pod6 {
     method md-text-element($/) { make $/.values[0].made; }
     method md-empty-line($/) { make ''; }
     method md-text-line($/) {
-        make $<md-text-line-tail>.made;
+        make (TEXTLINE => $<md-text-line-tail>.made);
     }
     method md-text-element-list($/) {
         make $<md-text-element>>>.made.join(' ');
@@ -103,11 +125,15 @@ class Markdown::Actions::Pod6 {
         make @res.join(' ');
     }
     method md-text-block($/) {
-        make "=para\n" ~ $/.values>>.made.join("\n");
+        make "=begin para\n" ~ $/.values>>.made>>.value.join("\n") ~ "\n=end para";
     }
 
     method md-quote-line($/) {
-        make $<md-text-element-list>.made;
+        with $<md-text-element-list> {
+            make $<md-text-element-list>.made
+        } else {
+            make ' ';
+        }
     }
     method md-quote-block($/) {
         make "=para Qoute\n" ~ $/.values>>.made.join("\n");
@@ -142,7 +168,8 @@ class Markdown::Actions::Pod6 {
                     when 5 ≤ $_ ≤ 6 { '=item4' }
                 };
 
-        make $itemType ~ ' ' ~ $<content>.made;
+        # $<content> is same as $<md-text-line> hence a Pair
+        make $itemType ~ ' ' ~ $<content>.made.value;
     }
 
     method md-numbered-list-block($/) {
@@ -157,11 +184,12 @@ class Markdown::Actions::Pod6 {
                     when 5 ≤ $_ ≤ 6 { '=item4' }
                 };
 
-        make $itemType ~ ' # ' ~ $<content>.made;
+        # $<content> is same as $<md-text-line> hence a Pair
+        make $itemType ~ ' # ' ~ $<content>.made.value;
     }
 
     method md-table-block($/) {
-        make "=para\n" ~ $/.Str;
+        make "=table\n" ~ $/.Str;
     }
 
     method md-any-line($/) {

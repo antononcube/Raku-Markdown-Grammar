@@ -57,13 +57,39 @@ class Markdown::Actions::Mathematica {
 
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
-        @mdBlocks = $<md-block>>>.made.grep({ $_ ne 'Cell[TextData[{""}]]' });
 
         my $res;
         if @mdBlocks.all ~~ Str {
+            @mdBlocks = $<md-block>>>.made.grep({ $_ ne 'Cell[TextData[{""}]]' });
             $res = @mdBlocks.join(', ');
         } else {
-            my %references = @mdBlocks.grep({ $_ ~~ Pair });
+            # Obtain references
+            my %references = @mdBlocks.grep({ $_ ~~ Pair && $_.key ne 'TEXTLINE' });
+
+            # Consolidate text lines into text blocks
+            my @mdBlocks2;
+            my @textBlockLines;
+            for @mdBlocks -> $b {
+                if $b ~~ Pair && $b.key eq 'TEXTLINE' {
+                    @textBlockLines.append($b.value);
+                } elsif @textBlockLines {
+                    @mdBlocks2.append(self.make-md-text-block(@textBlockLines));
+                    @textBlockLines = [];
+                    if $b ~~ Str && $b ne 'Cell[TextData[{""}]]' {
+                        @mdBlocks2.append($b)
+                    }
+                } else {
+                    if $b ~~ Str && $b ne 'Cell[TextData[{""}]]' {
+                        @mdBlocks2.append($b)
+                    }
+                }
+            }
+            if @textBlockLines {
+                @mdBlocks2.append( self.make-md-text-block(@textBlockLines) );
+            }
+            @mdBlocks = @mdBlocks2;
+
+            # Finish processing the references
             @mdBlocks = @mdBlocks.grep({ $_ !~~ Pair });
             for %references.kv -> $k, $v {
                 @mdBlocks = do for @mdBlocks -> $b {
@@ -219,9 +245,12 @@ class Markdown::Actions::Mathematica {
         }
         make @res.join(', " ", ');
     }
-    method md-text-line($/) { make $<md-text-line-tail>.made; }
+    method md-text-line($/) { make (TEXTLINE => $<md-text-line-tail>.made); }
+    method make-md-text-block(@lines) {
+        'Cell[TextData[{' ~ @lines.join(', " ", ') ~ '}], "Text"]';
+    }
     method md-text-block($/) {
-        make 'Cell[TextData[{' ~ $/.values>>.made.join(', " ", ') ~ '}], "Text"]';
+        make self.make-md-text-block($/.values>>.made>>.value);
     }
 
     method md-quote-line($/) {
@@ -261,8 +290,8 @@ class Markdown::Actions::Mathematica {
                     when 1 ≤ $_ ≤ 2 { 'Subitem' }
                     when 3 ≤ $_ ≤ 4 { 'Subsubitem' }
                 };
-
-        make 'Cell[TextData[{' ~ $<content>.made ~ '}], "' ~ $itemType ~ '"]';
+        # $<content> is same as $<md-text-line> hence a Pair
+        make 'Cell[TextData[{' ~ $<content>.made.value ~ '}], "' ~ $itemType ~ '"]';
     }
 
     method md-numbered-list-block($/) {
@@ -276,7 +305,8 @@ class Markdown::Actions::Mathematica {
                     when 3 ≤ $_ ≤ 4 { 'SubsubitemNumbered' }
                 };
 
-        make 'Cell[TextData[{' ~ $<content>.made ~ '}], "' ~ $itemType ~ '"]';
+        # $<content> is same as $<md-text-line> hence a Pair
+        make 'Cell[TextData[{' ~ $<content>.made.value ~ '}], "' ~ $itemType ~ '"]';
     }
 
     method md-table-block($/) {

@@ -19,7 +19,7 @@ class Markdown::Actions::Pod6 {
                 if $b ~~ Pair && $b.key eq 'TEXTLINE' {
                     $textBlock ~= "\n" ~ $b.value;
                 } elsif $textBlock {
-                    @mdBlocks2.append("=para\n" ~ $textBlock.trim);
+                    @mdBlocks2.append("=begin para\n" ~ $textBlock.trim ~ "\n=end para");
                     $textBlock = '';
                     @mdBlocks2.append($b)
                 } else {

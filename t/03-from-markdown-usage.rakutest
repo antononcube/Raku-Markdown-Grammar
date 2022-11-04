@@ -94,8 +94,9 @@ ok from-markdown($doc-file.Str, to=>'pod6'),
 # README example
 my $res6 = q:to/END/;
 =begin pod
-=para
+=begin para
 Here is data wrangling code:
+=end para
 =begin code
 obj = dfTitanic;
 obj = GroupBy[ obj, #["passengerSex"]& ];

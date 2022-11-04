@@ -267,7 +267,7 @@ They said:
 END
 
 is md-interpret($mtext12),
-        'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points."}], "ItemParagraph", Background->GrayLevel[0.97]], Cell[TextData[{">", " ", ">", " ", "Pick", " ", "the", " ", StyleBox["points", FontSlant->"Italic"], " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "Text"]}]',
+        'Notebook[{Cell[TextData[{"They", " ", "said:"}], "Text"], Cell[TextData[{"Select", " ", "QR", " ", "parameters", " ", "to", " ", "extract", " ", "the", " ", "\"near", " ", "constant", " ", "y\"", " ", "points.", " ", "\n\n", " ", "Pick", " ", "the", " ", StyleBox["points", FontSlant->"Italic"], " ", "around", " ", "produced", " ", "regression", " ", "quantile."}], "ItemParagraph", Background->GrayLevel[0.97]]}]',
         'Quote block';
 
 

@@ -207,6 +207,9 @@ class Markdown::Actions::Mathematica {
     method md-empty-line($/) { make 'Cell[TextData[{""}]]'; }
 
     method md-text-element($/) { make $/.values[0].made; }
+    method md-text-element-list($/) {
+        make $<md-text-element>>>.made.join(', " ", ');;
+    }
     method md-text-line-tail($/) {
         my @res;
         with $<rest> {
@@ -222,8 +225,8 @@ class Markdown::Actions::Mathematica {
     }
 
     method md-quote-line($/) {
-        with $<md-text-line-tail> {
-            make $<md-text-line-tail>.made
+        with $<md-text-element-list> {
+            make $<md-text-element-list>.made
         } else {
             make '"\\n\\n"';
         }

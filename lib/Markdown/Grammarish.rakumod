@@ -53,12 +53,12 @@ role Markdown::Grammarish  {
         [\h* \n]
     }
 
-    regex md-header1 { '#' \h* <head=.md-text-line> }
-    regex md-header2 { '##' \h* <head=.md-text-line> }
-    regex md-header3 { '###' \h* <head=.md-text-line> }
-    regex md-header4 { '####' \h* <head=.md-text-line> }
-    regex md-header5 { '#####' \h* <head=.md-text-line> }
-    regex md-header6 { '######' \h* <head=.md-text-line> }
+    regex md-header1 { '#' \h* <head=.md-text-element-list> \n }
+    regex md-header2 { '##' \h* <head=.md-text-element-list> \n }
+    regex md-header3 { '###' \h* <head=.md-text-element-list> \n }
+    regex md-header4 { '####' \h* <head=.md-text-element-list> \n }
+    regex md-header5 { '#####' \h* <head=.md-text-element-list> \n }
+    regex md-header6 { '######' \h* <head=.md-text-element-list> \n }
 
     regex md-horizontal-line { '-' ** 3..* \n }
 
@@ -90,7 +90,7 @@ role Markdown::Grammarish  {
     regex md-word-italic { ('*' | '_') <md-word> $0 }
     regex md-word-code { $<delim>=('`' | '```') <md-word> $<delim> }
     regex md-word-math { $<delim>=('$' | '````') <-[$`\v]>* $<delim> }
-    regex md-no-word { \h+  }
+    regex md-no-word { \h+ }
     regex md-empty-line { \h* \n }
 
     # I am not happy with repeating the definition of the code block header.
@@ -102,12 +102,17 @@ role Markdown::Grammarish  {
     }
 
     regex md-text-element { <md-link> || <md-word-bold-italic> || <md-word-bold> || <md-word-italic> || <md-word-math> || <md-word-code> || <md-word> }
+    regex md-text-element-list { <md-text-element>+ % \h* }
     regex md-text-line-tail { $<first>=(<md-text-element>) [$<sep>=(\h*)]? [$<rest>=([<md-text-element>+ % \h* ])]? \h*
-                                <!{ my $t = ($<first>.Str ~ ($<sep> // '').Str ~ ($<rest> // '').Str); (so $t ~~ / ^ &non-text-start /) }> }
+    <!{
+        my $t = ($<first>.Str ~ ($<sep> // '').Str ~ ($<rest> // '').Str);
+        (so $t ~~ / ^ &non-text-start /) || (so ($<first> // '').Str ~~ / '#' ** 1..6 / )
+    }>
+    }
     regex md-text-line { \h ** ^4 <md-text-line-tail> \n }
     regex md-text-block { <md-text-line>+ }
 
-    regex md-quote-line { '>' \h+ [ <md-text-line-tail> \n || \n ] }
+    regex md-quote-line { '>' \h+ [ <md-text-element-list> \n || \n ] }
     regex md-quote-block { <md-quote-line>+ }
 
     regex md-emphasize-text-element { <md-link> || <md-word-math> || <md-word-code> || <md-word> }

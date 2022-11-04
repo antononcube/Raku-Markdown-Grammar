@@ -90,6 +90,9 @@ class Markdown::Actions::Pod6 {
     method md-text-line($/) {
         make $<md-text-line-tail>.made;
     }
+    method md-text-element-list($/) {
+        make $<md-text-element>>>.made.join(' ');
+    }
     method md-text-line-tail($/) {
         my @res;
         with $<rest> {
@@ -104,7 +107,7 @@ class Markdown::Actions::Pod6 {
     }
 
     method md-quote-line($/) {
-        make $<md-text-line-tail>.made;
+        make $<md-text-element-list>.made;
     }
     method md-quote-block($/) {
         make "=para Qoute\n" ~ $/.values>>.made.join("\n");

@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 9;
+plan 10;
 
 #-----------------------------------------------------------
 ## 1
@@ -168,5 +168,14 @@ END
 is from-markdown($mtext7, to=>'wl', default-language => Whatever, raku-code-cell-name => Whatever, :!docked-cells).trim,
         $res9.trim,
         'Code cells with Whatever default language and Whatever Raku code cell';
+
+#-----------------------------------------------------------
+## 10
+#-----------------------------------------------------------
+
+is from-markdown($mtext7, to=>'pod6', default-language => Whatever, raku-code-cell-name => Whatever, :!docked-cells),
+        from-markdown($mtext7, to=>'pod6', default-language => 'Raku', raku-code-cell-name => Whatever, :!docked-cells),
+        'Code cells with Whatever default language and Whatever Raku code cell';
+
 
 done-testing;

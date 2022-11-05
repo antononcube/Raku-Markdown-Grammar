@@ -32,7 +32,7 @@ our proto from-markdown($md,
 
 multi from-markdown(IO::Path $file,
                     Str :t(:$to) = 'mathematica',
-                    :l(:$default-language) = 'mathematica',
+                    :l(:$default-language) = Whatever,
                     :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
     my $text = slurp($file);
@@ -41,7 +41,7 @@ multi from-markdown(IO::Path $file,
 
 multi from-markdown(Str:D $file where *.IO.f,
                     Str :t(:$to) = 'mathematica',
-                    :l(:$default-language) = 'mathematica',
+                    :l(:$default-language) = Whatever,
                     :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
 
@@ -51,24 +51,35 @@ multi from-markdown(Str:D $file where *.IO.f,
 
 multi from-markdown(Str:D $text,
                     Str :t(:$to) = 'mathematica',
-                    :l(:$default-language) = 'mathematica',
+                    :l(:$default-language) is copy = Whatever,
                     :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
 
     my $res;
     my $ending = $text.substr(*- 1, *) eq "\n" ?? '' !! "\n";
+
+    die 'The argument default-language is expected to be a string or Whatever.'
+    unless $default-language.isa(Whatever) || $default-language ~~ Str;
+
+    if $default-language.isa(Whatever) {
+        $default-language = 'Whatever'
+    }
+
     given $to.lc {
         when  $_ ∈ <mathematica wl> {
             $res = md-interpret($text ~ $ending,
                     actions => Markdown::Actions::Mathematica.new(
-                            defaultLang => $default-language,
+                            defaultLang => $default-language.lc eq 'whatever' ?? 'mathematica' !! $default-language,
                             addDockedCells => $docked-cells,
                             fromLaTeXButtonName => 'Convert found formulas',
                             rakuLaTeXCellName => 'RakuFoundLaTeX',
                             rakuCodeCellName => $raku-code-cell-name));
         }
         when  $_ ∈ <pod pod6> {
-            $res = md-interpret($text ~ $ending, actions => Markdown::Actions::Pod6.new);
+            $res = md-interpret($text ~ $ending,
+                    actions => Markdown::Actions::Pod6.new(
+                            defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
+                    ));
         }
         default {
             die 'Unknown output format.'

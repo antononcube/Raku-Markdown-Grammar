@@ -2,6 +2,8 @@
 
 class Markdown::Actions::Pod6 {
 
+    has $.defaultLang = 'raku';
+
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
 
@@ -51,10 +53,13 @@ class Markdown::Actions::Pod6 {
 
     method md-code-block($/) {
         my $code = $<code>.Str;
-        my $lang = '';
-        with $<header><lang> {
-            $lang = ' :lang<' ~ $<header><lang>.Str ~ '>';
+        my $lang = $!defaultLang;
+        if $<header><lang>.defined && $<header><lang>.Str {
+            $lang = ' :lang<' ~  $<header><lang>.Str ~ '>';
+        } elsif $lang.isa(Whatever) || $lang ~~ Str && $lang.lc ∈ <whatever raku perl6> {
+            $lang = ''
         }
+
         make '=begin code' ~ $lang ~ "\n" ~ $code.trim-trailing ~ "\n" ~ '=end code';
     }
 

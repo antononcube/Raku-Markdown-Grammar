@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 18;
+plan 19;
 
 #-----------------------------------------------------------
 ## 1
@@ -417,5 +417,29 @@ my $res18 = Q (Notebook[{Cell[TextData[{"In", " ", "these", " ", "cases,", " ", 
 is md-interpret($mtext18).trim,
         $res18.trim,
         'Multiple formula specs';
+
+#-----------------------------------------------------------
+## 19
+#-----------------------------------------------------------
+
+my $mtext19 = q:to/END/;
+## Conclusion
+
+This concludes the first part of the introduction to the `grep` method, and possibly to the Raku Programming Language.
+Questions and comments are always welcome.
+You can also drop into the [#raku-beginner channel](https://web.libera.chat/?channel=#raku-beginner) on Libera.chat, or on Discord if you'd like to have more immediate feedback.
+
+I hope you liked it!  Thank you for reading all the way to the end.
+# Don't fear the grepper! (Part 1)
+
+This blog post provides an introduction to the [Raku Programmming Language](https://raku.org) and its [`grep` functionality](https://docs.raku.org/routine/grep#(List)\_routine_grep).
+It does not require any specific knowledge about the Raku Programming Language, although being familiar with basic `grep` functionality (of the unix utility), is recommended.
+END
+
+my $res19 = Q (Cell[TextData[{"Don't", " ", "fear", " ", "the", " ", "grepper!", " ", "(Part", " ", "1)"}], "Title"]);
+
+is md-interpret($mtext19).contains($res19),
+        True,
+        'Section line immendiately after text line';
 
 done-testing;

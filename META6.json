@@ -19,6 +19,7 @@
   "resources": [
     "Example-document-1.md",
     "Example-document-2-formulas.md",
+    "Example-document-3-references.md",
     "Mathematica-StackExchange-example-1.md"
   ],
   "license": "Artistic-2.0",

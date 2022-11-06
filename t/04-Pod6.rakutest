@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 2;
+plan 3;
 
 #-----------------------------------------------------------
 ## 1
@@ -51,5 +51,32 @@ END
 is from-markdown($mtext2, to => 'pod6'),
         $res2.trim-trailing,
         'Raku code block';
+
+#-----------------------------------------------------------
+## 3
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/4
+my $mtext3 = q:to/END/;
+```
+{
+    "name": "Anton"
+}
+```
+END
+
+my $res3 = q:to/END/;
+=begin pod
+=begin code
+{
+    "name": "Anton"
+}
+=end code
+
+=end pod
+END
+
+is from-markdown($mtext3, to => 'pod6'),
+        $res3.trim-trailing,
+        'Raku code block with no lang spec';
 
 done-testing;

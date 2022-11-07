@@ -3,16 +3,19 @@
 ## In brief
 
 Markdown parser suitable for making converters of Markdown files into files of different kind of formats:
-- [X] Mathematica notebook
-- [ ] RMarkdown notebook 
-- [ ] Jupyter notebook
-- [X] Pod6 file
-- [ ] Org-mode file
+- [X] DONE Mathematica notebook
+- [ ] TODO RMarkdown notebook
+- [ ] TODO Jupyter notebook
+- [X] DONE Pod6 file
+- [ ] TODO Org-mode file
 
 See the video 
 ["Markdown to Mathematica converter (CLI and StackExchange examples)"](https://www.youtube.com/watch?v=39ekokgnoqE), [AAv1],
 for a (quick, 7.5 min) demo. 
 The video [AAv2] shows the conversion of a Jupyter notebook into a Mathematica notebook via Markdown representation.
+The video [AAv3] shows conversions to POD6, Mathematica, and Jupyter and evaluations of those documents.
+(The evaluations are done with 
+["Text::CodeProcessing"](https://raku.land/zef:antononcube/Text::CodeProcessing), [AAp1].)
 
 ### Motivation
 
@@ -130,7 +133,7 @@ attempts that, but unfortunately it is fairly incomplete.
 
 **Remark:** When starting this project I did not know about Connor's package 
 ["md2nb"](https://github.com/ConnorGray/md2nb). (Written in Rust.)
-If I knew about it, most likely, I would have not written my this package.
+If I knew about it, most likely, I would have not written this package.
 
 ------
 
@@ -232,8 +235,9 @@ from-markdown($mtext, to => 'pod6')
 ```
 ```
 # =begin pod
-# =para
+# =begin para
 # Here is data wrangling code:
+# =end para
 # =begin code
 # obj = dfTitanic;
 # obj = GroupBy[ obj, #["passengerSex"]& ];
@@ -362,5 +366,10 @@ a fair amount of Mathematica's
 
 [AAv2] Anton Antonov,
 ["Markdown to Mathematica converter (Jupyter notebook example)"](https://www.youtube.com/watch?v=Htmiu3ZI05w),
+(2022),
+[Anton A. Antonov's channel at YouTube](https://www.youtube.com/channel/UC5qMPIsJeztfARXWdIw3Xzw).
+
+[AAv3] Anton Antonov,
+["Conversion and evaluation of Raku files"](https://www.youtube.com/watch?v=GJO7YqjGn6o),
 (2022),
 [Anton A. Antonov's channel at YouTube](https://www.youtube.com/channel/UC5qMPIsJeztfARXWdIw3Xzw).

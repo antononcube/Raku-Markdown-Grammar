@@ -1,4 +1,4 @@
-  use v6.d;
+use v6.d;
 
 class Markdown::Actions::Pod6 {
 
@@ -156,7 +156,7 @@ class Markdown::Actions::Pod6 {
         given $emph.chars {
             when 1 { @res = @res.map({ 'I<' ~ $_ ~ '>' }) }
             when 2 { @res = @res.map({ 'B<' ~ $_ ~ '>' }) }
-            when 3 { @res = @res.map({ 'B>I<' ~ $_ ~ '>>' }) }
+            when 3 { @res = @res.map({ 'B<I<' ~ $_ ~ '>>' }) }
         }
          make "=para\n" ~ @res.join("\n");
     }

@@ -182,33 +182,40 @@ class Markdown::Actions::HTML {
     }
 
     method md-item-list-block($/) {
-        make  $<md-item-list-element>>>.made.join("\n");
+        make "<ul>\n" ~ $<md-item-list-element>>>.made.join("\n") ~ "\n</ul>";
     }
     method md-item-list-element($/) {
-        # I am not sure yet what should be done here.
-        my $itemType =
-                do given $<indent>.Str.chars {
-                    when 0 { '<li>' }
-                    when 1 ≤ $_ ≤ 6 { '<li>' }
-                    default { '<li>' }
-                };
+        my $start;
+        my $end;
+        given $<indent>.Str.chars {
+            when 0 { $start = '<li>'; $end = '</li>'; }
+            when 1 ≤ $_ ≤ 2 { $start = '<ul><li>'; $end = '</li></ul>'; }
+            when 3 ≤ $_ ≤ 4 { $start = '<ul><ul><li>'; $end = '</li></ul></ul>'; }
+            when 5 ≤ $_ ≤ 6 { $start = '<ul><ul><ul><li>'; $end = '</li></ul></ul></ul>'; }
+        };
 
         # $<content> is same as $<md-text-line> hence a Pair
-        make $itemType ~ ' ' ~ $<content>.made.value ~ '</li>';
+        make $start ~ ' ' ~ $<content>.made.value ~ $end;
     }
 
     method md-numbered-list-block($/) {
-        make  $<md-numbered-list-element>>>.made.join("\n");
+        make '<ol type="1">' ~ $<md-numbered-list-element>>>.made.join("\n") ~ '</ol>';
     }
     method md-numbered-list-element($/) {
-        my $itemType =
-                do given $<indent>.Str.chars {
-                    when 0 { '<ol>' }
-                    default { '<ol>' }
-                };
+        my $start;
+        my $end;
+        given $<indent>.Str.chars {
+            when 0 { $start = '<li>'; $end = '</li>'; }
+            when 1 ≤ $_ ≤ 2 { $start = '<ul><li>'; $end = '</li></ul>'; }
+            when 3 ≤ $_ ≤ 4 { $start = '<ul><ul><li>'; $end = '</li></ul></ul>'; }
+            when 5 ≤ $_ ≤ 6 { $start = '<ul><ul><ul><li>'; $end = '</li></ul></ul></ul>'; }
+        };
+
+        $start = $start.subst('<ul>', '<ol type="1">'):g;
+        $end = $end.subst('</ul>', '</ol>'):g;
 
         # $<content> is same as $<md-text-line> hence a Pair
-        make $itemType ~ ' ' ~ $<content>.made.value ~ '</ol>';
+        make $start ~ ' ' ~ $<content>.made.value ~ $end;
     }
 
     method md-table-block($/) {

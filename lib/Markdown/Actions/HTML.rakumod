@@ -219,8 +219,31 @@ class Markdown::Actions::HTML {
     }
 
     method md-table-block($/) {
-        make "<table>\n" ~ $/.Str ~ "\n</table>";
+        my $header = $<header><md-table-row>.made.subst(:g, '<td>', '<th>').subst(:g, '</td>', '</th>');
+        my $code = "<table>\n" ~ $header ~ "\n" ~ $<rows><md-table-row>>>.made.join("\n") ~ "\n</table>";
+
+        make  $code;
     }
+    method md-table-row($/) {
+        make $<md-table-field> ?? "<tr>\n" ~ $<md-table-field>>>.made.join("\n") ~ "\n</tr>" !! '""';
+    }
+    method md-table-field($/) {
+        my @res = $<field><md-text-element>>>.made;
+        my @sep = $<field><md-table-field-sep>>>.made;
+        @sep.append('');
+        my $res;
+        if @res {
+            if  @res.elems == @sep.elems {
+                $res = (@res Z~ @sep).join('');
+            } else {
+                $res = @res.join(' ');
+            }
+        } else {
+            $res = '';
+        }
+        make '<td>' ~ $res ~ '</td>';
+    }
+    method md-table-field-sep($/) { make $/.Str;}
 
     method md-any-line($/) {
         make $/.Str;

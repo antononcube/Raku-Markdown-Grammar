@@ -1,6 +1,7 @@
 use v6.d;
 
 use Markdown::Grammarish;
+use Markdown::Actions::HTML;
 use Markdown::Actions::Mathematica;
 use Markdown::Actions::Pod6;
 
@@ -66,6 +67,12 @@ multi from-markdown(Str:D $text,
     }
 
     given $to.lc {
+        when  $_ ∈ <html html5> {
+            $res = md-interpret($text ~ $ending,
+                    actions => Markdown::Actions::HTML.new(
+                            defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
+                            ));
+        }
         when  $_ ∈ <mathematica wl> {
             $res = md-interpret($text ~ $ending,
                     actions => Markdown::Actions::Mathematica.new(

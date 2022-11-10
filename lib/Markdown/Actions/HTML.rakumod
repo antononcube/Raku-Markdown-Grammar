@@ -55,7 +55,7 @@ class Markdown::Actions::HTML {
         my $code = $<code>.Str;
         my $lang = $!defaultLang;
         if $<header><lang>.defined && $<header><lang>.Str {
-            $lang = '{' ~  $<header><lang>.Str ~ '}';
+            $lang = ' class="' ~  $<header><lang>.Str ~ '"';
         } elsif $lang.isa(Whatever) || $lang ~~ Str && $lang.lc ∈ <whatever raku perl6> {
             $lang = ''
         }

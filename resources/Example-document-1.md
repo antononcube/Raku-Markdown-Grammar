@@ -38,16 +38,17 @@ say 404;
 - LSAMon
 - SMRMon
   - SBR too
+  - tidyverse too
+    - Similar to SQL
 - ClCon
-  END
 
 ### Monads numbered
 
 1. LSAMon
 2. SMRMon
-  3. SBR too
-4. ClCon
-5. QRMon
+  2.1. SBR too
+3. ClCon
+4. QRMon
 
 ------
 

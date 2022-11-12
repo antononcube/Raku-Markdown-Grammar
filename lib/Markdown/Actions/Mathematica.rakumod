@@ -169,6 +169,8 @@ class Markdown::Actions::Mathematica {
         make self.code-cell($code, $!defaultLang):code-as-is;
     }
 
+    method md-list-of-params($/) { make $/.Str; }
+
     method md-header1($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Title"]'; }
     method md-header2($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Section"]'; }
     method md-header3($/) { make 'Cell[TextData[{' ~ $<head>.made ~ '}], "Subsection"]'; }

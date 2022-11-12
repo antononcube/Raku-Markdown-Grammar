@@ -29,6 +29,10 @@ role Markdown::Grammarish  {
         || <md-any-block>
     }
 
+    # These are needed to parse Rmd type of Markdown files
+    regex md-assign-pair { $<param>=(<.alpha>+) \h* '=' \h* $<value>=(<-[ \{ \} \s ]>*) }
+    regex md-list-of-params { <md-assign-pair>+ % [ \h* ',' \h* ] }
+
     regex md-math-block {
         $<header>=($mdTicks 'math') \h* \v
         $<code>=[<!before $<header>> .]*?

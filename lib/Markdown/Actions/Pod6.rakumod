@@ -70,6 +70,8 @@ class Markdown::Actions::Pod6 {
         make '=begin code' ~ "\n" ~ $code.trim-trailing ~ "\n" ~ '=end code';
     }
 
+    method md-list-of-params($/) { make $/.Str; }
+
     method md-header1($/) { make '=begin head1' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head1'; }
     method md-header2($/) { make '=begin head2' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head2'; }
     method md-header3($/) { make '=begin head3' ~ "\n" ~ $<head>.made ~ "\n" ~ '=end head3'; }

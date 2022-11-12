@@ -70,6 +70,8 @@ class Markdown::Actions::HTML {
         make '<pre><code>' ~ "\n" ~ $code.trim-trailing ~ "\n" ~ '</code></pre>';
     }
 
+    method md-list-of-params($/) { make $/.Str; }
+
     method md-header1($/) { make '<h1>' ~ "\n" ~ $<head>.made ~ "\n" ~ '</h1>'; }
     method md-header2($/) { make '<h2>' ~ "\n" ~ $<head>.made ~ "\n" ~ '</h2>'; }
     method md-header3($/) { make '<h3>' ~ "\n" ~ $<head>.made ~ "\n" ~ '</h3>'; }

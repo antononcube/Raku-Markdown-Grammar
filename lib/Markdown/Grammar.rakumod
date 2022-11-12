@@ -3,6 +3,7 @@ use v6.d;
 use Markdown::Grammarish;
 use Markdown::Actions::HTML;
 use Markdown::Actions::Mathematica;
+use Markdown::Actions::OrgMode;
 use Markdown::Actions::Pod6;
 
 grammar Markdown::Grammar
@@ -81,6 +82,12 @@ multi from-markdown(Str:D $text,
                             fromLaTeXButtonName => 'Convert found formulas',
                             rakuLaTeXCellName => 'RakuFoundLaTeX',
                             rakuCodeCellName => $raku-code-cell-name));
+        }
+        when  $_ ∈ <org org-mode> {
+            $res = md-interpret($text ~ $ending,
+                    actions => Markdown::Actions::OrgMode.new(
+                            defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
+                            ));
         }
         when  $_ ∈ <pod pod6> {
             $res = md-interpret($text ~ $ending,

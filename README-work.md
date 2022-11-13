@@ -150,10 +150,10 @@ from-markdown --help
 The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:
 
 ```shell
-> from-markdown -to=pod6 'Here is data wrangling code:
+from-markdown -to=pod6 'Here is data wrangling code:
 
     obj = dfTitanic;
-    obj = GroupBy[ obj, #["passengerSex"]& ];
+    obj = GroupBy[ obj, #["passengerSex"]& ];  
     Echo[Map[ Length, obj], "counts:"]
 
 ## References'

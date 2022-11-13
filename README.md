@@ -161,17 +161,28 @@ from-markdown --help
 The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:
 
 ```shell
-> from-markdown -to=pod6 'Here is data wrangling code:
+from-markdown -to=pod6 'Here is data wrangling code:
 
     obj = dfTitanic;
-    obj = GroupBy[ obj, #["passengerSex"]& ];
+    obj = GroupBy[ obj, #["passengerSex"]& ];  
     Echo[Map[ Length, obj], "counts:"]
 
 ## References'
 ```
 ```
-#ERROR: Unable to parse expression in argument list; couldn't find final ')' (corresponding starter was at line 2)
-# Nil
+# =begin pod
+# =begin para
+# Here is data wrangling code:
+# =end para
+# =begin code
+# obj = dfTitanic;
+# obj = GroupBy[ obj, #["passengerSex"]& ];  
+# Echo[Map[ Length, obj], "counts:"]
+# =end code
+# =begin head2
+# References
+# =end head2
+# =end pod
 ```
 
 **Remark:** Using the CLI script with the option setting `--raku-cell-code-name=RakuInputExecute` produces

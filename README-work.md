@@ -7,7 +7,7 @@ Markdown parser suitable for making converters of Markdown files into files of d
 - [ ] TODO RMarkdown notebook
 - [ ] TODO Jupyter notebook
 - [X] DONE Pod6 file
-- [ ] TODO Org-mode file
+- [X] TODO Org-mode file
 - [X] DONE HTML file
 
 See the video 
@@ -70,13 +70,13 @@ produced by the package.
 
 From Zef ecosystem:
 
-```shell
+```
 zef install Markdown::Grammar
 ```
 
 From GitHub:
 
-```shell
+```
 zef install https://github.com/antononcube/Raku-Markdown-Grammar.git
 ```
 
@@ -111,13 +111,14 @@ graph TD
 
 Here is a table of converters from- or to Markdown:
 
-| From \ To   | HTML                                                                                                                                                                                                                     | Jupyter                                           | Markdown                                                                    | Mathematica                                                                                                                                                                    | Pod6                                                                     |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| HTML        |                                                                                                                                                                                                                          | [pandoc](https://pandoc.org)                      | [pandoc](https://pandoc.org)                                                |                                                                                                                                                                                |                                                                          |
-| Jupyter     | [Jupyter](https://jupyter.org)                                                                                                                                                                                           |                                                   | [Jupyter](https://jupyter.org), [jupytext](https://jupytext.readthedocs.io) |                                                                                                                                                                                |                                                                          |
-| Markdown    | [pandoc](https://pandoc.org), [Markit](https://raku.land/cpan:UZLUISF/Markit), [Text::Markdown](https://raku.land/zef:JJMERELO/Text::Markdown), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [jupytext](https://jupytext.readthedocs.io)       |                                                                             | [Markdown2WL](https://github.com/dishmint/Markdown2WL), [md2nb](https://github.com/ConnorGray/md2nb), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) |
-| Mathematica |                                                                                                                                                                                                                          |                                                   | [M2MD](https://github.com/kubaPod/M2MD)                                     |                                                                                                                                                                                |                                                                          |
-| Pod6        |                                                                                                                                                                                                                          |                                                   | [Pod::To::Markdown](https://raku.land/cpan:SOFTMOTH/Pod::To::Markdown)      |                                                                                                                                                                                |                                                                          |
+| From \ To   | HTML                                                                                                                                                                                                                     | Jupyter                                     | Markdown                                                                    | Mathematica                                                                                                                                                                    | Pod6                                                                     | Org-mode                                                                                               |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|-----------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| HTML        |                                                                                                                                                                                                                          | [pandoc](https://pandoc.org)                | [pandoc](https://pandoc.org)                                                |                                                                                                                                                                                |                                                                          | [pandoc](https://pandoc.org)                                                                           |
+| Jupyter     | [Jupyter](https://jupyter.org)                                                                                                                                                                                           |                                             | [Jupyter](https://jupyter.org), [jupytext](https://jupytext.readthedocs.io) |                                                                                                                                                                                |                                                                          |                                                                                                        |
+| Markdown    | [pandoc](https://pandoc.org), [Markit](https://raku.land/cpan:UZLUISF/Markit), [Text::Markdown](https://raku.land/zef:JJMERELO/Text::Markdown), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [jupytext](https://jupytext.readthedocs.io) |                                                                             | [Markdown2WL](https://github.com/dishmint/Markdown2WL), [md2nb](https://github.com/ConnorGray/md2nb), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) | [pandoc](https://pandoc.org), [Markdown::Grammar](https://raku.land/zef:antononcube/Markdown::Grammar) |
+| Mathematica |                                                                                                                                                                                                                          |                                             | [M2MD](https://github.com/kubaPod/M2MD)                                     |                                                                                                                                                                                |                                                                          |                                                                                                        |
+| Pod6        |                                                                                                                                                                                                                          |                                             | [Pod::To::Markdown](https://raku.land/cpan:SOFTMOTH/Pod::To::Markdown)      |                                                                                                                                                                                |                                                                          |                                                                                                        |
+| Org-mode    | [pandoc](https://pandoc.org), [Org-mode](https://orgmode.org)                                                                                                                                                            |                                             | [pandoc](https://pandoc.org), [Org-mode](https://orgmode.org)               |                                                                                                                                                                                |                                                                          |                                                                                                        |
 
 
 **Remark:** [Pandoc](https://pandoc.org) attempts to be an universal converter, applicable for all couples of formats.
@@ -143,17 +144,7 @@ If I knew about it, most likely, I would have not written this package.
 The package provides a Command Line Interface (CLI) script, `from-markdown`. Here is its usage message:
 
 ```shell
-> from-markdown --help
-# Usage:
-#  from-markdown [-t|--to=<Str>] [-l|--default-language=<Str>] [--raku-code-cell-name=<Str>] [-d|--docked-cells] [-o|--output=<Str>] <text> -- Converts Markdown files into Mathematica notebooks or Pod6 files.
-#  
-#    <text>                         Input file or Markdown text.
-#    -t|--to=<Str>                  Format to convert to. (One of 'html', 'mathematica' or 'pod6'.) [default: 'mathematica']
-#    -l|--default-language=<Str>    Default language. [default: 'Mathematica']
-#    --raku-code-cell-name=<Str>    Raku code cell name. [default: 'Whatever']
-#    -d|--docked-cells              Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
-#    -o|--output=<Str>              Output file; if an empty string then the result is printed to stdout. [default: '']
-(
+from-markdown --help
 ```
 
 The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:
@@ -166,19 +157,6 @@ The CLI script `from-markdown` takes both file names and (Markdown) text. Here i
     Echo[Map[ Length, obj], "counts:"]
 
 ## References'
-
-# =begin pod
-# =para
-# Here is data wrangling code:
-# =begin code
-# obj = dfTitanic;
-# obj = GroupBy[ obj, #["passengerSex"]& ];
-# Echo[Map[ Length, obj], "counts:"]
-# =end code
-# =begin head2
-# References
-# =end head2
-# =end pod
 ```
 
 **Remark:** Using the CLI script with the option setting `--raku-cell-code-name=RakuInputExecute` produces

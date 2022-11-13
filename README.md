@@ -7,7 +7,7 @@ Markdown parser suitable for making converters of Markdown files into files of d
 - [ ] TODO RMarkdown notebook
 - [ ] TODO Jupyter notebook
 - [X] DONE Pod6 file
-- [X] TODO Org-mode file
+- [X] DONE Org-mode file
 - [X] DONE HTML file
 
 See the video 

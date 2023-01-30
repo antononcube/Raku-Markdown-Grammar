@@ -78,6 +78,8 @@ Here is the "Ocean" style version:
 
 ![Breakdown](https://github.com/antononcube/PythonForPrediction-blog/raw/main/MarkdownDocuments/Diagrams/Breakdown-of-Python-people-and-projects/Breakdown-of-Python-people-and-projects-mind-map-BW.png)
 
+Let us see how this document is going to be previewed. Or _not_.
+
 -----
 
 ## References

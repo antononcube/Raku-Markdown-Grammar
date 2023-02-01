@@ -130,7 +130,7 @@ class Markdown::Actions::HTML {
     method md-word-code($/) {
         my $off = $<delim>.Str.chars;
         make '<code>' ~ $/.Str.substr($off, *-$off) ~ '</code>'; }
-    method md-math-code($/) {
+    method md-word-math($/) {
         my $off = $<delim>.Str.chars;
         make '<code>' ~ $/.Str.substr($off, *-$off) ~ '</code>'; }
 

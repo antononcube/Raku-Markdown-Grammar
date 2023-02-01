@@ -110,7 +110,7 @@ class Markdown::Actions::Pod6 {
     method md-word-code($/) {
         my $off = $<delim>.Str.chars;
         make 'C<' ~ $/.Str.substr($off, *-$off) ~ '>'; }
-    method md-math-code($/) {
+    method md-word-math($/) {
         my $off = $<delim>.Str.chars;
         make 'C<' ~ $/.Str.substr($off, *-$off) ~ '>'; }
 

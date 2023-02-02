@@ -7,17 +7,17 @@ I am going to use [QRMon](https://mathematicaforprediction.wordpress.com/2018/08
 
 1. Fit Quantile Regression (QR) curves:
 
-    1. Using small number of knots
+   1. Using small number of knots
 
-    1. At different probabilities (e.g. 0.25 and 0.75)
+   1. At different probabilities (e.g. 0.25 and 0.75)
 
-    1. With different, *low* interpolation orders (e.g. 0, 1, 2)
+   1. With different, *low* interpolation orders (e.g. 0, 1, 2)
 
 1. Select QR parameters to extract the "near constant y" points.
 
 1. Pick the points around produced regression quantile.
 
-    1. Using suitable pick range (e.g. 0.015)
+   1. Using suitable pick range (e.g. 0.015)
 
 1. Plot the original data points and the extracted ones.
 

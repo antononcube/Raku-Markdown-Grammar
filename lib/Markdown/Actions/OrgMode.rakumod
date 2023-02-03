@@ -199,6 +199,10 @@ class Markdown::Actions::OrgMode {
         make '- note table \\\\' ~ "\n" ~ $/.Str.lines.map({ '  ' ~ $_ }).join("\n");
     }
 
+    method md-html-block($/) {
+        make '#+BEGIN_SRC html' ~ "\n" ~ $/.Str ~ "\n" ~ '#+END_SRC';
+    }
+
     method md-any-line($/) {
         make $/.Str;
     }

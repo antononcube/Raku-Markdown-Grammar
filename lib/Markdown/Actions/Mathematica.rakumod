@@ -341,6 +341,10 @@ class Markdown::Actions::Mathematica {
     }
     method md-table-field-sep($/) { make $/.Str;}
 
+    method md-html-block($/) {
+        make 'Cell[TextData[{' ~ $/.Str ~ '}], "Text"]';
+    }
+
     method md-any-line($/) {
         make '"' ~ $/.Str.&to-wl-text ~ '"';
     }

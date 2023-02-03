@@ -199,6 +199,10 @@ class Markdown::Actions::Pod6 {
         make "=table\n" ~ $/.Str;
     }
 
+    method md-html-block($/) {
+        make '=begin code :lang<html>' ~ "\n" ~ $/.Str ~ "\n" ~ '=end code';
+    }
+
     method md-any-line($/) {
         make $/.Str;
     }

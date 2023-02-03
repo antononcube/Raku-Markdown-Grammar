@@ -247,6 +247,10 @@ class Markdown::Actions::HTML {
     }
     method md-table-field-sep($/) { make $/.Str;}
 
+    method md-html-block($/) {
+        make $/.Str;
+    }
+
     method md-any-line($/) {
         make $/.Str;
     }

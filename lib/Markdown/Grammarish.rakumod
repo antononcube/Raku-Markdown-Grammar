@@ -58,12 +58,12 @@ role Markdown::Grammarish  {
         [\h* \n]
     }
 
-    regex md-header1 { '#' \h* <head=.md-text-element-list> \n }
-    regex md-header2 { '##' \h* <head=.md-text-element-list> \n }
-    regex md-header3 { '###' \h* <head=.md-text-element-list> \n }
-    regex md-header4 { '####' \h* <head=.md-text-element-list> \n }
-    regex md-header5 { '#####' \h* <head=.md-text-element-list> \n }
-    regex md-header6 { '######' \h* <head=.md-text-element-list> \n }
+    regex md-header1 { '#' \h* <head=.md-text-element-list> \h* \n }
+    regex md-header2 { '##' \h* <head=.md-text-element-list> \h* \n }
+    regex md-header3 { '###' \h* <head=.md-text-element-list> \h* \n }
+    regex md-header4 { '####' \h* <head=.md-text-element-list> \h* \n }
+    regex md-header5 { '#####' \h* <head=.md-text-element-list> \h* \n }
+    regex md-header6 { '######' \h* <head=.md-text-element-list> \h* \n }
 
     regex md-horizontal-line { '-' ** 3..* \n }
 

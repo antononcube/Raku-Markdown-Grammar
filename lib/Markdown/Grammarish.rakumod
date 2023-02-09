@@ -128,7 +128,7 @@ role Markdown::Grammarish  {
     regex md-table-header-sep { '|' \h* '---' [ '|' | '-' | '+' | ':' | \h ]* \n }
     regex md-table-field-sep { \h+ | \h* [',' | ';'] \h* }
 
-    regex md-html-block { [ '<' (\w+) '>' .*? '</' $0 '>' | '<!DOCTYPE  html>' .*? '</html>' ] \n}
+    regex md-html-block { \h* [ '<!DOCTYPE' \h+ 'html>' .*? '</html>' || '<' (\w+) '>' .*? '</' $0 '>' ] \n}
 
     regex md-any-line { \V+ \n }
     regex md-any-block { <md-any-line>+ }

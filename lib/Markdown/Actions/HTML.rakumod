@@ -1,5 +1,7 @@
 use v6.d;
 
+use HTML::Escape;
+
 class Markdown::Actions::HTML {
 
     has $.defaultLang = 'raku';
@@ -48,7 +50,7 @@ class Markdown::Actions::HTML {
 
     method md-math-block($/) {
         my $code = $<code>.Str;
-        make '<pre><code{math}>' ~ "\n" ~ $code ~ "\n" ~ '</code></pre>';
+        make '<pre><code{math}>' ~ "\n" ~ escape-html($code) ~ "\n" ~ '</code></pre>';
     }
 
     method md-code-block($/) {
@@ -60,14 +62,14 @@ class Markdown::Actions::HTML {
             $lang = ''
         }
 
-        make "<pre><code{$lang}>\n" ~ $code.trim-trailing ~ "\n</code></pre>";
+        make "<pre><code{$lang}>\n" ~ escape-html($code.trim-trailing) ~ "\n</code></pre>";
     }
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str;
         $code = $code.subst(/ ^ \h ** 4 /, ''):g;
         $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
-        make '<pre><code>' ~ "\n" ~ $code.trim-trailing ~ "\n" ~ '</code></pre>';
+        make '<pre><code>' ~ "\n" ~ escape-html($code.trim-trailing) ~ "\n" ~ '</code></pre>';
     }
 
     method md-list-of-params($/) { make $/.Str; }

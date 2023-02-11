@@ -7,7 +7,9 @@
     "Anton Antonov"
   ],
   "auth": "zef:antononcube",
-  "depends": [],
+  "depends": [
+    "HTML::Escape:ver<0.0.1>+"
+  ],
   "build-depends": [],
   "test-depends": [],
   "provides": {

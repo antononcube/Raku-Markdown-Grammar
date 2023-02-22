@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 15;
+plan 16;
 
 #-----------------------------------------------------------
 ## 1
@@ -281,5 +281,21 @@ my $text15 = q:to/END/;
 END
 
 ok md-parse($text15, rule => 'md-table-block');
+
+
+#-----------------------------------------------------------
+## 16
+#-----------------------------------------------------------
+my $text16 = q:to/END/;
+ | Company                      | Contact           | Country |
+ | Alfreds Futterkiste          | Maria Anders      | Germany |
+ | Centro comercial Moctezuma   | Francisco Chang   | Mexico  |
+ | Ernst Handel                 | Roland Mendel     | Austria |
+ | Island Trading               | Helen Bennett     | UK      |
+ | Laughing Bacchus Winecellars | Yoshi Tannamuri   | Canada  |
+ | Magazzini Alimentari Riuniti | Giovanni Rovelli  | Italy   |
+END
+
+ok md-parse($text16, rule => 'md-table-block');
 
 done-testing;

@@ -122,7 +122,7 @@ role Markdown::Grammarish  {
     regex md-numbered-list-block { <md-numbered-list-element>+ }
     regex md-numbered-list-element { $<indent>=(\h*) <num=[\d+]> \. \h+ <content=.md-text-line> }
 
-    regex md-table-block { $<header>=(<md-table-row>) <.md-table-header-sep> $<rows>=(<md-table-row>+) }
+    regex md-table-block { $<header>=(<md-table-row>) <.md-table-header-sep>? $<rows>=(<md-table-row>+) }
     regex md-table-field { \h* $<field>=(<md-text-element>* % <md-table-field-sep>) \h* <!{ $<field>.Str.contains('|') }> }
     regex md-table-row { \h* '|' \h* [ <md-table-field>* % '|' ] \h* '|' \h* \n }
     regex md-table-header-sep { \h* '|' \h* '---' [ '|' | '-' | '+' | ':' | \h ]* \n }

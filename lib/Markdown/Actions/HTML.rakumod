@@ -6,6 +6,36 @@ class Markdown::Actions::HTML {
 
     has $.defaultLang = 'raku';
 
+    # Taken from https://github.com/moznion/p6-HTML-Escape/blob/master/lib/HTML/Escape.pm6
+    # (That package seems "abandoned.")
+    sub escape-html(Str $raw --> Str) {
+        return $raw.trans([
+            '&',
+            '<',
+            '>',
+            q{"},
+            q{'},
+
+            # For IE. IE interprets back-quote as valid quoting characters
+            # ref: https://rt.cpan.org/Public/Bug/Display.html?id=84971
+            q{`},
+
+            # For javascript templates (e.g. AngularJS and such javascript frameworks)
+            # ref: https://github.com/angular/angular.js/issues/5601
+            '{',
+            '}'
+        ] => [
+            '&amp;',
+            '&lt;',
+            '&gt;',
+            '&quot;',
+            '&#39;',
+            '&#96;',
+            '&#123;',
+            '&#125;'
+        ]);
+    }
+
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
 

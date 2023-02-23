@@ -8,7 +8,7 @@ class Markdown::Actions::HTML {
 
     # Taken from https://github.com/moznion/p6-HTML-Escape/blob/master/lib/HTML/Escape.pm6
     # (That package seems "abandoned.")
-    sub escape-html(Str $raw --> Str) {
+    method escape-html(Str $raw --> Str) {
         return $raw.trans([
             '&',
             '<',
@@ -80,7 +80,7 @@ class Markdown::Actions::HTML {
 
     method md-math-block($/) {
         my $code = $<code>.Str;
-        make '<pre><code{math}>' ~ "\n" ~ escape-html($code) ~ "\n" ~ '</code></pre>';
+        make '<pre><code{math}>' ~ "\n" ~ self.escape-html($code) ~ "\n" ~ '</code></pre>';
     }
 
     method md-code-block($/) {
@@ -92,14 +92,14 @@ class Markdown::Actions::HTML {
             $lang = ''
         }
 
-        make "<pre><code{$lang}>\n" ~ escape-html($code.trim-trailing) ~ "\n</code></pre>";
+        make "<pre><code{$lang}>\n" ~ self.escape-html($code.trim-trailing) ~ "\n</code></pre>";
     }
 
     method md-code-indented-block($/) {
         my $code = $<code>.Str;
         $code = $code.subst(/ ^ \h ** 4 /, ''):g;
         $code = $code.subst(/ \n \h ** 4 /, "\n"):g;
-        make '<pre><code>' ~ "\n" ~ escape-html($code.trim-trailing) ~ "\n" ~ '</code></pre>';
+        make '<pre><code>' ~ "\n" ~ self.escape-html($code.trim-trailing) ~ "\n" ~ '</code></pre>';
     }
 
     method md-list-of-params($/) { make $/.Str; }

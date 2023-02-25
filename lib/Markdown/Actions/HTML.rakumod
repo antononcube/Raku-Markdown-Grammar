@@ -1,7 +1,5 @@
 use v6.d;
 
-use HTML::Escape;
-
 class Markdown::Actions::HTML {
 
     has $.defaultLang = 'raku';

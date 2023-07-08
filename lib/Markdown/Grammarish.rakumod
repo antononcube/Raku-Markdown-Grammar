@@ -31,7 +31,7 @@ role Markdown::Grammarish  {
     }
 
     # These are needed to parse Rmd type of Markdown files
-    regex md-assign-pair { $<param>=(<.alpha>+) \h* '=' \h* $<value>=(<-[ \{ \} \s ]>*) }
+    regex md-assign-pair { $<param>=(<.alpha> [<.alnum> | <:Pd> | '.']*) \h* '=' \h* $<value>=(<-[ \{ \} \s ]>*) }
     regex md-list-of-params { <md-assign-pair>+ % [ \h* ',' \h* ] }
 
     regex md-math-block {

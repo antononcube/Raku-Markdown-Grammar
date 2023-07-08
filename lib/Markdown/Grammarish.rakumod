@@ -104,7 +104,7 @@ role Markdown::Grammarish  {
     regex md-text-line { \h ** ^4 <md-text-line-tail> \n }
     regex md-text-block { <md-text-line>+ }
 
-    regex md-quote-line { '>' [ \h+ <md-text-element-list> \n || \h* \n ] }
+    regex md-quote-line { '>' [ \h+ <md-text-element-list> \h* \n || \h* \n ] }
     regex md-quote-block { <md-quote-line>+ }
 
     regex md-emphasize-text-element { <md-link> || <md-word-math> || <md-word-code> || <md-word> }

@@ -89,10 +89,11 @@ role Markdown::Grammarish  {
     regex md-link-url { <-[()\v]>* }
     regex md-link-label { <-[\[\]\v]>* }
 
+    regex md-emph-clean-phrase1 { <-[\n*]>+ | <-[\n_]>+ }
     regex md-word { (\S+) <!{ (so $0.Str ~~ self.md-simple-link-strict) || (so $0.Str ~~ self.md-reference-link-strict) }> }
-    regex md-word-bold-italic { ('***' | '___') <md-word> $0 }
-    regex md-word-bold { ('**' | '__') <md-word> $0 }
-    regex md-word-italic { ('*' | '_') <md-word> $0 }
+    regex md-word-bold-italic { ('***' | '___') [ <md-word> | <md-emph-clean-phrase1> ] $0 }
+    regex md-word-bold        { ('**' | '__')   [ <md-word> | <md-emph-clean-phrase1> ] $0 }
+    regex md-word-italic      { ('*' | '_')     [ <md-word> | <md-emph-clean-phrase1> ] $0 }
     regex md-word-code { $<delim>=('`' | '```') <md-word> $<delim> }
     regex md-word-math { $<delim>=('$' | '````') <-[$`\v]>* $<delim> }
     regex md-no-word { \h+ }
@@ -107,7 +108,7 @@ role Markdown::Grammarish  {
     regex md-quote-line { '>' [ \h+ <md-text-element-list> \h* \n || \h* \n ] }
     regex md-quote-block { <md-quote-line>+ }
 
-    regex md-emphasize-text-element { <md-link> || <md-word-math> || <md-word-code> || <md-word> }
+    regex md-emphasize-text-element { <md-link> || <md-word-math> || <md-word-code> || <md-word> || <md-emph-clean-phrase1> }
     regex md-emphasize-text-line { <md-emphasize-text-element>+ % \h+ }
 
     regex md-emphasize-block {

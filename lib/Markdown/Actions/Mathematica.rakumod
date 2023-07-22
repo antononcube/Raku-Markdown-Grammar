@@ -212,6 +212,7 @@ class Markdown::Actions::Mathematica {
     method md-link-url($/) { make 'URL["' ~ $/.Str ~ '"]'; }
     method md-link-label($/) { make 'Label[' ~ $/.Str ~ ']'; }
 
+    method md-emph-clean-phrase1 ($/) { make '"' ~ $/.Str.&to-wl-text ~ '"'; }
     method md-word($/) { make '"' ~ $/.Str.&to-wl-text ~ '"'; }
     method md-word-bold-italic($/) { make 'StyleBox["' ~ $/.Str.substr(3,*-3).&to-wl-text ~ '", FontWeight->"Bold", FontSlant->"Italic"]'; }
     method md-word-bold($/) { make 'StyleBox["' ~ $/.Str.substr(2,*-2).&to-wl-text ~ '", FontWeight->"Bold"]'; }

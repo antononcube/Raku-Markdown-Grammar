@@ -101,6 +101,7 @@ class Markdown::Actions::OrgMode {
     method md-link-url($/) { make $/.Str; }
     method md-link-label($/) { make $/.Str; }
 
+    method md-emph-clean-phrase1 ($/) { make $/.Str; }
     method md-word($/) { make $/.Str; }
     method md-word-bold-italic($/) { make '*/' ~ $/.Str.substr(3, *-3) ~ '/*'; }
     method md-word-bold($/) { make '*' ~ $/.Str.substr(2, *-2) ~ '*'; }

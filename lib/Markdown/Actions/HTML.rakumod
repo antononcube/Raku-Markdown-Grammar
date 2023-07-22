@@ -151,6 +151,7 @@ class Markdown::Actions::HTML {
     method md-link-url($/) { make $/.Str; }
     method md-link-label($/) { make $/.Str; }
 
+    method md-emph-clean-phrase1 ($/) { make $/.Str; }
     method md-word($/) { make $/.Str; }
     method md-word-bold-italic($/) { make '<strong><em>' ~ $/.Str.substr(3, *-3) ~ '</em></strong>'; }
     method md-word-bold($/) { make '<strong>' ~ $/.Str.substr(2, *-2) ~ '</strong>'; }

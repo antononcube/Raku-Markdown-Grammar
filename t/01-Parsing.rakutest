@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 16;
+plan 17;
 
 #-----------------------------------------------------------
 ## 1
@@ -297,5 +297,14 @@ my $text16 = q:to/END/;
 END
 
 ok md-parse($text16, rule => 'md-table-block');
+
+#-----------------------------------------------------------
+## 17
+#-----------------------------------------------------------
+my $mtext17 = q:to/END/;
+**Remark:** For an example of a mature effort with the same mission (and naming, and design) see [SW1] and [WRIp1].
+END
+
+ok md-parse($mtext17.trim);
 
 done-testing;

@@ -12,17 +12,20 @@ grammar Markdown::Grammar
 
 #-----------------------------------------------------------
 our sub md-subparse(Str:D $command, Str:D :$rule = 'TOP') is export {
-    Markdown::Grammar.subparse($command, :$rule);
+    my $ending = $command.substr(*- 1, *) eq "\n" ?? '' !! "\n";
+    Markdown::Grammar.subparse($command ~ $ending, :$rule);
 }
 
 our sub md-parse(Str:D $command, Str:D :$rule = 'TOP') is export {
-    Markdown::Grammar.parse($command, :$rule);
+    my $ending = $command.substr(*- 1, *) eq "\n" ?? '' !! "\n";
+    Markdown::Grammar.parse($command ~ $ending, :$rule);
 }
 
 our sub md-interpret(Str:D $command,
                      Str:D:$rule = 'TOP',
                      :$actions = Markdown::Actions::Mathematica.new) is export {
-    return Markdown::Grammar.parse($command, :$rule, :$actions).made;
+    my $ending = $command.substr(*- 1, *) eq "\n" ?? '' !! "\n";
+    return Markdown::Grammar.parse($command ~ $ending, :$rule, :$actions).made;
 }
 
 #-----------------------------------------------------------

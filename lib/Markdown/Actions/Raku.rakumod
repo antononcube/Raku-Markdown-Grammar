@@ -91,12 +91,12 @@ class Markdown::Actions::Raku {
         }
 
         $modifier = do given $modifier {
-            when $_ ~~ Str:U && $_.lc ∈ <text texts> {
-                { $_.map(*<content>).join() }
+            when $_ ~~ Str:D && $_.lc ∈ <text texts> {
+                -> $x { $x.map(*<content>).join() }
             }
 
-            when $_ ~~ Str:U && $_.lc ∈ <code code-blocks codeblocks> {
-                { $_.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map(*<content>).Array }
+            when $_ ~~ Str:D && $_.lc ∈ <code code-blocks codeblocks> {
+                -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map(*<content>).Array }
             }
 
             default { WhateverCode }

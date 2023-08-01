@@ -6,6 +6,7 @@ class Markdown::Actions::Raku {
     has UInt $.max-level = 5;
     has &.modifier = WhateverCode;
     has Bool $.combine-adjacent-text-lines = True;
+
     method TOP($/) {
         my @mdBlocks = $<md-block>>>.made;
 
@@ -67,11 +68,16 @@ class Markdown::Actions::Raku {
     }
 
     #=======================================================
-    multi method section-tree(@blocks, UInt :$max-level = 6, :&modifier = WhateverCode) {
-        return self.section-tree(@blocks, 1, :$max-level, :&modifier);
+    multi method section-tree(@blocks,
+                              UInt :$max-level = 6,
+                              :$modifier = WhateverCode) {
+        return self.section-tree(@blocks, 1, :$max-level, :$modifier);
     }
 
-    multi method section-tree(@blocks, UInt $level, UInt :$max-level = 5, :&modifier = WhateverCode) {
+    multi method section-tree(@blocks,
+                              UInt $level,
+                              UInt :$max-level = 5,
+                              :$modifier is copy = WhateverCode) {
         if $level ≤ $max-level {
             my @inds = @blocks.pairs.grep({ $_.value<level> == $level })>>.key;
 
@@ -80,14 +86,25 @@ class Markdown::Actions::Raku {
 
                 my @content = @bounds.map({ @blocks[$_[0]]<name> => @blocks[$_[0] + 1 .. ($_[1] - 1)] });
 
-                return @content.map({ $_.key => self.section-tree($_.value, $level + 1, :$max-level, :&modifier) }).Array;
+                return @content.map({ $_.key => self.section-tree($_.value, $level + 1, :$max-level, :$modifier) }).Array;
             }
         }
 
-        # Is this needed? It seems .deepmap can take care of it.
-        given &modifier {
+        $modifier = do given $modifier {
+            when $_ ~~ Str:D && $_.lc ∈ <text texts> {
+                { $_.map(*<content>).join() }
+            }
+
+            when $_ ~~ Str:D && $_.lc ∈ <code code-blocks codeblocks> {
+                { $_.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map(*<content>).Array }
+            }
+
+            default { WhateverCode }
+        }
+
+        given $modifier {
             when WhateverCode { return @blocks }
-            when Callable     { return &modifier(@blocks) }
+            when Callable     { return $modifier(@blocks) }
             default           { return @blocks }
         }
     }

@@ -7,6 +7,8 @@ use Markdown::Grammar;
 
 use Test;
 
+plan *;
+
 ## 1
 my $text1 = q:to/END/;
 # A
@@ -33,11 +35,17 @@ isa-ok md-section-tree($text1).all ~~ Pair, True;
 
 ## 3
 is-deeply
-        md-section-tree($text1, modifier => 'text').Hash,
+        md-section-tree($text1).Hash,
         ${ :A($[(Whatever) => (),
                 :B((${ :content("\nThis is some food\nfor thought.\n\n"), :level(7), :name(Whatever), :type("md-text-block") },)),
                 :C((${ :content("\nThat\n\n"), :level(7), :name(Whatever), :type("md-text-block") },)),
                 :D((${ :content("\nOther\n\n"), :level(7), :name(Whatever), :type("md-text-block") },))]) },
-        'Expected Hash for simple Markdown text.';
+        'Expected Hash for simple Markdown text';
+
+## 4
+is-deeply
+        md-section-tree($text1, modifier => 'text').Hash,
+        ${:A($[(Whatever) => "", :B("\nThis is some food\nfor thought.\n\n"), :C("\nThat\n\n"), :D("\nOther\n\n")])},
+        "Expected Hash for simple Markdown text with modifier 'text'";
 
 done-testing;

@@ -1,0 +1,43 @@
+use v6.d;
+
+use lib '.';
+use lib './lib';
+
+use Markdown::Grammar;
+
+use Test;
+
+## 1
+my $text1 = q:to/END/;
+# A
+
+## B
+
+This is some food
+for thought.
+
+## C
+
+That
+
+## D
+
+Other
+
+END
+
+ok md-section-tree($text1);
+
+## 2
+isa-ok md-section-tree($text1).all ~~ Pair, True;
+
+## 3
+is-deeply
+        md-section-tree($text1, modifier => 'text').Hash,
+        ${ :A($[(Whatever) => (),
+                :B((${ :content("\nThis is some food\nfor thought.\n\n"), :level(7), :name(Whatever), :type("md-text-block") },)),
+                :C((${ :content("\nThat\n\n"), :level(7), :name(Whatever), :type("md-text-block") },)),
+                :D((${ :content("\nOther\n\n"), :level(7), :name(Whatever), :type("md-text-block") },))]) },
+        'Expected Hash for simple Markdown text.';
+
+done-testing;

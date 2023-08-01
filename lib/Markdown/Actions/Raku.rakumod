@@ -4,7 +4,7 @@ class Markdown::Actions::Raku {
 
     has Bool $.as-section-tree = False;
     has UInt $.max-level = 5;
-    has &.modifier = WhateverCode;
+    has $.modifier = WhateverCode;
     has Bool $.combine-adjacent-text-lines = True;
 
     method TOP($/) {
@@ -15,7 +15,7 @@ class Markdown::Actions::Raku {
         }
 
         if  $!as-section-tree {
-            make self.section-tree(@mdBlocks, :$!max-level, :&!modifier);
+            make self.section-tree(@mdBlocks, :$!max-level, :$!modifier);
         } else {
             make @mdBlocks;
         }
@@ -91,11 +91,11 @@ class Markdown::Actions::Raku {
         }
 
         $modifier = do given $modifier {
-            when $_ ~~ Str:D && $_.lc ∈ <text texts> {
+            when $_ ~~ Str:U && $_.lc ∈ <text texts> {
                 { $_.map(*<content>).join() }
             }
 
-            when $_ ~~ Str:D && $_.lc ∈ <code code-blocks codeblocks> {
+            when $_ ~~ Str:U && $_.lc ∈ <code code-blocks codeblocks> {
                 { $_.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map(*<content>).Array }
             }
 

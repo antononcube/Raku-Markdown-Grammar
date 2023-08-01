@@ -5,6 +5,7 @@ use Markdown::Actions::HTML;
 use Markdown::Actions::Mathematica;
 use Markdown::Actions::OrgMode;
 use Markdown::Actions::Pod6;
+use Markdown::Actions::Raku;
 
 grammar Markdown::Grammar
         does Markdown::Grammarish {
@@ -22,7 +23,7 @@ our sub md-parse(Str:D $command, Str:D :$rule = 'TOP') is export {
 }
 
 our sub md-interpret(Str:D $command,
-                     Str:D:$rule = 'TOP',
+                     Str:D :$rule = 'TOP',
                      :$actions = Markdown::Actions::Mathematica.new) is export {
     my $ending = $command.substr(*- 1, *) eq "\n" ?? '' !! "\n";
     return Markdown::Grammar.parse($command ~ $ending, :$rule, :$actions).made;
@@ -30,7 +31,7 @@ our sub md-interpret(Str:D $command,
 
 #-----------------------------------------------------------
 #| Converts Markdown files into Mathematica notebooks.
-#| C<$md> -- A markdown string or file name.
+#| C<$md> -- A Markdown string or file name.
 #| C<:t(:$to)> = 'mathematica' -- Format to convert to. (One of 'mathematica' or 'pod6'.)
 our proto from-markdown($md,
                         Str :t(:$to) = 'mathematica', | --> Str) is export {*}
@@ -103,4 +104,30 @@ multi from-markdown(Str:D $text,
         }
     }
     return $res;
+}
+
+#-----------------------------------------------------------
+#| Converts Markdown text or blocks into a section tree.
+#| C<$md> -- A Markdown string or an array of Markdown blocks.
+#| C<:$max-level)> -- Maximum level (or depth) of the tree.
+#| C<::$modifier> -- Modifier function spec.
+our proto md-section-tree($md, UInt :$max-level = 6, :$modifier = WhateverCode) is export {*}
+
+multi md-section-tree(Str $md,
+                      :$max-level = 6,
+                      :$modifier is copy = WhateverCode) {
+
+    my $actObj = Markdown::Actions::Raku.new(:as-section-tree, :$max-level, :$modifier, :combine-adjacent-text-lines);
+
+    return md-interpret($md, actions => $actObj);
+}
+
+multi md-section-tree(@mdBlocks where *.all ~~ Hash,
+                      :$max-level = 6,
+                      :$modifier = WhateverCode) {
+
+
+    my $actObj = Markdown::Actions::Raku.new(:as-section-tree, :$max-level, :$modifier, :combine-adjacent-text-lines);
+
+    return $actObj.section-tree(@mdBlocks, :$max-level, :$modifier);
 }

@@ -113,6 +113,16 @@ multi from-markdown(Str:D $text,
 #| C<::$modifier> -- Modifier function spec.
 our proto md-section-tree($md, UInt :$max-level = 6, :$modifier = WhateverCode) is export {*}
 
+multi md-section-tree(IO::Path $file, *%args) {
+    my $text = slurp($file);
+    return md-section-tree($text, |%args);
+}
+
+multi md-section-tree(Str:D $file where *.IO.f, *%args) {
+    my $text = slurp($file);
+    return md-section-tree($text, |%args);
+}
+
 multi md-section-tree(Str $md,
                       :$max-level = 6,
                       :$modifier is copy = WhateverCode) {

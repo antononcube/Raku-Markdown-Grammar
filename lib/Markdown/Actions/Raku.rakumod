@@ -90,21 +90,29 @@ class Markdown::Actions::Raku {
             }
         }
 
+        # I am not happy with with code block extractions code repetition.
+        # It has to be refactored at some point.
         $modifier = do given $modifier {
             when $_ ~~ Str:D && $_.lc ∈ <text texts> {
                 -> $x { $x.map(*<content>).join() }
             }
 
             when $_ ~~ Str:D && $_.lc ∈ <code-block code-blocks codeblocks> {
-                -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map(*<content>).Array }
+                -> $x { $x
+                        .grep({ $_<type> ∈ <md-code-block md-code-indented-block> })
+                        .map(*<content>).Array }
             }
 
             when $_ ~~ Str:D && $_.lc ∈ <lang-code code-pairs language-code> {
-                -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map({ given $_.<content> ~~ / ^ '```' (\V*)\n (.*?) \n '```'  $ / { $0.Str => $1.Str } }).Array }
+                -> $x { $x
+                        .grep({ $_<type> ∈ <md-code-block md-code-indented-block> })
+                        .map({ if $_<content> ~~ / ^ '```' (\V*)\n (.*?) \n '```'  $ / { $0.Str => $1.Str } else { '' => $_<content>.Str } }).Array }
             }
 
             when $_ ~~ Str:D && $_.lc ∈ <code> {
-                -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map({ given $_.<content> ~~ / ^ '```' (\V*)\n (.*?) \n '```'  $ / { $1.Str } }).Array }
+                -> $x { $x
+                        .grep({ $_<type> ∈ <md-code-block md-code-indented-block> })
+                        .map({ if $_<content> ~~ / ^ '```' (\V*)\n (.*?) \n '```'  $ / { $1.Str } else { $_<content>.Str } }).Array }
             }
 
             when $_ ~~ Callable {

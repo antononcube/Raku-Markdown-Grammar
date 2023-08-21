@@ -191,7 +191,9 @@ to be executed in the result notebook.
 
 ------
 
-## Usage example
+## Usage examples
+
+### Conversion of text
 
 Consider the following Markdown text:
 
@@ -262,6 +264,46 @@ from-markdown($mtext, to => 'pod6')
 # (2021),
 # L<RakuForPrediction at WordPress|https://rakuforprediction.wordpress.com> .
 # =end pod
+```
+
+### Section tree
+
+The function `md-section-tree` extracts the Markdown blocks into a Hash-based tree that 
+corresponds to the hierarchical sections structure of the Markdown document:
+
+```perl6, results=asis
+use Data::Translators;
+md-section-tree($mtext) ==> data-translation
+```
+<table border="1"><thead><tr><th>name</th><th>level</th><th>content</th><th>type</th></tr></thead><tbody><tr><td>(Whatever)</td><td>7</td><td>Here is data wrangling code:
+</td><td>md-text-block</td></tr><tr><td>(Whatever)</td><td>7</td><td>
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #[&quot;passengerSex&quot;]&amp; ];
+    Echo[Map[ Length, obj], &quot;counts:&quot;]
+
+</td><td>md-code-indented-block</td></tr><tr><td>References</td><td>2</td><td>## References
+</td><td>md-header2</td></tr><tr><td>(Whatever)</td><td>7</td><td>
+</td><td>md-text-block</td></tr><tr><td>Articles</td><td>3</td><td>### Articles
+</td><td>md-header3</td></tr><tr><td>(Whatever)</td><td>7</td><td>
+[AA1] Anton Antonov,
+[&quot;Introduction to data wrangling with Raku&quot;](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/),
+(2021),
+[RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
+</td><td>md-text-block</td></tr></tbody></table>
+
+
+Here we just get the code blocks:
+
+```perl6
+md-section-tree($mtext, modifier => 'code')
+```
+```
+# [
+#     obj = dfTitanic;
+#     obj = GroupBy[ obj, #["passengerSex"]& ];
+#     Echo[Map[ Length, obj], "counts:"]
+# 
+# ]
 ```
 
 ------

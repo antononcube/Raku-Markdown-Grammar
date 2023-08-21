@@ -165,7 +165,9 @@ to be executed in the result notebook.
 
 ------
 
-## Usage example
+## Usage examples
+
+### Conversion of text
 
 Consider the following Markdown text:
 
@@ -202,6 +204,22 @@ Here is the corresponding Pod6 text:
 
 ```perl6
 from-markdown($mtext, to => 'pod6')
+```
+
+### Section tree
+
+The function `md-section-tree` extracts the Markdown blocks into a Hash-based tree that 
+corresponds to the hierarchical sections structure of the Markdown document:
+
+```perl6, results=asis
+use Data::Translators;
+md-section-tree($mtext) ==> data-translation
+```
+
+Here we just get the code blocks:
+
+```perl6
+md-section-tree($mtext, modifier => 'code')
 ```
 
 ------

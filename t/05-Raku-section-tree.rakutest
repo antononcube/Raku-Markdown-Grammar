@@ -45,7 +45,49 @@ is-deeply
 ## 4
 is-deeply
         md-section-tree($text1, modifier => 'text').Hash,
-        ${:A($[(Whatever) => "", :B("\nThis is some food\nfor thought.\n\n"), :C("\nThat\n\n"), :D("\nOther\n\n")])},
+        ${ :A($[(Whatever) => "", :B("\nThis is some food\nfor thought.\n\n"), :C("\nThat\n\n"), :D("\nOther\n\n")]) },
         "Expected Hash for simple Markdown text with modifier 'text'";
+
+## 5
+my $text5 = q:to/END/;
+# A
+## B
+```perl6
+my $obj = 1 + π;
+```
+
+## C
+
+```raku
+1_000 + 23
+```
+END
+
+is-deeply
+        md-section-tree($text5, modifier => 'code').Hash,
+        ${ :A($[:B(['my $obj = 1 + π;',]), :C(['1_000 + 23',])]) },
+        "Expected Hash for simple Markdown text with modifier 'code'";
+
+## 6
+is-deeply
+        md-section-tree($text5, modifier => 'lang-code').Hash,
+        ${:A($[:B([:perl6("my \$obj = 1 + π;")]), :C([:raku("1_000 + 23")])])},
+        "Expected Hash for simple Markdown text with modifier 'lang-code'";
+
+## 7
+is-deeply
+        md-section-tree($text5, modifier => 'code-block').Hash,
+        ${:A($[:B(["```perl6\nmy \$obj = 1 + π;\n```"]), :C(["```raku\n1_000 + 23\n```"])])},
+        "Expected Hash for simple Markdown text with modifier 'code-block'";
+
+## 8
+is-deeply
+        md-section-tree(
+                $text5,
+                max-level => 1,
+                modifier => { $_.grep({ $_<type> ∈ <md-header2 md-header3> }).map(*<content>).Array }).Hash,
+        ${:A($["## B\n", "## C\n"])},
+        "Expected Hash for simple Markdown text with modifier 'code-block'";
+
 
 done-testing;

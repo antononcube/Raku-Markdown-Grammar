@@ -95,11 +95,26 @@ class Markdown::Actions::Raku {
                 -> $x { $x.map(*<content>).join() }
             }
 
-            when $_ ~~ Str:D && $_.lc ∈ <code code-blocks codeblocks> {
+            when $_ ~~ Str:D && $_.lc ∈ <code-block code-blocks codeblocks> {
                 -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map(*<content>).Array }
             }
 
-            default { WhateverCode }
+            when $_ ~~ Str:D && $_.lc ∈ <lang-code code-pairs language-code> {
+                -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map({ given $_.<content> ~~ / ^ '```' (\V*)\n (.*?) \n '```'  $ / { $0.Str => $1.Str } }).Array }
+            }
+
+            when $_ ~~ Str:D && $_.lc ∈ <code> {
+                -> $x { $x.grep({ $_<type> ∈ <md-code-block md-indented-block> }).map({ given $_.<content> ~~ / ^ '```' (\V*)\n (.*?) \n '```'  $ / { $1.Str } }).Array }
+            }
+
+            when $_ ~~ Callable {
+                $modifier
+            }
+
+            default {
+                note 'Do not know how to process the modifier argument.';
+                WhateverCode
+            }
         }
 
         given $modifier {

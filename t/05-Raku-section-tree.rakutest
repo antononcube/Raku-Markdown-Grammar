@@ -89,5 +89,22 @@ is-deeply
         ${:A($["## B\n", "## C\n"])},
         "Expected Hash for simple Markdown text with modifier 'code-block'";
 
+## 9
+my $text9 = q:to/END/;
+Here is data wrangling code:
+
+    obj = dfTitanic;
+    obj = GroupBy[ obj, #["passengerSex"]& ];
+    Echo[Map[ Length, obj], "counts:"]
+
+## References
+TBD...
+END
+
+is-deeply
+        md-section-tree($text9, modifier => 'code'),
+        $["\n    obj = dfTitanic;\n    obj = GroupBy[ obj, #[\"passengerSex\"]\& ];\n    Echo[Map[ Length, obj], \"counts:\"]\n\n"],
+        "Expected Hash for indented code block with modifier 'code'";
+
 
 done-testing;

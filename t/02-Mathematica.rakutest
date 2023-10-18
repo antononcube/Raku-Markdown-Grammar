@@ -8,7 +8,7 @@ use Markdown::Grammar;
 
 #===========================================================
 
-plan 19;
+plan 20;
 
 #-----------------------------------------------------------
 ## 1
@@ -441,5 +441,30 @@ my $res19 = Q (Cell[TextData[{"Don't", " ", "fear", " ", "the", " ", "grepper!",
 is md-interpret($mtext19).contains($res19),
         True,
         'Section line immendiately after text line';
+
+#-----------------------------------------------------------
+## 20
+#-----------------------------------------------------------
+
+my $mtext20 = q:to/END/;
+Here is a table of the Raku-Python correspondence:
+
+| Post processing of LLM results   | Raku                      | Python                         |
+|----------------------------------|---------------------------|--------------------------------|
+| Extracting text elements         | [Text::SubParsers][]      | part of [LLMFunctionObjects][] |
+| Shapes and types                 | [Data::TypeSystem][]      | [DataTypeSystem][]             |
+
+[Text::SubParsers]: https://raku.land/zef:antononcube/Text::SubParsers
+[Data::TypeSystem]: https://raku.land/zef:antononcube/Data::TypeSystem
+
+[LLMFunctionObjects]: https://pypi.org/project/LLMFunctionObjects
+[DataTypeSystem]: https://pypy.org/project/DataTypeSystem
+END
+
+my $res20 = Q (ButtonBox[\"Text::SubParsers\", BaseStyle -> \"Hyperlink\", ButtonData -> { URL[\"https://raku.land/zef:antononcube/Text::SubParsers\"], None}]);
+
+is md-interpret($mtext20).contains($res20),
+        True,
+        'Empty URL labels in a table';
 
 done-testing;

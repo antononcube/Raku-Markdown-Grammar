@@ -204,7 +204,11 @@ class Markdown::Actions::Mathematica {
     }
 
     method md-reference-link($/) {
-        make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $<md-link-label>.made ~ ', None}]';
+        my $lbl = $<md-link-label>.made;
+        if $lbl ~~ / Label\[\h*\] / {
+            $lbl = "Label[{$<md-link-name>.made.substr(1,*-1)}]";
+        }
+        make 'ButtonBox[' ~ $<md-link-name>.made ~ ', BaseStyle -> "Hyperlink", ButtonData -> { ' ~ $lbl ~ ', None}]';
     }
     method md-reference($/) { make $<md-link-label>.made => $<md-link-url>.made; }
 

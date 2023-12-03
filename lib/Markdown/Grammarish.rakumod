@@ -44,12 +44,12 @@ role Markdown::Grammarish  {
     }
 
     regex md-code-block {
-        $<header>=(
-        $mdTicks '{'? \h* $<lang>=(\w* | 'Wolfram Language')
+        $<fence>=[ ['`' | '~'] ** 3..* ]
+        $<header>=('{'? \h* $<lang>=(\w* | 'Wolfram Language')
         [ \h+ $<name>=(<alpha>+) ]?
         [ \h* ',' \h* $<params>=(<md-list-of-params>) ]? \h* '}'? \h* \v )
-        $<code>=[<!before $mdTicks> .]*?
-        $mdTicks
+        $<code>=(.*?)
+        <?after \v> $<fence>
     }
 
     regex md-code-indented-block {

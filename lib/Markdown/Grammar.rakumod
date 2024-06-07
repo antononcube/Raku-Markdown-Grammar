@@ -132,7 +132,7 @@ multi md-section-tree(Str $md,
     return md-interpret($md, actions => $actObj);
 }
 
-multi md-section-tree(@mdBlocks where *.all ~~ Hash,
+multi md-section-tree(@mdBlocks where @mdBlocks.all ~~ Hash,
                       :$max-level = 6,
                       :$modifier = WhateverCode) {
 

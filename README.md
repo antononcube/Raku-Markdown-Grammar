@@ -9,7 +9,7 @@ Markdown parser suitable for making converters of Markdown files into files of d
 - [X] DONE Pod6 file
 - [X] DONE Org-mode file
 - [X] DONE HTML file
-- [X] DONE Raku data structure
+- [X] DONE Raku data structure 
 
 See the video 
 ["Markdown to Mathematica converter (CLI and StackExchange examples)"](https://www.youtube.com/watch?v=39ekokgnoqE), [AAv1],
@@ -274,23 +274,23 @@ corresponds to the hierarchical sections structure of the Markdown document:
 
 ```perl6, results=asis
 use Data::Translators;
-md-section-tree($mtext) ==> data-translation
+md-section-tree($mtext) ==> data-translation(field-names => <type level name content>)
 ```
-<table border="1"><thead><tr><th>name</th><th>level</th><th>content</th><th>type</th></tr></thead><tbody><tr><td>(Whatever)</td><td>7</td><td>Here is data wrangling code:
-</td><td>md-text-block</td></tr><tr><td>(Whatever)</td><td>7</td><td>
+<table border="1"><thead><tr><th>type</th><th>level</th><th>name</th><th>content</th></tr></thead><tbody><tr><td>md-text-block</td><td>7</td><td>(Whatever)</td><td>Here is data wrangling code:
+</td></tr><tr><td>md-code-indented-block</td><td>7</td><td>(Whatever)</td><td>
     obj = dfTitanic;
     obj = GroupBy[ obj, #[&quot;passengerSex&quot;]&amp; ];
     Echo[Map[ Length, obj], &quot;counts:&quot;]
 
-</td><td>md-code-indented-block</td></tr><tr><td>References</td><td>2</td><td>## References
-</td><td>md-header2</td></tr><tr><td>(Whatever)</td><td>7</td><td>
-</td><td>md-text-block</td></tr><tr><td>Articles</td><td>3</td><td>### Articles
-</td><td>md-header3</td></tr><tr><td>(Whatever)</td><td>7</td><td>
+</td></tr><tr><td>md-header2</td><td>2</td><td>References</td><td>## References
+</td></tr><tr><td>md-text-block</td><td>7</td><td>(Whatever)</td><td>
+</td></tr><tr><td>md-header3</td><td>3</td><td>Articles</td><td>### Articles
+</td></tr><tr><td>md-text-block</td><td>7</td><td>(Whatever)</td><td>
 [AA1] Anton Antonov,
 [&quot;Introduction to data wrangling with Raku&quot;](https://rakuforprediction.wordpress.com/2021/12/31/introduction-to-data-wrangling-with-raku/),
 (2021),
 [RakuForPrediction at WordPress](https://rakuforprediction.wordpress.com).
-</td><td>md-text-block</td></tr></tbody></table>
+</td></tr></tbody></table>
 
 
 Here we just get the code blocks:

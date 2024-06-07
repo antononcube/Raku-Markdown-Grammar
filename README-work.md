@@ -214,7 +214,7 @@ corresponds to the hierarchical sections structure of the Markdown document:
 
 ```perl6, results=asis
 use Data::Translators;
-md-section-tree($mtext) ==> data-translation
+md-section-tree($mtext) ==> data-translation(field-names => <type level name content>)
 ```
 
 Here we just get the code blocks:

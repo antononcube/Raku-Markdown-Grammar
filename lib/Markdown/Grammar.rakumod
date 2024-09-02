@@ -2,6 +2,7 @@ use v6.d;
 
 use Markdown::Grammarish;
 use Markdown::Actions::HTML;
+use Markdown::Actions::Jupyter;
 use Markdown::Actions::Mathematica;
 use Markdown::Actions::OrgMode;
 use Markdown::Actions::Pod6;
@@ -75,6 +76,12 @@ multi from-markdown(Str:D $text,
         when  $_ ∈ <html html5> {
             $res = md-interpret($text ~ $ending,
                     actions => Markdown::Actions::HTML.new(
+                            defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
+                            ));
+        }
+        when  $_ ∈ <jupyter ipynb> {
+            $res = md-interpret($text ~ $ending,
+                    actions => Markdown::Actions::Jupyter.new(
                             defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
                             ));
         }

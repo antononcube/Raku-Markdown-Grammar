@@ -65,6 +65,11 @@ class Markdown::Actions::Jupyter {
         make $/.values[0].made;
     }
 
+    method md-math-block($/) {
+        my $code = $<code>.Str.trim;
+        make self.make-markdown-cell('$$' ~ $code ~ '$$');
+    }
+
     method md-code-block($/) {
         make {
             "cell_type" => "code",

@@ -79,7 +79,13 @@ class Markdown::Actions::Jupyter {
             "source" => $<code>.Str
         };
     }
-    method md-text-line($/) { make Pair.new('TEXTLINE', $<md-text-line-tail>.Str); }
+    method md-text-line($/) {
+        my $tail = $<md-text-line-tail>.Str;
+        if $tail.contains('````') {
+            $tail .= subst(/ '````' (<-[`\v]>*) '````' /, -> $x { '$' ~ $x[0].Str ~ '$' }):g;
+        }
+        make Pair.new('TEXTLINE', $tail);
+    }
 
     method md-header1($/) {
         make self.make-markdown-cell("# " ~ $<head>.Str);

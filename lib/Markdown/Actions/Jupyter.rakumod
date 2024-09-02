@@ -10,7 +10,7 @@ use JSON::Fast;
 class Markdown::Actions::Jupyter {
     has $.defaultLang = 'raku';
 
-    method markdown-cell(Str:D $content) {
+    method markdown-cell(Str:D $content --> Map:D) {
         return {
             "cell_type" => "markdown",
             "metadata" => {},
@@ -19,7 +19,7 @@ class Markdown::Actions::Jupyter {
     }
     
     method TOP($/) {
-        my @mdBlocks = $<md-block>>>.made;
+        my @mdBlocks = $<md-block>>>.made.grep({ $_ ~~ Map:D });
         
         make to-json {
             "cells" => @mdBlocks,
@@ -48,15 +48,15 @@ class Markdown::Actions::Jupyter {
     }
 
     method md-header1($/) {
-        make self.markdown-cell("#### " ~ $<head>.Str);
+        make self.markdown-cell("# " ~ $<head>.Str);
     }
 
     method md-header2($/) {
-        make self.markdown-cell("#### " ~ $<head>.Str);
+        make self.markdown-cell("## " ~ $<head>.Str);
     }
 
     method md-header3($/) {
-        make self.markdown-cell("#### " ~ $<head>.Str);
+        make self.markdown-cell("### " ~ $<head>.Str);
     }
 
     method md-header4($/) {

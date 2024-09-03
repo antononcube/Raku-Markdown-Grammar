@@ -9,6 +9,7 @@ use JSON::Fast;
 
 class Markdown::Actions::Jupyter {
     has $.defaultLang = 'raku';
+    has %!references;
 
     multi method make-markdown-cell(@lines --> Map:D) {
         return self.make-markdown-cell(@lines.grep(*.defined).join("\n"))
@@ -50,6 +51,12 @@ class Markdown::Actions::Jupyter {
                 @mdBlocks2.push( self.make-markdown-cell(@textBlockLines) );
             }
             @mdBlocks = @mdBlocks2;
+
+            # Process references
+            for %!references.kv -> $k, $v {
+                # This key pattern is not sufficient.
+                @mdBlocks .= map({ if $_<cell_type> eq 'markdown' { $_<source> = $_<source>.subst( '][' ~ $k ~ ']', '](' ~ $v ~ ')'):g }; $_ });
+            }
         }
 
         # Result
@@ -123,9 +130,16 @@ class Markdown::Actions::Jupyter {
         make Pair.new('TEXTLINE', $/.Str);
     }
 
+    # Not used
+    method md-reference-link($/) { make '<a href="[' ~  $<md-link-label>.made ~ ']">' ~ $<md-link-name>.made ~ '</a>'; }
     method md-reference($/) {
-        make Pair.new('TEXTLINE', $/.Str);
+        %!references.push(Pair.new($<md-link-label>.made, $<md-link-url>.made));
+        make self.make-markdown-cell("");
     }
+
+    method md-link-name($/) { make $/.Str; }
+    method md-link-url($/) { make $/.Str; }
+    method md-link-label($/) { make $/.Str; }
 
     method md-empty-line($/) {
         make self.make-markdown-cell("");

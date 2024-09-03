@@ -165,7 +165,7 @@ Raku cells that require the Mathematica package "RakuMode.m", [AAp2], to be load
 to be executed in the result notebook. 
 
 **Remark:** If CLI script's argument `--output` is a non-empty string and `--format` is "whatever" or "automatic",
-then an attempt is made to conclude the format to convert to from the extension of the file name given `--output`.
+then an attempt is made to conclude the format to convert to from the extension of the file name given to `--output`.
 
 
 ------

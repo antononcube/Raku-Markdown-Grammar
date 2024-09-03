@@ -25,6 +25,7 @@ sub MAIN(Str $text,                                  #= Input file or Markdown t
     if !$to || $to.lc ∈ <whatever automatic> {
         $toSpec = do given $output {
             when !$_.chars { 'mathematica' }
+            when $_ ~~ / '.nb' / { 'mathematica' }
             when $_ ~~ / '.ipynb' / { 'jupyter' }
             when $_ ~~ / '.html' / { 'html' }
             when $_ ~~ / '.org' / { 'org' }

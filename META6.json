@@ -1,7 +1,7 @@
 {
   "name": "Markdown::Grammar",
-  "description": "Grammar for parsing Markdown documents and converting them to notebook-, org-, or Pod6 files.",
-  "version": "0.5.11",
+  "description": "Grammar for parsing Markdown documents and converting them to html-, notebook-, org-, or Pod6 files.",
+  "version": "0.5.12",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"
@@ -33,8 +33,13 @@
   "license": "Artistic-2.0",
   "tags": [
     "grammar",
+    "html",
+    "jupyter",
     "markdown",
     "mathematica",
+    "notebook",
+    "org",
+    "org-mode",
     "parser",
     "pod6",
     "wl",

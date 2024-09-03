@@ -115,6 +115,18 @@ class Markdown::Actions::Jupyter {
         make self.make-markdown-cell("---");
     }
 
+    method md-image-simple-link($/) {
+        make Pair.new('TEXTLINE', $/.Str);
+    }
+
+    method md-image-complex-link($/) {
+        make Pair.new('TEXTLINE', $/.Str);
+    }
+
+    method md-reference($/) {
+        make Pair.new('TEXTLINE', $/.Str);
+    }
+
     method md-empty-line($/) {
         make self.make-markdown-cell("");
     }

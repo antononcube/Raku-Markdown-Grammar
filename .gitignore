@@ -4,4 +4,5 @@
 # precompiled files
 .precomp
 lib/.precomp
-
+.idea
+.DS_Store

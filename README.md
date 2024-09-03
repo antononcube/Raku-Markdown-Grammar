@@ -190,6 +190,10 @@ from-markdown -to=pod6 'Here is data wrangling code:
 Raku cells that require the Mathematica package "RakuMode.m", [AAp2], to be loaded and the command `RakuMode[]` 
 to be executed in the result notebook. 
 
+**Remark:** If CLI script's argument `--output` is a non-empty string and `--format` is "whatever" or "automatic",
+then an attempt is made to conclude the format to convert to from the extension of the file name given `--output`.
+
+
 ------
 
 ## Usage examples
@@ -383,7 +387,7 @@ a fair amount of Mathematica's
 
 [RC1] Raku Community, [Raku Pod6](https://docs.raku.org/language/pod).
 
-### Packages
+### Packages, paclets
 
 [AAp1] Anton Antonov
 [Text::CodeProcessing Raku package](https://github.com/antononcube/Raku-Text-CodeProcessing),
@@ -391,9 +395,9 @@ a fair amount of Mathematica's
 [GitHub/antononcube](https://github.com/antononcube).
 
 [AAp2] Anton Antonov
-[RakuMode Mathematica package](https://github.com/antononcube/ConversationalAgents/blob/master/Packages/WL/RakuMode.m),
-(2021),
-[ConversationalAgents at GitHub/antononcube](https://github.com/antononcube/ConversationalAgents).
+[RakuMode Wolfram Language paclet](https://resources.wolframcloud.com/PacletRepository/resources/AntonAntonov/RakuMode/),
+(2023),
+[Wolfram Language Paclet Repository](https://resources.wolframcloud.com/PacletRepository).
 
 [FZp1] Faizon Zaman,
 [Markdown2WL Mathematica package](https://github.com/dishmint/Markdown2WL),

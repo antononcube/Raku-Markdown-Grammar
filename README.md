@@ -149,14 +149,14 @@ from-markdown --help
 ```
 ```
 # Usage:
-#   from-markdown <text> [-t|--to=<Str>] [-l|--default-language=<Str>] [--raku-code-cell-name=<Str>] [-d|--docked-cells] [-o|--output=<Str>] -- Converts Markdown files into Mathematica notebooks or Pod6 files.
+#   from-markdown <text> [-t|--to=<Str>] [-l|--default-language=<Str>] [-r|--raku-code-cell-name=<Str>] [-d|--docked-cells] [-o|--output=<Str>] -- Converts Markdown files into Jupyter and Mathematica notebooks, and HTML, Org-mode, and Pod6 files.
 #   
-#     <text>                         Input file or Markdown text.
-#     -t|--to=<Str>                  Format to convert to. (One of 'html', 'mathematica', 'org', or 'pod6'.) [default: 'mathematica']
-#     -l|--default-language=<Str>    Default language. [default: 'Whatever']
-#     --raku-code-cell-name=<Str>    Raku code cell name. [default: 'Whatever']
-#     -d|--docked-cells              Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
-#     -o|--output=<Str>              Output file; if an empty string then the result is printed to stdout. [default: '']
+#     <text>                            Input file or Markdown text.
+#     -t|--to=<Str>                     Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', or 'pod6'.) [default: 'Whatever']
+#     -l|--default-language=<Str>       Default language. [default: 'Whatever']
+#     -r|--raku-code-cell-name=<Str>    Raku code cell name. (Mathematica only.) [default: 'Whatever']
+#     -d|--docked-cells                 Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
+#     -o|--output=<Str>                 Output file; if an empty string then the result is printed to stdout. [default: '']
 ```
 
 The CLI script `from-markdown` takes both file names and (Markdown) text. Here is an usage example for the latter:

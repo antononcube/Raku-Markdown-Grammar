@@ -7,11 +7,11 @@ my %*SUB-MAIN-OPTS = :named-anywhere;
 
 #-----------------------------------------------------------
 
-#| Converts Markdown files into Mathematica notebooks or Pod6 files.
+#| Converts Markdown files into Jupyter and Mathematica notebooks, and HTML, Org-mode, and Pod6 files.
 sub MAIN(Str $text,                                  #= Input file or Markdown text.
-         Str :t(:$to) = 'mathematica',               #= Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', or 'pod6'.)
+         Str :t(:$to) = 'Whatever',                  #= Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', or 'pod6'.)
          Str :l(:$default-language) = 'Whatever',    #= Default language.
-         Str :$raku-code-cell-name = 'Whatever',     #= Raku code cell name.
+         Str :r(:$raku-code-cell-name) = 'Whatever', #= Raku code cell name. (Mathematica only.)
          Bool :d(:$docked-cells) = False,            #= Should formula conversion button be added as a docked cell or not? (Mathematica only.)
          Str :o(:$output) = '',                      #= Output file; if an empty string then the result is printed to stdout.
          ) {
@@ -19,9 +19,27 @@ sub MAIN(Str $text,                                  #= Input file or Markdown t
 
     my $defaultLang = (!$default-language || $default-language.lc ∈ <whatever automatic>) ?? Whatever !! $default-language;
 
-    my $rakuCodeCellName = (!$$raku-code-cell-name || $$raku-code-cell-name.lc ∈ <whatever automatic>) ?? Whatever !! $raku-code-cell-name;
+    my $rakuCodeCellName = (!$raku-code-cell-name || $raku-code-cell-name.lc ∈ <whatever automatic>) ?? Whatever !! $raku-code-cell-name;
 
-    my $res = from-markdown($text, :$to, :$docked-cells,
+    my $toSpec = $to;
+    if !$to || $to.lc ∈ <whatever automatic> {
+        $toSpec = do given $output {
+            when !$_.chars { 'mathematica' }
+            when $_ ~~ / '.ipynb' / { 'jupyter' }
+            when $_ ~~ / '.html' / { 'html' }
+            when $_ ~~ / '.org' / { 'org' }
+            when $_ ~~ / '.pod' | '.pod6' / { 'pod6' }
+            when $_ ~~ / '.raku' | '.p6' / { 'raku' }
+            default {
+                note 'Cannot automatically determine the format to convert to.';
+                'mathematica'
+            }
+        }
+    }
+
+    my $res = from-markdown($text,
+            to => $toSpec,
+            :$docked-cells,
             default-language => $defaultLang,
             raku-code-cell-name => $rakuCodeCellName);
 

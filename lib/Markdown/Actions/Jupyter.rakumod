@@ -54,8 +54,13 @@ class Markdown::Actions::Jupyter {
 
             # Process references
             for %!references.kv -> $k, $v {
-                # This key pattern is not sufficient.
-                @mdBlocks .= map({ if $_<cell_type> eq 'markdown' { $_<source> = $_<source>.subst( '][' ~ $k ~ ']', '](' ~ $v ~ ')'):g }; $_ });
+                @mdBlocks .= map({
+                    if $_<cell_type> eq 'markdown' {
+                        # See md-link-name in Grammarish
+                        $_<source> = $_<source>.subst( / <?after '![' <-[\[\]\v]>*  ']'> '[' $k ']' /, '(' ~ $v ~ ')'):g
+                    };
+                    $_
+                });
             }
         }
 

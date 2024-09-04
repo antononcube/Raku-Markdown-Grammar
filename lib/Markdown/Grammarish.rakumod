@@ -49,7 +49,8 @@ role Markdown::Grammarish  {
         [ \h+ $<name>=(<alpha>+) ]?
         [ \h* ',' \h* $<params>=(<md-list-of-params>) ]? \h* '}'? \h* \v )
         $<code>=(.*?)
-        <?after \v> $<fence>
+        #<?after \v> $<fence>
+        \v $<fence>
     }
 
     regex md-code-indented-block {

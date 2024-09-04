@@ -1,0 +1,149 @@
+use v6.d;
+use Test;
+
+use lib '.';
+use lib './lib';
+
+use Markdown::Grammar;
+use JSON::Fast;
+
+#===========================================================
+
+plan 4;
+
+#-----------------------------------------------------------
+## 1
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/1
+my $mtext1 = q:to/END/;
+line1
+END
+
+my $res1 = q:to/END/;
+{
+  "nbformat_minor": 2,
+  "cells": [
+    {
+      "source": "line1",
+      "metadata": {
+      },
+      "cell_type": "markdown"
+    }
+  ],
+  "metadata": {
+  },
+  "nbformat": 4
+}
+END
+
+is-deeply from-markdown($mtext1, to => 'jupyter').&from-json,
+        $res1.trim-trailing.&from-json,
+        'Simple';
+
+#-----------------------------------------------------------
+## 2
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/2
+my $mtext2 = q:to/END/;
+```raku
+my $obj = [12,]
+```
+END
+
+my $res2 = q:to/END/;
+{
+  "nbformat_minor": 2,
+  "nbformat": 4,
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": 0,
+      "source": "my $obj = [12,]",
+      "outputs": [
+      ],
+      "metadata": {
+      }
+    }
+  ],
+  "metadata": {
+  }
+}
+END
+
+is from-markdown($mtext2, to => 'jupyter').&from-json,
+        $res2.trim-trailing.&from-json,
+        'Raku code block';
+
+#-----------------------------------------------------------
+## 3
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/4
+my $mtext3 = q:to/END/;
+```
+{
+    "name": "Anton"
+}
+```
+END
+
+my $res3 = q:to/END/;
+{
+  "nbformat": 4,
+  "nbformat_minor": 2,
+  "metadata": {
+  },
+  "cells": [
+    {
+      "execution_count": 0,
+      "outputs": [
+      ],
+      "source": "{\n    \"name\": \"Anton\"\n}",
+      "metadata": {
+      },
+      "cell_type": "code"
+    }
+  ]
+}
+END
+
+is from-markdown($mtext3, to => 'jupyter').&from-json,
+        $res3.trim-trailing.&from-json,
+        'Raku code block with no lang spec';
+
+#-----------------------------------------------------------
+## 4
+#-----------------------------------------------------------
+# Same as the above using '~~~~~' as a fence
+my $mtext4 = q:to/END/;
+~~~~~
+{
+    "name": "Anton"
+}
+~~~~~
+END
+
+my $res4 = q:to/END/;
+{
+  "cells": [
+    {
+      "source": "{\n    \"name\": \"Anton\"\n}",
+      "outputs": [
+      ],
+      "cell_type": "code",
+      "metadata": {
+      },
+      "execution_count": 0
+    }
+  ],
+  "nbformat": 4,
+  "nbformat_minor": 2,
+  "metadata": {
+  }
+}
+END
+
+is from-markdown($mtext4, to => 'jupyter').&from-json,
+        $res3.trim-trailing.&from-json,
+        'Raku code block with no lang spec using "~~~~~" fence';
+
+done-testing;

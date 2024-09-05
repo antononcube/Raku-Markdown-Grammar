@@ -149,11 +149,12 @@ from-markdown --help
 ```
 ```
 # Usage:
-#   from-markdown <text> [-t|--to=<Str>] [-l|--default-language=<Str>] [-r|--raku-code-cell-name=<Str>] [-d|--docked-cells] [-o|--output=<Str>] -- Converts Markdown files into Jupyter and Mathematica notebooks, and HTML, Org-mode, and Pod6 files.
+#   from-markdown <text> [-f|--flavor=<Str>] [-t|--to=<Str>] [-l|--default-language=<Str>] [-r|--raku-code-cell-name=<Str>] [-d|--docked-cells] [-o|--output=<Str>] -- Converts Markdown files into Jupyter and Mathematica notebooks, and HTML, Org-mode, and Pod6 files.
 #   
 #     <text>                            Input file or Markdown text.
-#     -t|--to=<Str>                     Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', or 'pod6'.) [default: 'Whatever']
-#     -l|--default-language=<Str>       Default language. [default: 'Whatever']
+#     -f|--flavor=<Str>                 Markdown flavor. (One of 'obsidian' or 'Whatever'.) [default: 'Whatever']
+#     -t|--to=<Str>                     Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', 'pod6', or 'Whatever'.) [default: 'Whatever']
+#     -l|--default-language=<Str>       Default code blocks language. [default: 'Whatever']
 #     -r|--raku-code-cell-name=<Str>    Raku code cell name. (Mathematica only.) [default: 'Whatever']
 #     -d|--docked-cells                 Should formula conversion button be added as a docked cell or not? (Mathematica only.) [default: False]
 #     -o|--output=<Str>                 Output file; if an empty string then the result is printed to stdout. [default: '']
@@ -313,6 +314,30 @@ md-section-tree($mtext, modifier => 'code')
 
 ------
 
+## Parsing Markdown flavors
+
+### Obsidian 
+
+The parsing and interpretation of Obsidian flavor Markdown files is specified with the option "flavor".
+Here is an invocation within a Raku session:
+
+```
+from-markdown($mtext2, flavor => 'obsidian', to => 'jupyter');
+```
+
+Here is one of the ways to specify Obsidian file conversion via the CLI script:
+
+```
+from-markdown myObsidianFile.md -f=obsidian -o myObsidianFile.ipynb  
+```
+
+Other examples are given in the test file 
+["07-Jupyter-Obsidian.rakutest"](https://github.com/antononcube/Raku-Markdown-Grammar/blob/main/t/07-Jupyter-Obsidian.rakutest).
+
+See also the dedicated GitHub repository: ["obsidian-2-jupyter"](https://github.com/rcmlz/obsidian-2-jupyter), [RMr1].
+
+------
+
 ## TODOs
 
 The most important items are placed first.
@@ -363,6 +388,9 @@ Many thanks to Jakub (Kuba) Podkalicki for programming the package "M2MD", and h
 a fair amount of Mathematica's 
 [low-Level notebook programming](https://reference.wolfram.com/language/guide/LowLevelNotebookProgramming.html).
 
+Thanks to Rc Mlz for his request and guidance for parsing the Obsidian Markdown flavor and 
+creating the dedicated [Obsidian-to-Jupyter conversion repository](https://github.com/rcmlz/obsidian-2-jupyter), [RMr1].
+
 ------
 
 ## References
@@ -408,6 +436,11 @@ a fair amount of Mathematica's
 [M2MD](https://github.com/kubaPod/M2MD),
 (2018-2022),
 [GitHub/kubaPod](https://github.com/kubaPod).
+
+[RMr1] Rc Mlz,
+[obsidian-2-jupyter](https://github.com/rcmlz/obsidian-2-jupyter),
+(2024),
+[GitHub/rcmlz](https://github.com/rcmlz).
 
 ### Videos
 

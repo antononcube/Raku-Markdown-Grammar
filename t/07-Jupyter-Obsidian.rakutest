@@ -1,0 +1,118 @@
+use v6.d;
+use Test;
+
+use lib <. lib>;
+
+use Markdown::Grammar;
+use JSON::Fast;
+
+#===========================================================
+
+plan *;
+
+#-----------------------------------------------------------
+## 1
+#-----------------------------------------------------------
+my $mtext1 = q:to/END/;
+> [!info]
+> Like this one.
+> info
+END
+
+my $res1 = q:to/END/;
+{
+  "nbformat_minor": 2,
+  "cells": [
+    {
+      "metadata": {
+      },
+      "source": "<div class=\"alert alert-block alert-info\"><b>Info</b><br/>Like this one.<br/>info</div>",
+      "cell_type": "markdown"
+    }
+  ],
+  "metadata": {
+  },
+  "nbformat": 4
+}
+END
+
+is-deeply from-markdown($mtext1, to => 'jupyter-obsidian').&from-json,
+        $res1.trim-trailing.&from-json,
+        'Simple quote block';
+
+#-----------------------------------------------------------
+## 2
+#-----------------------------------------------------------
+my $mtext2 = q:to/END/;
+> [!warning] This is a warning!
+> Like this
+> warning block
+END
+
+my $res2 = q:to/END/;
+{
+  "nbformat_minor": 2,
+  "nbformat": 4,
+  "cells": [
+    {
+      "source": "<div class=\"alert alert-block alert-warning\"><b>This is a warning!</b><br/>Like this<br/>warning block</div>",
+      "cell_type": "markdown",
+      "metadata": {
+      }
+    }
+  ],
+  "metadata": {
+  }
+}
+END
+
+is from-markdown($mtext2, to => 'JupyterObsidian').&from-json,
+        $res2.trim-trailing.&from-json,
+        'Custom title quote block';
+
+#-----------------------------------------------------------
+## 3
+#-----------------------------------------------------------
+my $mtext3 = q:to/END/;
+![Engelbart|100](https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg)
+END
+
+my $res3 = q:to/END/;
+{
+  "nbformat": 4,
+  "nbformat_minor": 2,
+  "metadata": {
+  },
+  "cells": [
+    {
+      "metadata": {
+      },
+      "source": "<img src=\"https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg\" alt=\"Engelbart\" width=\"100\"/>",
+      "cell_type": "markdown"
+    }
+  ]
+}
+END
+
+is from-markdown($mtext3, to => 'Jupyter::Obsidian').&from-json,
+        $res3.trim-trailing.&from-json,
+        'Image with size spec';
+
+#-----------------------------------------------------------
+## 4
+#-----------------------------------------------------------
+my $mtext4 = q:to/END/;
+Formula test:
+
+$$
+\begin{vmatrix}a & b\\
+c & d
+\end{vmatrix}=ad-bc
+$$
+END
+
+#is from-markdown($mtext4, to => 'jupyter').&from-json,
+#        $res4.trim-trailing.&from-json,
+#        'Formula test';
+
+done-testing;

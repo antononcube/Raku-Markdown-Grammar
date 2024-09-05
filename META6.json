@@ -1,7 +1,7 @@
 {
   "name": "Markdown::Grammar",
   "description": "Grammar for parsing Markdown documents and converting them to html-, notebook-, org-, or Pod6 files.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "perl": "6.d",
   "authors": [
     "Anton Antonov"
@@ -15,6 +15,7 @@
   "provides": {
     "Markdown::Actions::HTML": "lib/Markdown/Actions/HTML.rakumod",
     "Markdown::Actions::Jupyter": "lib/Markdown/Actions/Jupyter.rakumod",
+    "Markdown::Actions::JupyterObsidian": "lib/Markdown/Actions/JupyterObsidian.rakumod",
     "Markdown::Actions::Mathematica": "lib/Markdown/Actions/Mathematica.rakumod",
     "Markdown::Actions::OrgMode": "lib/Markdown/Actions/OrgMode.rakumod",
     "Markdown::Actions::Pod6": "lib/Markdown/Actions/Pod6.rakumod",

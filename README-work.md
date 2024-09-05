@@ -243,7 +243,7 @@ from-markdown($mtext2, flavor => 'obsidian', to => 'jupyter');
 Here is one of the ways to specify Obsidian file conversion via the CLI script:
 
 ```
-from-markdown myObsidianFile.md -f=obsidian -o myObsidianFile.ipynb  
+from-markdown myObsidianFile.md -f obsidian -o myObsidianFile.ipynb  
 ```
 
 Other examples are given in the test file 

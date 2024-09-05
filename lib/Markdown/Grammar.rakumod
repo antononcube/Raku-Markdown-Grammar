@@ -40,25 +40,28 @@ our proto from-markdown($md,
 
 multi from-markdown(IO::Path $file,
                     Str :t(:$to) = 'mathematica',
+                    :f(:$flavor) = Whatever,
                     :l(:$default-language) = Whatever,
                     :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
     my $text = slurp($file);
-    return from-markdown($text, :$to, :$default-language, :$raku-code-cell-name, :$docked-cells);
+    return from-markdown($text, :$to, :$flavor, :$default-language, :$raku-code-cell-name, :$docked-cells);
 }
 
 multi from-markdown(Str:D $file where *.IO.f,
                     Str :t(:$to) = 'mathematica',
+                    :f(:$flavor) = Whatever,
                     :l(:$default-language) = Whatever,
                     :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
 
     my $text = slurp($file);
-    return from-markdown($text, :$to, :$default-language, :$raku-code-cell-name, :$docked-cells);
+    return from-markdown($text, :$to, :$flavor, :$default-language, :$raku-code-cell-name, :$docked-cells);
 }
 
 multi from-markdown(Str:D $text,
                     Str :t(:$to) = 'mathematica',
+                    :f(:$flavor) is copy = Whatever,
                     :l(:$default-language) is copy = Whatever,
                     :$raku-code-cell-name = Whatever,
                     Bool :$docked-cells = False --> Str) {
@@ -80,15 +83,16 @@ multi from-markdown(Str:D $text,
                             defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
                             ));
         }
-        when  $_ ∈ <jupyter ipynb> {
+        when $_ ∈ <jupyter ipynb> && $flavor ~~ Str:D && $flavor.lc eq 'obsidian'
+                || $_ ~~ / jupyter [<:Pd> | '::']? obsidian /  {
             $res = md-interpret($text ~ $ending,
-                    actions => Markdown::Actions::Jupyter.new(
+                    actions => Markdown::Actions::JupyterObsidian.new(
                             defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
                             ));
         }
-        when  $_ ~~ / jupyter [<:Pd> | '::']? obsidian / {
+        when  $_ ∈ <jupyter ipynb> {
             $res = md-interpret($text ~ $ending,
-                    actions => Markdown::Actions::JupyterObsidian.new(
+                    actions => Markdown::Actions::Jupyter.new(
                             defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
                             ));
         }

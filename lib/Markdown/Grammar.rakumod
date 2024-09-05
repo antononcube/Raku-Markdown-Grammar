@@ -3,6 +3,7 @@ use v6.d;
 use Markdown::Grammarish;
 use Markdown::Actions::HTML;
 use Markdown::Actions::Jupyter;
+use Markdown::Actions::JupyterObsidian;
 use Markdown::Actions::Mathematica;
 use Markdown::Actions::OrgMode;
 use Markdown::Actions::Pod6;
@@ -82,6 +83,12 @@ multi from-markdown(Str:D $text,
         when  $_ ∈ <jupyter ipynb> {
             $res = md-interpret($text ~ $ending,
                     actions => Markdown::Actions::Jupyter.new(
+                            defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
+                            ));
+        }
+        when  $_ ~~ / jupyter [<:Pd> | '::']? obsidian / {
+            $res = md-interpret($text ~ $ending,
+                    actions => Markdown::Actions::JupyterObsidian.new(
                             defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
                             ));
         }

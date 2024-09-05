@@ -56,7 +56,7 @@ my $mtext2 = q:to/END/;
 Formula test:
 
 $$
-\begin{vmatrix}a & b\\
+\begin{vmatrix}a & b\\\\
 c & d
 \end{vmatrix}=ad-bc
 $$
@@ -65,7 +65,8 @@ $$
 
 END
 
-my $res = from-markdown($mtext2, to => 'Jupyter-Obsidian');
+#my $res = from-markdown($mtext2, to => 'Jupyter-Obsidian');
+my $res = from-markdown($mtext2, flavor => 'obsidian', to => 'jupyter');
 
 say $res;
 

@@ -135,8 +135,9 @@ class Markdown::Actions::Jupyter {
         make Pair.new('TEXTLINE', $/.Str);
     }
 
-    # Not used
+    # Not used here; not used in ::JupyterObsidian too
     method md-reference-link($/) { make '<a href="[' ~  $<md-link-label>.made ~ ']">' ~ $<md-link-name>.made ~ '</a>'; }
+
     method md-reference($/) {
         %!references.push(Pair.new($<md-link-label>.made, $<md-link-url>.made));
         make self.make-markdown-cell("");

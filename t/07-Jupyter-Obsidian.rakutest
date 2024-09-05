@@ -36,7 +36,7 @@ my $res1 = q:to/END/;
 }
 END
 
-is-deeply from-markdown($mtext1, to => 'jupyter-obsidian').&from-json,
+is-deeply from-markdown($mtext1, flavor => 'obsidian', to => 'jupyter').&from-json,
         $res1.trim-trailing.&from-json,
         'Simple quote block';
 

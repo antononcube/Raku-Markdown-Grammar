@@ -4,6 +4,7 @@ use v6.d;
 use Markdown::Grammar;
 use HTTP::Tiny;
 
+# Generic
 my $mtext1 = q:to/END/;
 # Example Doc
 
@@ -37,9 +38,36 @@ Each cell is its own document in Jupyter:
 
 END
 
-my $res = from-markdown($mtext1, to => 'Jupyter');
+# Obsidian specific
+my $mtext2 = q:to/END/;
+
+> [!info]
+> Like this one.
+> info
+
+> [!warning] This is a warning!
+> Like this
+> warning block
+
+> [!danger] This is a danger warning!
+> See this
+> danger block
+
+Formula test:
+
+$$
+\begin{vmatrix}a & b\\
+c & d
+\end{vmatrix}=ad-bc
+$$
+
+![Engelbart|100](https://history-computer.com/ModernComputer/Basis/images/Engelbart.jpg)
+
+END
+
+my $res = from-markdown($mtext2, to => 'Jupyter-Obsidian');
 
 say $res;
 
-spurt $*HOME ~ '/example-doc.ipynb', $res;
+spurt $*CWD ~ '/example-doc.ipynb', $res;
 

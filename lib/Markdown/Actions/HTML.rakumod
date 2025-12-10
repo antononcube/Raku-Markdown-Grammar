@@ -211,7 +211,7 @@ class Markdown::Actions::HTML {
             when 2 { @res = @res.map({ '<strong>' ~ $_ ~ '</strong>' }) }
             when 3 { @res = @res.map({ '<strong><em>' ~ $_ ~ '</strong></em>' }) }
         }
-         make "<b>\n" ~ @res.join("\n") ~ "\n</p>";
+         make "<p>\n" ~ @res.join("\n") ~ "\n</p>";
     }
 
     method md-item-list-block($/) {

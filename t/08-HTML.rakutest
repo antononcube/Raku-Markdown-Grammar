@@ -1,0 +1,115 @@
+use v6.d;
+use Test;
+
+# use lib <. lib>;
+use Markdown::Grammar;
+
+#===========================================================
+
+plan 5;
+
+#-----------------------------------------------------------
+## 1
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/1
+my $mtext1 = q:to/END/;
+line1
+END
+
+my $res1 = q:to/END/;
+<p>
+line1
+</p>
+END
+
+is from-markdown($mtext1, to => 'HTML'),
+        $res1.trim-trailing,
+        'Simple';
+
+#-----------------------------------------------------------
+## 2
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/2
+my $mtext2 = q:to/END/;
+```raku
+my $obj = [12,]
+```
+END
+
+my $res2 = q:to/END/;
+<pre><code class="raku">
+my $obj = [12,]
+</code></pre>
+END
+
+is from-markdown($mtext2, to => 'HTML').trim-trailing,
+        $res2.trim-trailing,
+        'Raku code block';
+
+#-----------------------------------------------------------
+## 3
+#-----------------------------------------------------------
+# See: https://github.com/antononcube/Raku-Markdown-Grammar/issues/4
+my $mtext3 = q:to/END/;
+```
+{
+    "name": "Anton"
+}
+```
+END
+
+my $res3 = q:to/END/;
+<pre><code>
+&#123;
+&quot;name&quot;: &quot;Anton&quot;
+&#125;
+</code></pre>
+END
+
+is from-markdown($mtext3, to => 'HTML').subst(/\s+/, :g),
+        $res3.trim.subst(/\s+/, :g),
+        'Raku code block with no lang spec';
+
+#-----------------------------------------------------------
+## 4
+#-----------------------------------------------------------
+# Same as the above using '~~~~~' as a fence
+my $mtext4 = q:to/END/;
+~~~~~
+{
+    "name": "Anton"
+}
+~~~~~
+END
+
+my $res4 = q:to/END/;
+<pre><code>
+&#123;
+&quot;name&quot;: &quot;Anton&quot;
+&#125;
+</code></pre>
+END
+
+is from-markdown($mtext4, to => 'HTML').trim-trailing.subst(/ \s+ /, :g),
+        $res4.trim-trailing.subst(/ \s+ /, :g),
+        'Raku code block with no lang spec using "~~~~~" fence';
+
+#-----------------------------------------------------------
+## 5
+#-----------------------------------------------------------
+# https://github.com/antononcube/Raku-Markdown-Grammar/issues/10
+my $mtext5 = q:to/END/;
+_for help and friendly advice_
+END
+
+my $res5 = q:to/END/;
+<p>
+<em>for help and friendly advice</em>
+</p>
+END
+
+is from-markdown($mtext5, to => 'HTML'),
+        $res5.trim-trailing,
+        'Raku emphasis paragraph';
+
+done-testing;

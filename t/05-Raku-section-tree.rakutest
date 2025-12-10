@@ -1,8 +1,6 @@
 use v6.d;
 
-use lib '.';
-use lib './lib';
-
+# use lib <. lib>;
 use Markdown::Grammar;
 
 use Test;

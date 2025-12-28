@@ -10,7 +10,7 @@ my %*SUB-MAIN-OPTS = :named-anywhere;
 #| Converts Markdown files into Jupyter and Mathematica notebooks, and HTML, Org-mode, and Pod6 files.
 sub MAIN(Str $text,                                  #= Input file or Markdown text.
          Str :f(:$flavor) = 'Whatever',              #= Markdown flavor. (One of 'obsidian' or 'Whatever'.)
-         Str :t(:$to) = 'Whatever',                  #= Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', 'pod6', or 'Whatever'.)
+         Str :t(:format(:$to)) = 'Whatever',         #= Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', 'pod6', or 'Whatever'.)
          Str :l(:$default-language) = 'Whatever',    #= Default code blocks language.
          Str :r(:$raku-code-cell-name) = 'Whatever', #= Raku code cell name. (Mathematica only.)
          Bool :d(:$docked-cells) = False,            #= Should formula conversion button be added as a docked cell or not? (Mathematica only.)

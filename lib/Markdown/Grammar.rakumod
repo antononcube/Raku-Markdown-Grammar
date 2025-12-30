@@ -96,7 +96,7 @@ multi from-markdown(Str:D $text,
                             defaultLang =>$default-language.lc eq 'whatever' ?? 'raku' !! $default-language
                             ));
         }
-        when  $_ ∈ <mathematica wl> {
+        when  $_ ∈ <mathematica wolfram wl> {
             $res = md-interpret($text ~ $ending,
                     actions => Markdown::Actions::Mathematica.new(
                             defaultLang => $default-language.lc eq 'whatever' ?? 'mathematica' !! $default-language,

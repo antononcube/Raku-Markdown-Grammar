@@ -8,7 +8,7 @@ my %*SUB-MAIN-OPTS = :named-anywhere;
 #-----------------------------------------------------------
 
 #| Converts Markdown files into Jupyter and Mathematica notebooks, and HTML, Org-mode, and Pod6 files.
-sub MAIN(Str $text,                                  #= Input file or Markdown text.
+multi sub MAIN(Str $input?,                           #= Input file or Markdown text.
          Str :f(:$flavor) = 'Whatever',              #= Markdown flavor. (One of 'obsidian' or 'Whatever'.)
          Str :t(:format(:$to)) = 'Whatever',         #= Format to convert to. (One of 'html', 'jupyter', 'mathematica', 'org', 'pod6', or 'Whatever'.)
          Str :l(:$default-language) = 'Whatever',    #= Default code blocks language.
@@ -17,6 +17,7 @@ sub MAIN(Str $text,                                  #= Input file or Markdown t
          Str :o(:$output) = '',                      #= Output file; if an empty string then the result is printed to stdout.
          ) {
 
+    my $text = $input // $*IN.slurp;
 
     my $flavorSpec = (!$flavor || $flavor.lc ∈ <whatever automatic>) ?? Whatever !! $flavor;
 
